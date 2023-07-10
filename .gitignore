@@ -92,3 +92,4 @@ node_modules
 /yarn-error.log
 .idea
 .vscode
+lerna-debug.log
