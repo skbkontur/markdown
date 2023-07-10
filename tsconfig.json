@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "es6",
+    "target": "es5",
+    "declaration": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "types": ["jest", "node"],
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "lib": ["es2015", "dom"],
+    "skipLibCheck": true
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/__stories__", "**/__tests__"]
+}
