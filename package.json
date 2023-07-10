@@ -1,5 +1,5 @@
 {
-  "name": "markdown",
+  "name": "@skbkontur/markdown",
   "version": "1.0.0",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -7,7 +7,6 @@
   },
   "private": false,
   "license": "UNLICENSED",
-  "main": "index.js",
   "author": "tsypilov_m",
   "dependencies": {
     "react-dropzone": "^14.2.3",
@@ -17,13 +16,14 @@
     "rehype-sanitize": "5.0.1",
     "remark-breaks": "^3.0.3",
     "remark-gfm": "^3.0.1",
+    "styled-components": "5.1.0",
     "turndown": "^7.1.2",
     "turndown-plugin-gfm": "^1.0.2",
-    "uuid": "^9.0.0",
-    "styled-components": "5.1.0"
+    "uuid": "^9.0.0"
   },
   "scripts": {
-    "build": "yarn tsc",
+    "bump": "lerna version",
+    "build": "lerna run build",
     "lint-staged": "lint-staged",
     "lint": "eslint --ext=ts,tsx src",
     "lint:fix": "eslint --ext=.ts,tsx src --fix",
@@ -54,12 +54,12 @@
     "@storybook/preset-create-react-app": "4.1.2",
     "@storybook/react": "6.5.16",
     "@storybook/test-runner": "0.9.4",
-    "@types/styled-components": "5.1.0",
-    "@types/turndown": "^5.0.1",
-    "@types/uuid": "^9.0.1",
     "@types/node": "12.0.0",
     "@types/react": "16.9.0",
     "@types/react-dom": "16.9.0",
+    "@types/styled-components": "5.1.0",
+    "@types/turndown": "^5.0.1",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "5.57.0",
     "@typescript-eslint/parser": "5.57.0",
     "axe-playwright": "1.2.3",
@@ -76,6 +76,7 @@
     "husky": "7.0.4",
     "jest": "29.5.0",
     "jest-environment-jsdom": "29.5.0",
+    "lerna": "7.1.1",
     "lint-staged": "^12.3.4",
     "prettier": "2.2.1",
     "react": "16.9.0",
