@@ -16,13 +16,13 @@ export const useFileLogic = (
   fileApiUrl?: string,
   textarea?: Nullable<Textarea>,
   cursorPosition?: number | null,
-  disabled?: boolean
+  disabled?: boolean,
 ) => {
   const { getRootProps, isDragActive, open } = useDropzone({
     multiple: false,
     noClick: true,
     disabled: disabled || !fileUploadApi || !fileDownloadApi,
-    onDrop: (files) => void uploadFile(files[0]),
+    onDrop: files => void uploadFile(files[0]),
   });
 
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.Default);
@@ -49,7 +49,7 @@ export const useFileLogic = (
             textarea,
             isImage ? MarkdownFormat.image : MarkdownFormat.file,
             cursorPosition,
-            fileApiUrl
+            fileApiUrl,
           );
         }
 

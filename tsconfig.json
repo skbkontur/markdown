@@ -3,22 +3,24 @@
     "strict": true,
     "module": "es6",
     "target": "es5",
-    "declaration": true,
     "jsx": "react",
+    "declaration": true,
     "resolveJsonModule": true,
     "types": ["jest", "node"],
-    "esModuleInterop": true,
-    "moduleResolution": "Node",
-    "experimentalDecorators": true,
     "allowJs": true,
-    "lib": ["es2015", "dom"],
-    "skipLibCheck": true
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Node",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "typeRoots": ["node_modules/@types"]
   },
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "**/__stories__", "**/__tests__"]
+  "include": ["src", "index.ts"],
+  "exclude": ["node_modules", "**/*/__stories__", "**/*/__tests__", "**/*__mocks__"]
 }

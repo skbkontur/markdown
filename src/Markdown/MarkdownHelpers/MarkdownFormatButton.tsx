@@ -1,10 +1,10 @@
 import { Hint } from '@skbkontur/react-ui';
 import React, { FC } from 'react';
 
-import { MarkdownButtonIcon, MarkdownButtonWrapper, VisuallyHidden } from '../Markdown.styled';
-import { MarkdownFormat } from '../MarkdownFormat';
 import { MarkdownButtonProps } from './MarkdownButton';
 import { MarkdownCombination } from './MarkdownCombination';
+import { MarkdownButtonIcon, MarkdownButtonWrapper, VisuallyHidden } from '../Markdown.styled';
+import { MarkdownFormat } from '../MarkdownFormat';
 
 interface Props extends MarkdownButtonProps {
   format?: MarkdownFormat;

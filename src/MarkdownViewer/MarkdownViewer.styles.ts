@@ -35,7 +35,7 @@ export const Wrapper = styled.div`
 
   button {
     text-align: left;
-    color: ${(p) => p.theme?.colors?.link};
+    color: ${p => p.theme?.colors?.link};
   }
 
   table {
@@ -55,7 +55,7 @@ export const Paragraph = styled.p`
 export const BlockQuote = styled.blockquote`
   margin: 0;
   padding-left: 8px;
-  border-left: 4px solid ${(p) => p.theme?.colors?.grayDefault};
+  border-left: 4px solid ${p => p.theme?.colors?.grayDefault};
 `;
 
 export const FileButtonWrapper = styled.div`

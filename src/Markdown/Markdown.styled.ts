@@ -1,9 +1,9 @@
 import { Button, MenuItem, ThemeFactory, THEME_2022 } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
 
+import { HorizontalPaddings } from './types';
 import styled, { css } from '../styles/styled-components';
 import { MarkdownTheme } from '../styles/theme';
-import { HorizontalPaddings } from './types';
 
 interface PanelProps extends HorizontalPaddings {
   theme: MarkdownTheme;
@@ -19,14 +19,14 @@ export const Wrapper = styled.div`
   position: relative;
 
   &:focus-visible {
-    outline: 1px solid ${(p) => p.theme.colors.brand};
+    outline: 1px solid ${p => p.theme.colors.brand};
   }
 `;
 
 export const Avatar = styled.img.attrs({ alt: '' })`
   flex-shrink: 0;
   box-sizing: border-box;
-  border: 1px solid ${(props) => props.theme.colors.grayDefault};
+  border: 1px solid ${props => props.theme.colors.grayDefault};
   border-radius: 50%;
   object-fit: cover;
 `;
@@ -40,16 +40,16 @@ export const UserWrapper = styled.div`
 
 export const DroppablePlaceholder = styled.div<HorizontalPaddings>`
   position: absolute;
-  top: ${(p) => (p.panelPadding || p.fullscreenPadding ? 0 : -8)}px;
-  left: ${(p) => (p.panelPadding || p.fullscreenPadding ? 0 : -8)}px;
+  top: ${p => (p.panelPadding || p.fullscreenPadding ? 0 : -8)}px;
+  left: ${p => (p.panelPadding || p.fullscreenPadding ? 0 : -8)}px;
   width: 100%;
   height: 100%;
-  padding: ${(p) => (p.panelPadding || p.fullscreenPadding ? 0 : 8)}px;
+  padding: ${p => (p.panelPadding || p.fullscreenPadding ? 0 : 8)}px;
   border-radius: 8px;
   z-index: 100;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.04)),
-    rgba(255, 255, 255, ${(p) => (p.theme.themeMode === 'dark' ? 0.1 : 0.7)});
-  background-image: ${(p) => p.theme?.droppablePlaceholderBgImage ?? ''};
+    rgba(255, 255, 255, ${p => (p.theme.themeMode === 'dark' ? 0.1 : 0.7)});
+  background-image: ${p => p.theme?.droppablePlaceholderBgImage ?? ''};
 `;
 
 export const MentionWrapper = styled.div``;
@@ -59,7 +59,7 @@ export const MarkdownPreview = styled.div<HorizontalPaddings>`
 `;
 
 export const MarkdownActionsWrapper = styled.div<HorizontalPaddings>`
-  padding: 0 ${(p) => `${p.fullscreenPadding ?? 0}px`};
+  padding: 0 ${p => `${p.fullscreenPadding ?? 0}px`};
   margin-bottom: 4px;
 
   ${({ theme, panelPadding, fullscreenPadding }) => {
@@ -100,18 +100,18 @@ export const MarkdownDropdown = styled.div`
   button {
     padding-top: 0;
     padding-bottom: 0;
-    font-size: ${(p) => p.theme.elementsFontSize};
+    font-size: ${p => p.theme.elementsFontSize};
   }
 `;
 
 export const MarkdownSymbolWrapper = styled.span`
-  color: ${(p) => p.theme.colors.brand};
+  color: ${p => p.theme.colors.brand};
 `;
 
 export const MarkdownMenuItem = styled(MenuItem)`
   padding-left: 8px;
   padding-right: 8px;
-  color: ${(p) => p.theme.colors.grayDefault};
+  color: ${p => p.theme.colors.grayDefault};
 `;
 
 export const HintContentWrapper = styled.div`
@@ -160,7 +160,7 @@ export const getMarkdownReactUiTheme = (
   theme: MarkdownTheme,
   reactUiTheme?: typeof THEME_2022,
   panelHorizontalPadding?: number,
-  fullScreenTextareaPadding?: number
+  fullScreenTextareaPadding?: number,
 ) => {
   const { elementsFontSize, elementsLineHeight, themeMode, colors } = theme;
 
@@ -217,6 +217,6 @@ export const getMarkdownReactUiTheme = (
         textareaPaddingY: `0`,
       }),
     },
-    reactUiTheme
+    reactUiTheme,
   );
 };

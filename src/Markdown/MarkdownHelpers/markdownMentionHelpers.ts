@@ -1,8 +1,8 @@
 import { Menu } from '@skbkontur/react-ui/internal/Menu';
 import { ChangeEvent, MouseEvent, RefObject, SyntheticEvent, useEffect } from 'react';
 
-import { Token, User } from '../types';
 import { getTextareaTokens } from './markdownTextareaHelpers';
+import { Token, User } from '../types';
 
 const ArrowsVertical: string[] = ['ArrowUp', 'ArrowDown'];
 
@@ -11,14 +11,14 @@ export function mentionActions(
     | ChangeEvent<HTMLTextAreaElement>
     | MouseEvent<HTMLTextAreaElement>
     | SyntheticEvent<HTMLTextAreaElement, Event>,
-  setToken: (token?: Token) => void
+  setToken: (token?: Token) => void,
 ) {
   const { value, selectionStart } = event.currentTarget;
 
   const tokens = getTextareaTokens(value as string);
 
   const mention = tokens.find(
-    (t) => selectionStart >= t.positions[0] && selectionStart <= t.positions[1] && t.value.startsWith('@')
+    t => selectionStart >= t.positions[0] && selectionStart <= t.positions[1] && t.value.startsWith('@'),
   );
 
   if (mention) {
@@ -31,7 +31,7 @@ export function mentionActions(
 export const useMenuKeyListener = (
   onUserSelect: (login: string, name: string) => void,
   users?: User[],
-  menuRef?: RefObject<Menu>
+  menuRef?: RefObject<Menu>,
 ) => {
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {

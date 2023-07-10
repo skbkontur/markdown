@@ -54,19 +54,19 @@ export const MarkdownMention: FC<Props> = ({ value, onUserSelect, x, y, getUsers
   return createPortal(
     <ZIndex priority="Toast" style={getMarkdownMentionStyle(x, y)}>
       <Menu ref={menuRef} preventWindowScroll hasShadow maxHeight={300} width={300}>
-        {users?.map((user) => (
+        {users?.map(user => (
           <MentionMenuItem key={user.id} onClick={() => onUserSelect(user?.login ?? '', user.name)}>
             <UserWrapper>
               <Avatar height={48} width={48} src={getAvatarUrl(user.sid)} />
               <div>
                 <div>{user.name}</div>
-                <UserDescriptions>{user?.teams.map((t) => t.caption).join(', ')}</UserDescriptions>
+                <UserDescriptions>{user?.teams.map(t => t.caption).join(', ')}</UserDescriptions>
               </div>
             </UserWrapper>
           </MentionMenuItem>
         ))}
       </Menu>
     </ZIndex>,
-    markdownMentionsRef.current as HTMLElement
+    markdownMentionsRef.current as HTMLElement,
   );
 };

@@ -16,7 +16,7 @@ export interface MarkdownEditorProps
   validationInfo?: ValidationInfo | null;
 }
 
-export const MarkdownEditor: FC<MarkdownEditorProps> = (props) => {
+export const MarkdownEditor: FC<MarkdownEditorProps> = props => {
   const {
     resize = 'none',
     width = '100%',

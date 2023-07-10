@@ -1,0 +1,7 @@
+config/**/*.js
+node_modules/**/*.ts
+**/*.test.tsx
+**/types/*.ts
+**/types/**/*.ts
+.storybook
+.eslintrc.js

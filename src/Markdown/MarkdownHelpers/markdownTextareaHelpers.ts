@@ -1,10 +1,10 @@
 import { Textarea } from '@skbkontur/react-ui';
 import { useCallback, useEffect } from 'react';
 
+import { setMarkdownPastedHtml } from './markdownHelpers';
 import { MENTION_WRAPPER_ID_POSTFIX } from '../constants';
 import { Token } from '../types';
 import { turndownService } from '../utils/htmlToMd';
-import { setMarkdownPastedHtml } from './markdownHelpers';
 
 export const textareaTokensRegExp = /(\[[\w\s\dА-Яа-яЁёЙй]+]\(@[\w\d]+\)|[@А-Яа-яЁёЙйA-Za-z]+)/g;
 

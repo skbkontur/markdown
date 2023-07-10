@@ -1,4 +1,3 @@
-import { Attach } from '@skbkontur/react-icons';
 import { Checkbox } from '@skbkontur/react-ui';
 import React, { FC, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -7,7 +6,6 @@ import rehypeRaw from 'rehype-raw';
 import remarkBreaks from 'remark-breaks';
 import gfm from 'remark-gfm';
 
-import { useFileLogic } from '../Markdown/Files/Files.logic';
 import { MarkdownImage } from './Helpers/MarkdownImage';
 import { MarkdownLink } from './Helpers/MarkdownLink';
 import {
@@ -20,6 +18,8 @@ import {
   Wrapper,
 } from './MarkdownViewer.styles';
 import { CustomComponentsProps, MarkdownInputProps, MarkdownLinkProps, MarkdownLiProps } from './types';
+import { useFileLogic } from '../Markdown/Files/Files.logic';
+import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 
 export interface MarkdownViewerProps {
   /** Метод апи для скачивания файлов */
@@ -64,9 +64,9 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
       input: renderInput,
       ul: renderList,
       ol: renderOrderedList,
-      blockquote: (props) => <BlockQuote>{props.children}</BlockQuote>,
-      p: (props) => <Paragraph>{props.children}</Paragraph>,
-      img: (props) => <MarkdownImage src={props.src ?? ''} />,
+      blockquote: props => <BlockQuote>{props.children}</BlockQuote>,
+      p: props => <Paragraph>{props.children}</Paragraph>,
+      img: props => <MarkdownImage src={props.src ?? ''} />,
     };
   }
 
@@ -86,7 +86,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
 
       return (
         <FileButtonWrapper>
-          <Attach />
+          <AttachPaperclip />
           &nbsp;
           <button aria-label={`Загрузить файл ${children}`} onClick={() => downloadFile(id)}>
             {children}

@@ -13,9 +13,6 @@ import React, {
 } from 'react';
 import Foco from 'react-foco/lib';
 
-import { MarkdownViewer } from '../MarkdownViewer';
-import { MarkdownThemeProvider, MarkdownThemeConsumer } from '../styles/styled-components';
-import { DEFAULT_MARKDOWN_THEME } from '../styles/theme';
 import { MENTION_WRAPPER_ID_POSTFIX } from './constants';
 import { useFileLogic } from './Files/Files.logic';
 import {
@@ -39,25 +36,28 @@ import { MarkdownMention } from './MarkdownMention';
 import { HorizontalPaddings, ViewMode, Token, MarkdownApi } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
+import { MarkdownViewer } from '../MarkdownViewer';
+import { MarkdownThemeProvider, MarkdownThemeConsumer } from '../styles/styled-components';
+import { DEFAULT_MARKDOWN_THEME } from '../styles/theme';
 
 export interface MarkdownProps extends MarkdownEditorProps {
   /** Методы апи для загрузки/скачивания файлов и меншена */
   api?: MarkdownApi;
   /** Url апи для файлов  */
   fileApiUrl?: string;
-  /** Url для профиля сотрудника  */
-  profileUrl?: string;
   /** Скрыть панель действий (кнопки помощи форматирования текста) */
   hideMarkdownActions?: boolean;
   /** Превьювер мардауна, по умолчанию используется MarkdownViewer */
   markdownViewer?: (value: string) => ReactNode;
   /** Padding markdownActions (кнопки помощи форматирования текста), включает режим panel */
   panelHorizontalPadding?: number;
+  /** Url для профиля сотрудника  */
+  profileUrl?: string;
   /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
 }
 
-export const Markdown: FC<MarkdownProps> = (props) => {
+export const Markdown: FC<MarkdownProps> = props => {
   const {
     panelHorizontalPadding,
     hideMarkdownActions,
@@ -89,7 +89,7 @@ export const Markdown: FC<MarkdownProps> = (props) => {
     fileApiUrl,
     textareaRef.current,
     selectionStart,
-    !isEditMode
+    !isEditMode,
   );
 
   usePasteFromClipboard(textareaRef.current, api?.fileUploadApi, api?.fileDownloadApi, fileApiUrl);
@@ -108,7 +108,7 @@ export const Markdown: FC<MarkdownProps> = (props) => {
       textareaNode.selectionStart = selectionStart ?? 0;
       textareaNode.selectionEnd = selectionEnd ?? 0;
     }
-  }, [fullscreen, isEditMode]);
+  }, [fullscreen, isEditMode, selectionEnd, selectionStart]);
 
   const fullscreenTextareaPadding = getFullscreenHorizontalPadding(fullscreen, initialWidth);
 
@@ -151,13 +151,13 @@ export const Markdown: FC<MarkdownProps> = (props) => {
 
   return (
     <MarkdownThemeConsumer>
-      {(theme) => {
+      {theme => {
         const defaultTheme = theme ?? DEFAULT_MARKDOWN_THEME;
         const reactUiTheme = getMarkdownReactUiTheme(
           defaultTheme,
           theme?.reactUiTheme,
           panelHorizontalPadding,
-          fullscreenTextareaPadding
+          fullscreenTextareaPadding,
         );
 
         return (
@@ -220,7 +220,7 @@ export const Markdown: FC<MarkdownProps> = (props) => {
 
   function handleSelectUser(login: string, name: string) {
     if (textareaRef.current && mention) {
-      const htmlTextArea = textareaRef.current as any as HTMLTextAreaElement;
+      const htmlTextArea = (textareaRef.current as any) as HTMLTextAreaElement;
 
       htmlTextArea.setSelectionRange(mention.positions[0] ? mention.positions[0] - 1 : 0, mention.positions[1]);
 
@@ -255,7 +255,7 @@ export const Markdown: FC<MarkdownProps> = (props) => {
     event:
       | ChangeEvent<HTMLTextAreaElement>
       | MouseEvent<HTMLTextAreaElement>
-      | SyntheticEvent<HTMLTextAreaElement, Event>
+      | SyntheticEvent<HTMLTextAreaElement, Event>,
   ) {
     if (api?.getUsersApi) mentionActions(event, setMention);
   }

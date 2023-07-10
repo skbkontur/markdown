@@ -2,13 +2,13 @@ import React, { ReactNode } from 'react';
 
 import { MarkdownSymbolWrapper } from './Markdown.styled';
 import { MarkdownFormat } from './MarkdownFormat';
-import { AttachLink } from './MarkdownIcons/AttachLink';
-import { AttachPaperclip } from './MarkdownIcons/AttachPaperclip';
-import { CheckedList } from './MarkdownIcons/CheckedList';
-import { List } from './MarkdownIcons/List';
-import { NumberedList } from './MarkdownIcons/NumberedList';
-import { Table } from './MarkdownIcons/Table';
 import { RefItem } from './types';
+import { AttachLink } from '../MarkdownIcons/AttachLink';
+import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
+import { CheckedList } from '../MarkdownIcons/CheckedList';
+import { List } from '../MarkdownIcons/List';
+import { NumberedList } from '../MarkdownIcons/NumberedList';
+import { Table } from '../MarkdownIcons/Table';
 
 const newLinesRegexp = /([\n\r]+)/g;
 
@@ -230,14 +230,14 @@ export const markdownHelpFiles = (fileApiUrl?: string): MarkdownHelpFileItem[] =
       format: MarkdownFormat.image,
       node: '',
       icon: <span />,
-      wrapContent: (file) => `![img](${fileApiUrl}${file.id})`,
+      wrapContent: file => `![img](${fileApiUrl}${file.id})`,
       text: 'Картинка',
     },
     {
       format: MarkdownFormat.file,
       node: '',
       icon: <AttachPaperclip />,
-      wrapContent: (file) => `[${file.caption}](${fileApiUrl}${file.id})`,
+      wrapContent: file => `[${file.caption}](${fileApiUrl}${file.id})`,
       text: 'Файл',
     },
   ];

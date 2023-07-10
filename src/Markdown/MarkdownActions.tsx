@@ -14,12 +14,12 @@ import { MarkdownCombination } from './MarkdownHelpers/MarkdownCombination';
 import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
-import { AttachPaperclip } from './MarkdownIcons/AttachPaperclip';
-import { Collapse } from './MarkdownIcons/Collapse';
-import { Expand } from './MarkdownIcons/Expand';
-import { EyeOpen } from './MarkdownIcons/EyeOpen';
-import { ToolPencil } from './MarkdownIcons/ToolPencil';
 import { HorizontalPaddings, ViewMode } from './types';
+import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
+import { Collapse } from '../MarkdownIcons/Collapse';
+import { Expand } from '../MarkdownIcons/Expand';
+import { EyeOpen } from '../MarkdownIcons/EyeOpen';
+import { ToolPencil } from '../MarkdownIcons/ToolPencil';
 
 interface Props {
   horizontalPaddings: HorizontalPaddings;
@@ -57,7 +57,10 @@ export const MarkdownActions: FC<Props> = ({
           <MarkdownDropdown>
             <Dropdown disablePortal disabled={isPreviewMode} menuWidth={260} caption="Заголовок">
               {markdownHelpHeaders.map((helper, idx) => (
-                <MarkdownMenuItem key={idx} onClick={(event) => handleMarkdownItemClick(event, helper.format)}>
+                <MarkdownMenuItem
+                  key={idx}
+                  onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
+                >
                   <MarkdownCombination format={helper.format} text={helper.node} />
                 </MarkdownMenuItem>
               ))}
@@ -71,7 +74,7 @@ export const MarkdownActions: FC<Props> = ({
               hintText={helper.node}
               icon={helper.icon}
               text={helper.text}
-              onClick={(event) => handleMarkdownItemClick(event, helper.format)}
+              onClick={event => handleMarkdownItemClick(event, helper.format)}
             />
           ))}
           {markdownHelpLists.map((helper, idx) => (
@@ -82,7 +85,7 @@ export const MarkdownActions: FC<Props> = ({
               hintText={helper.node}
               icon={helper.icon}
               text={helper.text}
-              onClick={(event) => handleMarkdownItemClick(event, helper.format)}
+              onClick={event => handleMarkdownItemClick(event, helper.format)}
             />
           ))}
           {markdownHelpOther.map((helper, idx) => (
@@ -93,7 +96,7 @@ export const MarkdownActions: FC<Props> = ({
               hintText={helper.node}
               icon={helper.icon}
               text={helper.text}
-              onClick={(event) => handleMarkdownItemClick(event, helper.format)}
+              onClick={event => handleMarkdownItemClick(event, helper.format)}
             />
           ))}
           {hasFilesApi && (

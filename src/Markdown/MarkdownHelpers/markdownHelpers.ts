@@ -1,11 +1,11 @@
 import { Textarea } from '@skbkontur/react-ui';
 import { KeyboardEvent as ReactKeyboardEvent, RefObject, useEffect } from 'react';
 
+import { getPastedHtml } from './markdownTextareaHelpers';
 import { useFileLogic } from '../Files/Files.logic';
 import { MarkdownFormat } from '../MarkdownFormat';
 import { eventKeyCodeToMarkdownFormat, markdownHelpFiles, markdownHelpItems } from '../MarkdownHelpItems';
 import { Nullable, RefItem } from '../types';
-import { getPastedHtml } from './markdownTextareaHelpers';
 
 const { italic, bold, crossed, codeBlock, ref, file, image } = MarkdownFormat;
 
@@ -18,9 +18,9 @@ export function setMarkdown(
   text: string,
   format: MarkdownFormat,
   selectionStart: number,
-  selectionEnd?: number | null
+  selectionEnd?: number | null,
 ) {
-  const markdownHelpItem = markdownHelpItems.find((item) => item.format === format);
+  const markdownHelpItem = markdownHelpItems.find(item => item.format === format);
 
   if (markdownHelpItem) {
     const prevCommentPart = text.substring(selectionStart, selectionEnd ?? undefined);
@@ -37,9 +37,9 @@ export function setMarkdownFiles(
   textarea: Textarea,
   format: MarkdownFormat,
   cursorPosition?: number | null,
-  fileApiUrl?: string
+  fileApiUrl?: string,
 ) {
-  const markdownHelpItem = markdownHelpFiles(fileApiUrl).find((item) => item.format === format);
+  const markdownHelpItem = markdownHelpFiles(fileApiUrl).find(item => item.format === format);
 
   if (markdownHelpItem) {
     const textareaNode = (textarea as any).node as HTMLTextAreaElement;
@@ -77,7 +77,7 @@ export function setTextareaCursor(
   prevCommentPartLength: number,
   nextCommentPartLength: number,
   textareaNode: HTMLTextAreaElement,
-  selectionEnd: number
+  selectionEnd: number,
 ) {
   if (betweenTextFormats.includes(format)) {
     const formatCenterPosition = (nextCommentPartLength - prevCommentPartLength) / 2;
@@ -97,7 +97,7 @@ export function setTextareaCursor(
 export function createMarkdownHelpKeyDownHandler(
   text: string,
   ref?: RefObject<Textarea> | null,
-  callback?: (event: ReactKeyboardEvent<HTMLTextAreaElement>) => void
+  callback?: (event: ReactKeyboardEvent<HTMLTextAreaElement>) => void,
 ) {
   return (event: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     if (!ref?.current) {
@@ -109,7 +109,7 @@ export function createMarkdownHelpKeyDownHandler(
     const format = eventKeyCodeToMarkdownFormat[event.keyCode];
 
     if (event.ctrlKey && event.altKey && format) {
-      const markdownHelpItem = markdownHelpItems.find((item) => item.format === format);
+      const markdownHelpItem = markdownHelpItems.find(item => item.format === format);
 
       if (markdownHelpItem && textareaNode) {
         event.stopPropagation();
@@ -133,7 +133,7 @@ export const usePasteFromClipboard = (
   textarea: Nullable<Textarea>,
   uploadFileApi?: (file: File) => Promise<RefItem>,
   downloadFileApi?: (id: string) => Promise<File>,
-  fileApiUrl?: string
+  fileApiUrl?: string,
 ) => {
   const { uploadFile } = useFileLogic(uploadFileApi, downloadFileApi, fileApiUrl, textarea);
   const textareaNode = (textarea as any)?.node as HTMLTextAreaElement;
