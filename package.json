@@ -5,9 +5,10 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
+  "repository": "https://github.com/tsypilov/skbkontur-markdown",
   "private": false,
   "license": "UNLICENSED",
-  "author": "tsypilov_m",
+  "author": "tsypilov",
   "dependencies": {
     "react-dropzone": "^14.2.3",
     "react-foco": "^1.3.1",
