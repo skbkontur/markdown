@@ -3,6 +3,7 @@ import React, { FC, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
 import gfm from 'remark-gfm';
 
@@ -49,7 +50,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
       <ReactMarkdown
         components={getCustomComponents()}
         remarkPlugins={[gfm, remarkBreaks]}
-        rehypePlugins={[rehypeRaw]}
+        rehypePlugins={[rehypeRaw, rehypeSanitize]}
         linkTarget="_blank"
       >
         {source}
