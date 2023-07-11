@@ -15,9 +15,7 @@ const a11yConfig = {
     const storyContext = await getStoryContext(page, context);
 
     // Do not test a11y for stories that disable a11y
-    if (storyContext.parameters?.a11y?.disable) {
-      return;
-    }
+    if (storyContext.parameters?.a11y?.disable) return;
 
     // Apply story-level a11y rules
     await configureAxe(page, {
