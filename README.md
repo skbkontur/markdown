@@ -12,6 +12,8 @@
 Тема `Textarea` берется из ThemeContext из react-ui.
 Стилизация `Markdown` через `MarkdownThemeProvider`.
 
+### [Примеры использования](https://stackblitz.com/edit/skbkontur-markdown?file=src%2FApp.tsx)
+
 ### Markdown
 #### Props
 
