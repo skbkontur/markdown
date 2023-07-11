@@ -23,7 +23,7 @@
   },
   "scripts": {
     "bump": "lerna version",
-    "build": "lerna run build",
+    "build": "yarn tsc",
     "lint-staged": "lint-staged",
     "lint": "eslint --ext=ts,tsx src",
     "lint:fix": "eslint --ext=.ts,tsx src --fix",
