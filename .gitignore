@@ -93,3 +93,4 @@ node_modules
 .idea
 .vscode
 lerna-debug.log
+.DS_Store
