@@ -88,8 +88,10 @@
     "typescript": "4.9.4"
   },
   "files": [
-    "**/*.js",
-    "**/*.d.ts"
+    "src/**/*.js",
+    "src/**/*.d.ts",
+    "index.js",
+    "index.d.ts"
   ],
   "husky": {
     "hooks": {

@@ -22,5 +22,5 @@
     }
   },
   "include": ["src", "index.ts"],
-  "exclude": ["node_modules", "**/*/__stories__", "**/*/__tests__", "**/*__mocks__"]
+  "exclude": ["node_modules", "**/*/__stories__", "**/*/__tests__", "**/*/__mocks__"]
 }
