@@ -1,6 +1,6 @@
-const path = require('path');
 const axios = require('axios');
 const { hybridStoriesProvider } = require('creevey');
+const path = require('path');
 
 const config = {
   resolveStorybookUrl: () => axios('https://fake.testkontur.ru/ip').then(res => `http://${res.data}:6006`),
