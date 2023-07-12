@@ -28,7 +28,17 @@ export const WithPanel = () => <Markdown value={allVariantsMarkdownMock} panelHo
 export const Editable = () => {
   const [value, setValue] = useState<string>('');
 
-  return <Markdown value={value} maxLength={50000} onValueChange={setValue} />;
+  return (
+    <Markdown
+      api={{
+        fileDownloadApi: () => new Promise<File>(() => new File(['a'], 'test.txt')),
+        fileUploadApi: () => new Promise(() => ({ id: 'i', caption: 'test.txt' })),
+      }}
+      value={value}
+      maxLength={50000}
+      onValueChange={setValue}
+    />
+  );
 };
 
 export const WithValidation = () => {

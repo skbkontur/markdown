@@ -59,7 +59,7 @@ export const MarkdownPreview = styled.div<HorizontalPaddings>`
 `;
 
 export const MarkdownActionsWrapper = styled.div<HorizontalPaddings>`
-  padding: 0 ${p => `${p.fullscreenPadding ?? 0}px`};
+  padding: ${p => `${p.fullscreenPadding ? 16 : 0}px`} ${p => `${p.fullscreenPadding ?? 0}px`} 0;
   margin-bottom: 4px;
 
   ${({ theme, panelPadding, fullscreenPadding }) => {
