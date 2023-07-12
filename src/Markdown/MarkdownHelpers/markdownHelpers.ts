@@ -4,7 +4,12 @@ import { KeyboardEvent as ReactKeyboardEvent, RefObject, useEffect } from 'react
 import { getPastedHtml } from './markdownTextareaHelpers';
 import { useFileLogic } from '../Files/Files.logic';
 import { MarkdownFormat } from '../MarkdownFormat';
-import { eventKeyCodeToMarkdownFormat, markdownHelpFiles, markdownHelpItems } from '../MarkdownHelpItems';
+import {
+  checkSpaceSymbol,
+  eventKeyCodeToMarkdownFormat,
+  markdownHelpFiles,
+  markdownHelpItems,
+} from '../MarkdownHelpItems';
 import { Nullable, RefItem } from '../types';
 
 const { italic, bold, crossed, codeBlock, ref, file, image } = MarkdownFormat;
@@ -24,11 +29,18 @@ export function setMarkdown(
 
   if (markdownHelpItem) {
     const prevCommentPart = text.substring(selectionStart, selectionEnd ?? undefined);
-    const nextCommentPart = markdownHelpItem.wrapContent(prevCommentPart);
+    const { value, spaces } = checkSpaceSymbol(prevCommentPart, markdownHelpItem.checkLength);
+    const nextCommentPart = markdownHelpItem.wrapContent(value) + spaces;
 
     document.execCommand('insertText', false, nextCommentPart);
 
-    setTextareaCursor(format, prevCommentPart.length, nextCommentPart.length, textareaNode, Number(selectionEnd));
+    setTextareaCursor(
+      format,
+      prevCommentPart.length,
+      nextCommentPart.length,
+      textareaNode,
+      Number(selectionEnd) + (markdownHelpItem?.checkLength ?? 0),
+    );
   }
 }
 

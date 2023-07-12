@@ -11,6 +11,8 @@ import { NumberedList } from '../MarkdownIcons/NumberedList';
 import { Table } from '../MarkdownIcons/Table';
 
 const newLinesRegexp = /([\n\r]+)/g;
+const spacesMatchRegexp = /\s/gm;
+const spacesSplitRegexp = /(\s+)/;
 
 export const eventKeyCodeToMarkdownFormat: { [key: number]: MarkdownFormat } = {
   50: MarkdownFormat.h2,
@@ -49,7 +51,24 @@ export interface MarkdownHelpItem {
   node: ReactNode;
   text: string;
   wrapContent: (content: string) => string;
+  checkLength?: number;
   icon?: ReactNode;
+}
+
+export function checkSpaceSymbol(text: string, checkedLength?: number) {
+  const latestSymbolPos = text.length - 1;
+  const latestSymbol = text.charAt(latestSymbolPos);
+
+  if (latestSymbol.match(spacesMatchRegexp) && checkedLength) {
+    const substringText = text.split('').reverse().join('').split(spacesSplitRegexp);
+    const spaces = substringText[1];
+    const textWithoutSpaces = substringText[2];
+    const reversed = textWithoutSpaces.split('').reverse().join('');
+
+    return { value: reversed, spaces };
+  }
+
+  return { value: text, spaces: '' };
 }
 
 export const markdownHelpHeaders: MarkdownHelpItem[] = [
@@ -97,6 +116,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
     icon: <strong>B</strong>,
     wrapContent: (content: string) => `**${content}**`,
     text: 'Жирный',
+    checkLength: 2,
   },
   {
     format: MarkdownFormat.italic,
@@ -109,6 +129,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
     icon: <i>I</i>,
     wrapContent: (content: string) => `*${content}*`,
     text: 'Курсив',
+    checkLength: 1,
   },
   {
     format: MarkdownFormat.crossed,
@@ -129,6 +150,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
     ),
     wrapContent: (content: string) => `~~${content}~~`,
     text: 'Зачеркнутый',
+    checkLength: 2,
   },
   {
     format: MarkdownFormat.ref,
@@ -143,6 +165,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
     icon: <AttachLink />,
     wrapContent: (content: string) => `[${content}]()`,
     text: 'Ссылка',
+    checkLength: 1,
   },
 ];
 
@@ -194,6 +217,7 @@ export const markdownHelpOther: MarkdownHelpItem[] = [
     icon: <span>{'</>'}</span>,
     wrapContent: (content: string) => `\`${content}\``,
     text: 'Блок кода',
+    checkLength: 1,
   },
   {
     format: MarkdownFormat.quote,
