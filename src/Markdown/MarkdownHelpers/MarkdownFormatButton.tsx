@@ -16,7 +16,7 @@ export const MarkdownFormatButton: FC<Props> = ({ icon, hintText, onClick, forma
       manual={disabled}
       text={format ? <MarkdownCombination format={format} text={hintText} /> : hintText}
       pos="top center"
-      maxWidth={300}
+      maxWidth={340}
     >
       <MarkdownButtonWrapper borderless disabled={disabled} onClick={onClick}>
         <MarkdownButtonIcon>{icon}</MarkdownButtonIcon>
