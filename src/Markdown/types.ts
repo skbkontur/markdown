@@ -1,5 +1,3 @@
-import { THEME_2022, THEME_2022_DARK } from '@skbkontur/react-ui';
-
 export enum ViewMode {
   Preview = 'Preview',
   Edit = 'Edit',
@@ -21,8 +19,6 @@ export interface RefItem {
   caption: string;
   id: string;
 }
-
-export type ReactUiTheme = typeof THEME_2022 | typeof THEME_2022_DARK;
 
 export interface User {
   id: string;
