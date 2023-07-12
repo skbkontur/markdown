@@ -34,12 +34,16 @@ export function setMarkdown(
 
     document.execCommand('insertText', false, nextCommentPart);
 
+    console.log(spaces.length);
+
     setTextareaCursor(
       format,
       prevCommentPart.length,
       nextCommentPart.length,
       textareaNode,
-      Number(selectionEnd) + (markdownHelpItem?.checkLength ?? 0),
+      nextCommentPart.length -
+        (markdownHelpItem?.format === MarkdownFormat.ref ? 4 : (markdownHelpItem?.checkLength ?? 0) * 2) -
+        spaces.length,
     );
   }
 }

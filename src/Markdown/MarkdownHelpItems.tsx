@@ -56,17 +56,21 @@ export interface MarkdownHelpItem {
   icon?: ReactNode;
 }
 
+function reverseString(text: string) {
+  return text.split('').reverse().join('');
+}
+
 export function checkSpaceSymbol(text: string, checkedLength?: number) {
   const latestSymbolPos = text.length - 1;
   const latestSymbol = text.charAt(latestSymbolPos);
 
   if (latestSymbol.match(spacesMatchRegexp) && checkedLength) {
-    const substringText = text.split('').reverse().join('').split(spacesSplitRegexp);
+    const substringText = reverseString(text).split(spacesSplitRegexp);
     const spaces = substringText[1];
     const textWithoutSpaces = substringText[2];
-    const reversed = textWithoutSpaces.split('').reverse().join('');
+    const reversed = reverseString(textWithoutSpaces);
 
-    return { value: reversed, spaces };
+    return { value: reversed, spaces: reverseString(spaces) };
   }
 
   return { value: text, spaces: '' };
