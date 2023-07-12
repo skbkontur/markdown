@@ -98,8 +98,6 @@ export const MarkdownButtonIcon = styled.div`
 
 export const MarkdownDropdown = styled.div`
   button {
-    padding-top: 0;
-    padding-bottom: 0;
     font-size: ${p => p.theme.elementsFontSize};
   }
 `;
