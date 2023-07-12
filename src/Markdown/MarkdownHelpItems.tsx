@@ -7,6 +7,7 @@ import { AttachLink } from '../MarkdownIcons/AttachLink';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 import { CheckedList } from '../MarkdownIcons/CheckedList';
 import { List } from '../MarkdownIcons/List';
+import { I } from '../MarkdownIcons/MarkdownIcons.styled';
 import { NumberedList } from '../MarkdownIcons/NumberedList';
 import { Table } from '../MarkdownIcons/Table';
 
@@ -126,7 +127,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
         <MarkdownSymbolWrapper>*</MarkdownSymbolWrapper>
       </>
     ),
-    icon: <i>I</i>,
+    icon: <I>I</I>,
     wrapContent: (content: string) => `*${content}*`,
     text: 'Курсив',
     checkLength: 1,

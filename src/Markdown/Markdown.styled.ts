@@ -82,7 +82,7 @@ export const ActionsWrapper = styled.div`
 
 export const MarkdownButtonWrapper = styled(Button)`
   button {
-    padding: 4px 6px;
+    padding: 4px 4px;
     border: none;
     box-sizing: border-box;
   }

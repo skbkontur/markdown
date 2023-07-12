@@ -9,15 +9,7 @@ import gfm from 'remark-gfm';
 
 import { MarkdownImage } from './Helpers/MarkdownImage';
 import { MarkdownLink } from './Helpers/MarkdownLink';
-import {
-  BlockQuote,
-  checkboxStyle,
-  FileButtonWrapper,
-  getListStyle,
-  ListItem,
-  Paragraph,
-  Wrapper,
-} from './MarkdownViewer.styles';
+import { BlockQuote, FileButtonWrapper, getListStyle, ListItem, Paragraph, Wrapper } from './MarkdownViewer.styles';
 import { CustomComponentsProps, MarkdownInputProps, MarkdownLinkProps, MarkdownLiProps } from './types';
 import { useFileLogic } from '../Markdown/Files/Files.logic';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
@@ -112,11 +104,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
   }
 
   function renderInput(props: MarkdownInputProps) {
-    return (
-      <Checkbox style={checkboxStyle} checked={props.checked}>
-        {props.children}
-      </Checkbox>
-    );
+    return <Checkbox checked={props.checked}>{props.children}</Checkbox>;
   }
 
   function renderList(props: UnorderedListProps) {

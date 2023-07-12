@@ -4,6 +4,6 @@ export const Wrapper = styled.div`
   margin-top: 6px;
 `;
 
-export const RotatedWrapper = styled.div`
-  transform: rotate(45deg);
+export const I = styled.i`
+  padding: 0 4px;
 `;

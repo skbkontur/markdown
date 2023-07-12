@@ -62,8 +62,6 @@ export const FileButtonWrapper = styled.div`
   display: flex;
 `;
 
-export const checkboxStyle: CSSProperties = { marginLeft: 4 };
-
 export function getListStyle(depth: boolean): CSSProperties {
   return depth ? { marginTop: 4 } : { marginBottom: 16 };
 }
