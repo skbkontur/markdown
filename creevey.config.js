@@ -3,7 +3,7 @@ const { hybridStoriesProvider } = require('creevey');
 const path = require('path');
 
 const config = {
-  resolveStorybookUrl: () => axios('https://fake.testkontur.ru/ip').then(res => `http://${res.data}:6006`),
+  resolveStorybookUrl: () => axios('https://fake.testkontur.ru/ip').then(res => `http://${res.data}:6007`),
   storiesProvider: hybridStoriesProvider,
   testsDir: path.join(__dirname, 'src'),
   testsRegex: /.creevey.(t|j)s$/,
