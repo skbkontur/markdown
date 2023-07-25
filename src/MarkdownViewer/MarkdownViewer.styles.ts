@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   p,
   table,
   blockquote {
-    margin-bottom: 0;
+    margin-bottom: 16px;
   }
 
   ul,
