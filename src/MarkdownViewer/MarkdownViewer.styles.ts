@@ -12,12 +12,17 @@ export const Wrapper = styled.div`
   table,
   blockquote {
     margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   ul,
-  ol {
+  ol,
+  li {
     p {
-      margin-bottom: 0;
+      margin: 0;
     }
   }
 
