@@ -55,7 +55,7 @@ export const MarkdownActions: FC<Props> = ({
       <ButtonsWrapper>
         <ActionsWrapper>
           <MarkdownDropdown>
-            <Dropdown disablePortal disabled={isPreviewMode} menuWidth={260} caption="Заголовок">
+            <Dropdown disablePortal disabled={isPreviewMode} menuWidth={280} caption="Заголовок">
               {markdownHelpHeaders.map((helper, idx) => (
                 <MarkdownMenuItem
                   key={idx}
