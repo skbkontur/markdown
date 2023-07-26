@@ -1,6 +1,6 @@
 {
   "name": "@skbkontur/markdown",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
