@@ -206,7 +206,7 @@ export const getMarkdownReactUiTheme = (
         textareaPaddingX: `${panelHorizontalPadding}px`,
       }),
       ...(fullScreenTextareaPadding && {
-        textareaMinHeight: '90vh',
+        textareaMinHeight: '85vh',
         textareaBorderColor: 'transparent',
         textareaBorderColorFocus: 'transparent',
         textareaBorderTopColor: 'transparent',
