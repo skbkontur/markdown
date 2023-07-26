@@ -21,7 +21,7 @@ export default {
 
 export const WithoutActions = () => <Markdown hideMarkdownActions value={allVariantsMarkdownMock} />;
 
-export const WithActions = () => <Markdown value={allVariantsMarkdownMock} />;
+export const WithActions = () => <Markdown fileApiUrl="/api/file" value={allVariantsMarkdownMock} />;
 
 export const WithPanel = () => <Markdown value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
 

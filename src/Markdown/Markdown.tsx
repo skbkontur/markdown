@@ -66,8 +66,8 @@ export const Markdown: FC<MarkdownProps> = props => {
     onSelect,
     markdownViewer,
     renderFilesValidation,
-    fileApiUrl = '',
-    profileUrl = '',
+    fileApiUrl,
+    profileUrl,
     api,
     ...textareaProps
   } = props;
@@ -142,7 +142,12 @@ export const Markdown: FC<MarkdownProps> = props => {
       {!isEditMode && (
         <MarkdownPreview {...horizontalPaddings}>
           {markdownViewer?.(props.value as string) || (
-            <MarkdownViewer source={(props.value as string) ?? ''} fileApiUrl={fileApiUrl} profileUrl={profileUrl} />
+            <MarkdownViewer
+              source={(props.value as string) ?? ''}
+              downloadFileApi={api?.fileDownloadApi}
+              fileApiUrl={fileApiUrl}
+              profileUrl={profileUrl}
+            />
           )}
         </MarkdownPreview>
       )}

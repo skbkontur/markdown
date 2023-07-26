@@ -74,7 +74,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
   function renderLink(props: MarkdownLinkProps) {
     const { href = '', children } = props;
 
-    if (href.startsWith(fileApiUrl)) {
+    if (fileApiUrl && href.startsWith(fileApiUrl)) {
       const id = href.replace(fileApiUrl, '');
 
       return (
