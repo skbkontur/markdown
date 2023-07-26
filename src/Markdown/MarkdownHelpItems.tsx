@@ -67,7 +67,8 @@ export function checkSpaceSymbol(text: string, checkedLength?: number) {
   if (latestSymbol.match(spacesMatchRegexp) && checkedLength) {
     const substringText = reverseString(text).split(spacesSplitRegexp);
     const spaces = substringText[1];
-    const textWithoutSpaces = substringText[2];
+    const remainingText = substringText.slice(2);
+    const textWithoutSpaces = remainingText.join('');
     const reversed = reverseString(textWithoutSpaces);
 
     return { value: reversed, spaces: reverseString(spaces) };
