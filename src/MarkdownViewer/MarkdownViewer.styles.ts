@@ -63,10 +63,17 @@ export const BlockQuote = styled.blockquote`
   border-left: 4px solid ${p => p.theme?.colors?.grayDefault};
 `;
 
-export const FileButtonWrapper = styled.div`
-  display: flex;
-`;
-
 export function getListStyle(depth: boolean): CSSProperties {
   return depth ? { marginTop: 4 } : { marginBottom: 16 };
 }
+
+export const VisuallyHidden = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+`;

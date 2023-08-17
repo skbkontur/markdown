@@ -1,4 +1,4 @@
-import { Checkbox } from '@skbkontur/react-ui';
+import { Button, Checkbox } from '@skbkontur/react-ui';
 import React, { FC, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react';
@@ -9,7 +9,7 @@ import gfm from 'remark-gfm';
 
 import { MarkdownImage } from './Helpers/MarkdownImage';
 import { MarkdownLink } from './Helpers/MarkdownLink';
-import { BlockQuote, FileButtonWrapper, getListStyle, ListItem, Paragraph, Wrapper } from './MarkdownViewer.styles';
+import { BlockQuote, getListStyle, ListItem, Paragraph, VisuallyHidden, Wrapper } from './MarkdownViewer.styles';
 import { CustomComponentsProps, MarkdownInputProps, MarkdownLinkProps, MarkdownLiProps } from './types';
 import { useFileLogic } from '../Markdown/Files/Files.logic';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
@@ -78,13 +78,10 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
       const id = href.replace(fileApiUrl, '');
 
       return (
-        <FileButtonWrapper>
-          <AttachPaperclip />
-          &nbsp;
-          <button aria-label={`Загрузить файл ${children}`} onClick={() => downloadFile(id)}>
-            {children}
-          </button>
-        </FileButtonWrapper>
+        <Button use="link" icon={<AttachPaperclip />} onClick={() => downloadFile(id)}>
+          {children}
+          <VisuallyHidden>Загрузить файл ${children}</VisuallyHidden>
+        </Button>
       );
     }
 
