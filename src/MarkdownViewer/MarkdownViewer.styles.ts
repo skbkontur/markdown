@@ -67,6 +67,11 @@ export const FileButtonWrapper = styled.div`
   display: flex;
 `;
 
+export const ImgHref = styled.a`
+  text-decoration: none !important;
+  border: none !important;
+`;
+
 export function getListStyle(depth: boolean): CSSProperties {
   return depth ? { marginTop: 4 } : { marginBottom: 16 };
 }
