@@ -9,7 +9,15 @@ import gfm from 'remark-gfm';
 
 import { MarkdownImage } from './Helpers/MarkdownImage';
 import { MarkdownLink } from './Helpers/MarkdownLink';
-import { BlockQuote, getListStyle, ListItem, Paragraph, VisuallyHidden, Wrapper } from './MarkdownViewer.styles';
+import {
+  BlockQuote,
+  FileButtonWrapper,
+  getListStyle,
+  ListItem,
+  Paragraph,
+  VisuallyHidden,
+  Wrapper,
+} from './MarkdownViewer.styles';
 import { CustomComponentsProps, MarkdownInputProps, MarkdownLinkProps, MarkdownLiProps } from './types';
 import { useFileLogic } from '../Markdown/Files/Files.logic';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
@@ -78,10 +86,12 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
       const id = href.replace(fileApiUrl, '');
 
       return (
-        <Button use="link" icon={<AttachPaperclip />} onClick={() => downloadFile(id)}>
-          {children}
-          <VisuallyHidden>Загрузить файл ${children}</VisuallyHidden>
-        </Button>
+        <FileButtonWrapper>
+          <Button use="link" icon={<AttachPaperclip />} onClick={() => downloadFile(id)}>
+            {children}
+            <VisuallyHidden>Загрузить файл ${children}</VisuallyHidden>
+          </Button>
+        </FileButtonWrapper>
       );
     }
 
