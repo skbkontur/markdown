@@ -5,7 +5,7 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "https://github.com/tsypilov/skbkontur-markdown",
+  "repository": "https://github.com/skbkontur/markdown",
   "private": false,
   "license": "UNLICENSED",
   "author": "tsypilov",
