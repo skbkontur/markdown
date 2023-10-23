@@ -1,0 +1,15 @@
+# Sample workflow for building and deploying a Jekyll site to GitHub Pages
+name: Build and deploy storybook
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+    
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.0
+      with:
+        path: dist/storybook
