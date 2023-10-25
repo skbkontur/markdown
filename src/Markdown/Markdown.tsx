@@ -45,6 +45,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   api?: MarkdownApi;
   /** Url апи для файлов  */
   fileApiUrl?: string;
+  /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
+  hideHeadersSelect?: boolean;
   /** Скрыть панель действий (кнопки помощи форматирования текста) */
   hideMarkdownActions?: boolean;
   /** Превьювер мардауна, по умолчанию используется MarkdownViewer */
@@ -53,7 +55,6 @@ export interface MarkdownProps extends MarkdownEditorProps {
   panelHorizontalPadding?: number;
   /** Url для профиля сотрудника  */
   profileUrl?: string;
-  /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
 }
 
@@ -69,6 +70,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     fileApiUrl,
     profileUrl,
     api,
+    hideHeadersSelect,
     ...textareaProps
   } = props;
 
@@ -126,6 +128,7 @@ export const Markdown: FC<MarkdownProps> = props => {
             viewMode={viewMode}
             loadingFile={requestStatus === RequestStatus.isFetching}
             fullscreen={fullscreen}
+            hideHeadersSelect={hideHeadersSelect}
             selectionStart={selectionStart}
             selectionEnd={selectionEnd}
             horizontalPaddings={horizontalPaddings}

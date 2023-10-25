@@ -24,6 +24,9 @@ export const WithoutActions = () => <Markdown hideMarkdownActions value={allVari
 export const WithActions = () => <Markdown fileApiUrl="/api/file" value={allVariantsMarkdownMock} />;
 
 export const WithPanel = () => <Markdown value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
+export const WithoutHeadersSelect = () => (
+  <Markdown hideHeadersSelect value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
+);
 
 export const Editable = () => {
   const [value, setValue] = useState<string>('');

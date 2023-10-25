@@ -30,6 +30,7 @@ interface Props {
   viewMode: ViewMode;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
+  hideHeadersSelect?: boolean;
   loadingFile?: boolean;
   selectionEnd?: number | null;
   selectionStart?: number | null;
@@ -47,6 +48,7 @@ export const MarkdownActions: FC<Props> = ({
   onChangeViewMode,
   horizontalPaddings,
   hasFilesApi,
+  hideHeadersSelect,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
@@ -54,18 +56,20 @@ export const MarkdownActions: FC<Props> = ({
     <MarkdownActionsWrapper {...horizontalPaddings}>
       <ButtonsWrapper>
         <ActionsWrapper>
-          <MarkdownDropdown>
-            <Dropdown disablePortal disabled={isPreviewMode} menuWidth={280} caption="Заголовок">
-              {markdownHelpHeaders.map((helper, idx) => (
-                <MarkdownMenuItem
-                  key={idx}
-                  onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
-                >
-                  <MarkdownCombination format={helper.format} text={helper.node} />
-                </MarkdownMenuItem>
-              ))}
-            </Dropdown>
-          </MarkdownDropdown>
+          {hideHeadersSelect || (
+            <MarkdownDropdown>
+              <Dropdown disablePortal disabled={isPreviewMode} menuWidth={280} caption="Заголовок">
+                {markdownHelpHeaders.map((helper, idx) => (
+                  <MarkdownMenuItem
+                    key={idx}
+                    onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
+                  >
+                    <MarkdownCombination format={helper.format} text={helper.node} />
+                  </MarkdownMenuItem>
+                ))}
+              </Dropdown>
+            </MarkdownDropdown>
+          )}
           {markdownHelpText.map((helper, idx) => (
             <MarkdownFormatButton
               key={idx}
