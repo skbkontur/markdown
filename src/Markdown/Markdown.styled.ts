@@ -1,8 +1,8 @@
-import { Button, MenuItem, ThemeFactory, THEME_2022 } from '@skbkontur/react-ui';
+import { Button, MenuItem, ThemeFactory, THEME_2022, ButtonProps } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
+import styled, { css, IStyledComponent } from 'styled-components';
 
 import { HorizontalPaddings } from './types';
-import styled, { css } from '../styles/styled-components';
 import { MarkdownTheme } from '../styles/theme';
 
 interface PanelProps extends HorizontalPaddings {
@@ -80,9 +80,9 @@ export const ActionsWrapper = styled.div`
   align-items: center;
 `;
 
-export const MarkdownButtonWrapper = styled(Button)`
+export const MarkdownButtonWrapper: IStyledComponent<'web', ButtonProps> = styled(Button)`
   button {
-    padding: 4px 4px;
+    padding: 4px;
     border: none;
     box-sizing: border-box;
   }

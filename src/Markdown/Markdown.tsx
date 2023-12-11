@@ -12,6 +12,7 @@ import React, {
   useState,
 } from 'react';
 import Foco from 'react-foco/lib';
+import { ThemeConsumer, ThemeProvider } from 'styled-components';
 
 import { MENTION_WRAPPER_ID_POSTFIX } from './constants';
 import { useFileLogic } from './Files/Files.logic';
@@ -37,7 +38,6 @@ import { HorizontalPaddings, ViewMode, Token, MarkdownApi } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
-import { MarkdownThemeProvider, MarkdownThemeConsumer } from '../styles/styled-components';
 import { DEFAULT_MARKDOWN_THEME } from '../styles/theme';
 
 export interface MarkdownProps extends MarkdownEditorProps {
@@ -158,7 +158,7 @@ export const Markdown: FC<MarkdownProps> = props => {
   );
 
   return (
-    <MarkdownThemeConsumer>
+    <ThemeConsumer>
       {theme => {
         const defaultTheme = theme ?? DEFAULT_MARKDOWN_THEME;
         const reactUiTheme = getMarkdownReactUiTheme(
@@ -169,14 +169,14 @@ export const Markdown: FC<MarkdownProps> = props => {
         );
 
         return (
-          <MarkdownThemeProvider theme={defaultTheme}>
+          <ThemeProvider theme={defaultTheme}>
             <ThemeContext.Provider value={reactUiTheme}>
               {fullscreen ? renderFullScreen() : content}
             </ThemeContext.Provider>
-          </MarkdownThemeProvider>
+          </ThemeProvider>
         );
       }}
-    </MarkdownThemeConsumer>
+    </ThemeConsumer>
   );
 
   function renderFullScreen() {

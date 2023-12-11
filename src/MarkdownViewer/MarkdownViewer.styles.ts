@@ -1,6 +1,5 @@
 import { CSSProperties } from 'react';
-
-import styled from '../styles/styled-components';
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   overflow-wrap: break-word;
