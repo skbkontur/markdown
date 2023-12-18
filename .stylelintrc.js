@@ -1,6 +1,6 @@
 module.exports = {
-  processors: ['stylelint-processor-styled-components'],
-  extends: ['stylelint-config-standard', 'stylelint-config-styled-components'],
+  extends: 'stylelint-config-standard',
+  customSyntax: 'postcss-styled-syntax',
   rules: {
     'property-no-vendor-prefix': null,
     'declaration-colon-newline-after': null,
@@ -14,8 +14,7 @@ module.exports = {
     'alpha-value-notation': null,
     indentation: null,
     'no-descending-specificity': null,
-
-    'selector-list-comma-newline-after': 'always-multi-line',
+    'color-function-notation': 'legacy',
     'selector-pseudo-element-colon-notation': 'single',
   },
 };

@@ -1,15 +1,14 @@
-import { MarkdownThemeProvider } from '../src/styles/styled-components';
 import { StoryContext } from '@storybook/react';
 import { CSSProperties } from 'react';
 import { DEFAULT_MARKDOWN_THEME } from '../src/styles/theme';
 import React from 'react';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 const style: CSSProperties = { padding: 4, boxSizing: 'border-box' };
 
 const GlobalStyles = createGlobalStyle`
   body {
-    font-family: "Lab Grotesque", -apple-system, BlinkMacSystemFont, "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    font-family: "Lab Grotesque", -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans",
       "Droid Sans", "Helvetica Neue", sans-serif;
   }
 `;
@@ -19,11 +18,11 @@ export const storyBookMainDecorators = (story: Function, context?: StoryContext)
   const theme = { ...DEFAULT_MARKDOWN_THEME, themeMode: globalTheme };
 
   return (
-    <MarkdownThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
       <div id="test-element" style={style}>
         {story()}
       </div>
-    </MarkdownThemeProvider>
+    </ThemeProvider>
   );
 };
