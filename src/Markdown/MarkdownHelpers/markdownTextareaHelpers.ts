@@ -1,5 +1,5 @@
 import { Textarea } from '@skbkontur/react-ui';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { setMarkdownPastedHtml } from './markdownHelpers';
 import { MENTION_WRAPPER_ID_POSTFIX } from '../constants';
@@ -94,10 +94,27 @@ export const useListenTextareaScroll = (setMention: (value: undefined) => void, 
   }, [resetMention]);
 };
 
-export const getFullscreenHorizontalPadding = (fullscreen: boolean, textareaWidth: number) => {
-  if (fullscreen) {
-    return (document.body.clientWidth - textareaWidth) / 2;
-  }
+export const useFullscreenHorizontalPadding = (fullscreen: boolean, textareaWidth?: number) => {
+  const [padding, setPadding] = useState<number>();
+
+  useEffect(() => {
+    if (fullscreen && textareaWidth) {
+      const observable = document.body;
+      const handleChangeWidth = (width: number) => setPadding((width - textareaWidth) / 2);
+
+      handleChangeWidth(observable.clientWidth);
+
+      const observer = new ResizeObserver(entries => entries.forEach(e => handleChangeWidth(e.contentRect.width)));
+
+      observer.observe(observable);
+
+      return () => observer.disconnect();
+    } else {
+      setPadding(0);
+    }
+  }, [fullscreen, textareaWidth]);
+
+  return padding;
 };
 
 export const getPastedHtml = (html: string, event: ClipboardEvent, textArea: HTMLTextAreaElement) => {
