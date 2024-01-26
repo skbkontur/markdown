@@ -30,7 +30,7 @@ import { usePasteFromClipboard } from './MarkdownHelpers/markdownHelpers';
 import { getMentionValue, mentionActions } from './MarkdownHelpers/markdownMentionHelpers';
 import {
   getCursorCoordinates,
-  getFullscreenHorizontalPadding,
+  useFullscreenHorizontalPadding,
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
@@ -112,7 +112,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     }
   }, [fullscreen, isEditMode, selectionEnd, selectionStart]);
 
-  const fullscreenTextareaPadding = getFullscreenHorizontalPadding(fullscreen, initialWidth);
+  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, initialWidth);
 
   const horizontalPaddings: HorizontalPaddings = {
     panelPadding: panelHorizontalPadding,
