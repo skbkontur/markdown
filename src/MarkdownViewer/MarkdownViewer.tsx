@@ -21,6 +21,8 @@ import {
 import { CustomComponentsProps, MarkdownInputProps, MarkdownLinkProps, MarkdownLiProps } from './types';
 import { useFileLogic } from '../Markdown/Files/Files.logic';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
+import { ThemeProvider } from '../styles/styled-components';
+import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
 
 export interface MarkdownViewerProps {
   /** Метод апи для скачивания файлов */
@@ -46,16 +48,22 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
   }
 
   return (
-    <Wrapper aria-label="Форматированный текст">
-      <ReactMarkdown
-        components={getCustomComponents()}
-        remarkPlugins={[gfm, remarkBreaks]}
-        rehypePlugins={[rehypeRaw, rehypeSanitize]}
-        linkTarget="_blank"
-      >
-        {source}
-      </ReactMarkdown>
-    </Wrapper>
+    <MarkdownThemeConsumer>
+      {theme => (
+        <ThemeProvider theme={theme ?? DEFAULT_MARKDOWN_THEME}>
+          <Wrapper aria-label="Форматированный текст">
+            <ReactMarkdown
+              components={getCustomComponents()}
+              remarkPlugins={[gfm, remarkBreaks]}
+              rehypePlugins={[rehypeRaw, rehypeSanitize]}
+              linkTarget="_blank"
+            >
+              {source}
+            </ReactMarkdown>
+          </Wrapper>
+        </ThemeProvider>
+      )}
+    </MarkdownThemeConsumer>
   );
 
   function getCustomComponents(): CustomComponentsProps {

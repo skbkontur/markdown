@@ -1,8 +1,8 @@
-import { Button, MenuItem, ThemeFactory, THEME_2022, ButtonProps } from '@skbkontur/react-ui';
+import { Button, MenuItem, ThemeFactory, THEME_2022 } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
-import styled, { css, IStyledComponent } from 'styled-components';
 
-import { HorizontalPaddings } from './types';
+import { HorizontalPaddings, Nullable } from './types';
+import styled, { css } from '../styles/styled-components';
 import { MarkdownTheme } from '../styles/theme';
 
 interface PanelProps extends HorizontalPaddings {
@@ -58,13 +58,14 @@ export const MarkdownPreview = styled.div<HorizontalPaddings>`
   padding: 6px ${({ panelPadding, fullscreenPadding }) => fullscreenPadding ?? panelPadding ?? 8}px;
 `;
 
-export const MarkdownActionsWrapper = styled.div<HorizontalPaddings>`
-  padding: ${p => `${p.fullscreenPadding ? 16 : 0}px`} ${p => `${p.fullscreenPadding ?? 0}px`} 0;
+export const MarkdownActionsWrapper = styled.div<{ width?: Nullable<number | string> } & HorizontalPaddings>`
+  padding: ${p => (p.fullscreenPadding ? '16px' : 0)} ${p => p.fullscreenPadding ?? 0}px 0;
   margin-bottom: 4px;
+  ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
 
   ${({ theme, panelPadding, fullscreenPadding }) => {
     if (panelPadding && !fullscreenPadding) return panelStyle({ theme, panelPadding });
-  }};
+  }}
 `;
 
 export const ButtonsWrapper = styled.div`
@@ -80,7 +81,7 @@ export const ActionsWrapper = styled.div`
   align-items: center;
 `;
 
-export const MarkdownButtonWrapper: IStyledComponent<'web', ButtonProps> = styled(Button)`
+export const MarkdownButtonWrapper = styled(Button)`
   button {
     padding: 4px;
     border: none;
@@ -198,6 +199,7 @@ export const getMarkdownReactUiTheme = (
       hintColor: themeMode === 'light' ? colors.white : colors.grayDefault,
       selectPaddingXSmall: '8px',
       selectLineHeightSmall: '24px',
+      dropdownBorderWidth: '0',
       ...(panelHorizontalPadding && {
         textareaBorderColor: 'transparent',
         textareaBorderColorFocus: 'transparent',

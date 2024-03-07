@@ -1,19 +1,22 @@
 import { Textarea, TextareaProps } from '@skbkontur/react-ui';
-import { ValidationInfo, ValidationWrapper } from '@skbkontur/react-ui-validations';
+import { ValidationInfo, ValidationWrapper, RenderErrorMessage } from '@skbkontur/react-ui-validations';
 import React, { FC, RefObject } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { createMarkdownHelpKeyDownHandler } from './MarkdownHelpers/markdownHelpers';
+import { Nullable } from './types';
 
 export interface MarkdownEditorProps
   extends Omit<TextareaProps, 'rows' | 'maxRows' | 'disableAnimations' | 'extraRow'> {
   disableAnimations?: boolean;
   extraRow?: boolean;
   maxRows?: number;
+  /** Рендер сообщения валидации react-ui-validations */
+  renderMessage?: Nullable<RenderErrorMessage>;
   rows?: number;
   textareaRef?: RefObject<Textarea>;
   /** Стандартная валидация из react-ui-validations */
-  validationInfo?: ValidationInfo | null;
+  validationInfo?: Nullable<ValidationInfo>;
 }
 
 export const MarkdownEditor: FC<MarkdownEditorProps> = props => {
@@ -24,13 +27,16 @@ export const MarkdownEditor: FC<MarkdownEditorProps> = props => {
     showLengthCounter: propsShowLengthCounter = true,
     textareaRef,
     validationInfo,
+    renderMessage,
     ...rest
   } = props;
 
   const { getInputProps } = useDropzone();
 
-  return validationInfo !== undefined ? (
-    <ValidationWrapper validationInfo={validationInfo}>{renderTextarea()}</ValidationWrapper>
+  return validationInfo ? (
+    <ValidationWrapper validationInfo={validationInfo} renderMessage={renderMessage}>
+      {renderTextarea()}
+    </ValidationWrapper>
   ) : (
     renderTextarea()
   );

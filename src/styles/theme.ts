@@ -1,4 +1,5 @@
 import { THEME_2022 } from '@skbkontur/react-ui';
+import { createContext } from 'react';
 
 import { ColorScheme, ThemeMode } from './types';
 
@@ -24,3 +25,9 @@ export const DEFAULT_MARKDOWN_THEME: MarkdownTheme = {
   elementsLineHeight: '24px',
   themeMode: 'light',
 };
+
+export const MarkdownThemeContext = createContext<MarkdownTheme>(DEFAULT_MARKDOWN_THEME);
+
+export const MarkdownThemeProvider = MarkdownThemeContext.Provider;
+
+export const MarkdownThemeConsumer = MarkdownThemeContext.Consumer;
