@@ -1,5 +1,5 @@
 import { Dropdown, Textarea } from '@skbkontur/react-ui';
-import React, { FC, RefObject, SyntheticEvent } from 'react';
+import React, { CSSProperties, FC, RefObject, SyntheticEvent } from 'react';
 
 import {
   ActionsWrapper,
@@ -14,7 +14,7 @@ import { MarkdownCombination } from './MarkdownHelpers/MarkdownCombination';
 import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
-import { HorizontalPaddings, ViewMode } from './types';
+import { HorizontalPaddings, Nullable, ViewMode } from './types';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 import { Collapse } from '../MarkdownIcons/Collapse';
 import { Expand } from '../MarkdownIcons/Expand';
@@ -32,8 +32,9 @@ interface Props {
   hasFilesApi?: boolean;
   hideHeadersSelect?: boolean;
   loadingFile?: boolean;
-  selectionEnd?: number | null;
-  selectionStart?: number | null;
+  selectionEnd?: Nullable<number>;
+  selectionStart?: Nullable<number>;
+  width?: Nullable<number | string>;
 }
 
 export const MarkdownActions: FC<Props> = ({
@@ -49,11 +50,12 @@ export const MarkdownActions: FC<Props> = ({
   horizontalPaddings,
   hasFilesApi,
   hideHeadersSelect,
+  width,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
   return (
-    <MarkdownActionsWrapper {...horizontalPaddings}>
+    <MarkdownActionsWrapper {...horizontalPaddings} width={width}>
       <ButtonsWrapper>
         <ActionsWrapper>
           {hideHeadersSelect || (

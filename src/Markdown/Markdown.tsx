@@ -12,7 +12,6 @@ import React, {
   useState,
 } from 'react';
 import Foco from 'react-foco/lib';
-import { ThemeConsumer, ThemeProvider } from 'styled-components';
 
 import { MENTION_WRAPPER_ID_POSTFIX } from './constants';
 import { useFileLogic } from './Files/Files.logic';
@@ -38,7 +37,8 @@ import { HorizontalPaddings, ViewMode, Token, MarkdownApi } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
-import { DEFAULT_MARKDOWN_THEME } from '../styles/theme';
+import { ThemeProvider } from '../styles/styled-components';
+import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
 
 export interface MarkdownProps extends MarkdownEditorProps {
   /** Методы апи для загрузки/скачивания файлов и меншена */
@@ -125,6 +125,7 @@ export const Markdown: FC<MarkdownProps> = props => {
         {!hideMarkdownActions && (
           <MarkdownActions
             textAreaRef={textareaRef}
+            width={props.width}
             viewMode={viewMode}
             loadingFile={requestStatus === RequestStatus.isFetching}
             fullscreen={fullscreen}
@@ -158,7 +159,7 @@ export const Markdown: FC<MarkdownProps> = props => {
   );
 
   return (
-    <ThemeConsumer>
+    <MarkdownThemeConsumer>
       {theme => {
         const defaultTheme = theme ?? DEFAULT_MARKDOWN_THEME;
         const reactUiTheme = getMarkdownReactUiTheme(
@@ -176,7 +177,7 @@ export const Markdown: FC<MarkdownProps> = props => {
           </ThemeProvider>
         );
       }}
-    </ThemeConsumer>
+    </MarkdownThemeConsumer>
   );
 
   function renderFullScreen() {

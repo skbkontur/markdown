@@ -1,5 +1,5 @@
 module.exports = {
-  extends: 'stylelint-config-standard',
+  extends: ['stylelint-config-standard', 'stylelint-config-styled-components'],
   customSyntax: 'postcss-styled-syntax',
   rules: {
     'property-no-vendor-prefix': null,
@@ -15,6 +15,7 @@ module.exports = {
     indentation: null,
     'no-descending-specificity': null,
     'color-function-notation': 'legacy',
+    'selector-list-comma-newline-after': 'always-multi-line',
     'selector-pseudo-element-colon-notation': 'single',
   },
 };
