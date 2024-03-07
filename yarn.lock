@@ -7061,9 +7061,9 @@ can-bind-to-host@^1.1.1:
   integrity sha512-CqsgmaqiyFRNtP17Ihqa/uHbZxRirntNVNl/kJz31DLKuNRfzvzionkLoUSkElQ6Cz+cpXKA3mhHq4tjbieujA==
 
 caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001587:
-  version "1.0.30001591"
-  resolved "https://nexus.kontur.host/repository/kontur-npm-group/caniuse-lite/-/caniuse-lite-1.0.30001591.tgz#16745e50263edc9f395895a7cd468b9f3767cf33"
-  integrity sha512-PCzRMei/vXjJyL5mJtzNiUCKP59dm8Apqc3PH8gJkMnMXZGox93RbE76jHsmLwmIo6/3nsYIpJtx0O7u5PqFuQ==
+  version "1.0.30001593"
+  resolved "https://nexus.kontur.host/repository/kontur-npm-group/caniuse-lite/-/caniuse-lite-1.0.30001593.tgz#7cda1d9e5b0cad6ebab4133b1f239d4ea44fe659"
+  integrity sha512-UWM1zlo3cZfkpBysd7AS+z+v007q9G1+fLTUU42rQnY6t2axoogPW/xol6T7juU5EUoOhML4WgBIdG+9yYqAjQ==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -9931,11 +9931,6 @@ fs.realpath@^1.0.0:
   resolved "https://nexus.kontur.host/repository/kontur-npm-group/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
-fsevents@2.3.2:
-  version "2.3.2"
-  resolved "https://nexus.kontur.host/repository/kontur-npm-group/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
-  integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
-
 fsevents@^1.2.7:
   version "1.2.13"
   resolved "https://nexus.kontur.host/repository/kontur-npm-group/fsevents/-/fsevents-1.2.13.tgz#f325cb0455592428bcf11b383370ef70e3bfcc38"
@@ -10686,9 +10681,9 @@ html-encoding-sniffer@^3.0.0:
     whatwg-encoding "^2.0.0"
 
 html-entities@^2.1.0:
-  version "2.4.0"
-  resolved "https://nexus.kontur.host/repository/kontur-npm-group/html-entities/-/html-entities-2.4.0.tgz#edd0cee70402584c8c76cc2c0556db09d1f45061"
-  integrity sha512-igBTJcNNNhvZFRtm8uA6xMY6xYleeDwn3PeBCkDz7tHttv4F2hsDI2aPgNERWzvRcNYHNT3ymRaQzllmXj4YsQ==
+  version "2.5.0"
+  resolved "https://nexus.kontur.host/repository/kontur-npm-group/html-entities/-/html-entities-2.5.0.tgz#cb1346d0bca6df719c7f6e9ab09d4d916d1141d4"
+  integrity sha512-g3xzbdhD5HamT50Sc7/KVvFvU3SUMpKmJkQWYVRhcXHzwUzRXZt5HzTNwn/5BNMm4bECBZc5YnuPh0J8PIBbAQ==
 
 html-escaper@^2.0.0:
   version "2.0.2"
@@ -15578,19 +15573,17 @@ pkg-dir@^5.0.0:
   dependencies:
     find-up "^5.0.0"
 
-playwright-core@1.42.1, playwright-core@>=1.2.0:
-  version "1.42.1"
-  resolved "https://nexus.kontur.host/repository/kontur-npm-group/playwright-core/-/playwright-core-1.42.1.tgz#13c150b93c940a3280ab1d3fbc945bc855c9459e"
-  integrity sha512-mxz6zclokgrke9p1vtdy/COWBH+eOZgYUVVU34C73M+4j4HLlQJHtfcqiqqxpP0o8HhMkflvfbquLX5dg6wlfA==
+playwright-core@1.35.1, playwright-core@>=1.2.0:
+  version "1.35.1"
+  resolved "https://nexus.kontur.host/repository/kontur-npm-group/playwright-core/-/playwright-core-1.35.1.tgz#52c1e6ffaa6a8c29de1a5bdf8cce0ce290ffb81d"
+  integrity sha512-pNXb6CQ7OqmGDRspEjlxE49w+4YtR6a3X6mT1hZXeJHWmsEz7SunmvZeiG/+y1yyMZdHnnn73WKYdtV1er0Xyg==
 
 playwright@^1.14.0:
-  version "1.42.1"
-  resolved "https://nexus.kontur.host/repository/kontur-npm-group/playwright/-/playwright-1.42.1.tgz#79c828b51fe3830211137550542426111dc8239f"
-  integrity sha512-PgwB03s2DZBcNRoW+1w9E+VkLBxweib6KTXM0M3tkiT4jVxKSi6PmVJ591J+0u10LUrgxB7dLRbiJqO5s2QPMg==
+  version "1.35.1"
+  resolved "https://nexus.kontur.host/repository/kontur-npm-group/playwright/-/playwright-1.35.1.tgz#f991d0c76ae517d4a0023d9428b09d19d5e87128"
+  integrity sha512-NbwBeGJLu5m7VGM0+xtlmLAH9VUfWwYOhUi/lSEDyGg46r1CA9RWlvoc5yywxR9AzQb0mOCm7bWtOXV7/w43ZA==
   dependencies:
-    playwright-core "1.42.1"
-  optionalDependencies:
-    fsevents "2.3.2"
+    playwright-core "1.35.1"
 
 pngjs@^6.0.0:
   version "6.0.0"
