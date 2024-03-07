@@ -11,7 +11,7 @@ import { Markdown } from '../Markdown';
 export default {
   title: 'Markdown',
   component: Markdown,
-  decorators: [story => <div style={{ width: 486, minHeight: 200 }}>{story()}</div>],
+  decorators: [story => <div style={{ width: 486, minHeight: 388 }}>{story()}</div>],
   parameters: {
     a11y: {
       config: {
@@ -60,7 +60,7 @@ export const WithValidation = () => {
   );
 };
 
-export const InModal = () => {
+export const InModal: Story = () => {
   const [value, setValue] = useState<string>('');
 
   return (
@@ -97,6 +97,8 @@ export const InModal = () => {
     </MarkdownThemeProvider>
   );
 };
+
+InModal.parameters = { creevey: { captureElement: 'body > div.react-ui > div' } };
 
 export const CustomWidth: Story = () => (
   <Markdown width="550px" fileApiUrl="/api/file" value={allVariantsMarkdownMock} />

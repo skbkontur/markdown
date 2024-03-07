@@ -59,13 +59,13 @@ export const MarkdownPreview = styled.div<HorizontalPaddings>`
 `;
 
 export const MarkdownActionsWrapper = styled.div<{ width?: Nullable<number | string> } & HorizontalPaddings>`
-  padding: ${p => `${p.fullscreenPadding ? '16px' : 0}`} ${p => `${p.fullscreenPadding ?? 0}px`} 0;
+  padding: ${p => (p.fullscreenPadding ? '16px' : 0)} ${p => p.fullscreenPadding ?? 0}px 0;
   margin-bottom: 4px;
-  ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`}`};
+  ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
 
   ${({ theme, panelPadding, fullscreenPadding }) => {
     if (panelPadding && !fullscreenPadding) return panelStyle({ theme, panelPadding });
-  }};
+  }}
 `;
 
 export const ButtonsWrapper = styled.div`
@@ -199,6 +199,7 @@ export const getMarkdownReactUiTheme = (
       hintColor: themeMode === 'light' ? colors.white : colors.grayDefault,
       selectPaddingXSmall: '8px',
       selectLineHeightSmall: '24px',
+      dropdownBorderWidth: '0',
       ...(panelHorizontalPadding && {
         textareaBorderColor: 'transparent',
         textareaBorderColorFocus: 'transparent',
