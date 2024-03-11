@@ -1,7 +1,7 @@
 import { Button, MenuItem, ThemeFactory, THEME_2022 } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
 
-import { HorizontalPaddings, Nullable } from './types';
+import { HorizontalPaddings, Nullable, ReactUIThemeType } from './types';
 import styled, { css } from '../styles/styled-components';
 import { MarkdownTheme } from '../styles/theme';
 
@@ -205,14 +205,14 @@ export const getMarkdownReactUiTheme = (
       ...(panelHorizontalPadding &&
         ({
           textareaPaddingX: `${panelHorizontalPadding}px`,
-        } as Partial<typeof THEME_2022>)),
+        } as ReactUIThemeType)),
       ...(borderless &&
         ({
           textareaBorderColor: 'transparent',
           textareaBorderColorFocus: 'transparent',
           textareaBorderTopColor: 'transparent',
           textareaShadow: 'none',
-        } as Partial<typeof THEME_2022>)),
+        } as ReactUIThemeType)),
       ...(fullScreenTextareaPadding &&
         ({
           textareaMinHeight: '85vh',
@@ -222,7 +222,7 @@ export const getMarkdownReactUiTheme = (
           textareaShadow: 'none',
           textareaPaddingX: `${fullScreenTextareaPadding}px`,
           textareaPaddingY: `0`,
-        } as Partial<typeof THEME_2022>)),
+        } as ReactUIThemeType)),
     },
     reactUiTheme,
   );
