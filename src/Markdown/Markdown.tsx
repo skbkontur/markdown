@@ -43,9 +43,11 @@ import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
 export interface MarkdownProps extends MarkdownEditorProps {
   /** Методы апи для загрузки/скачивания файлов и меншена */
   api?: MarkdownApi;
+  /** Режим прозрачной рамки у Textarea */
+  borderless?: boolean;
   /** Url апи для файлов  */
   fileApiUrl?: string;
-  /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
+  /** Скрыть селект выбора размера текста */
   hideHeadersSelect?: boolean;
   /** Скрыть панель действий (кнопки помощи форматирования текста) */
   hideMarkdownActions?: boolean;
@@ -55,6 +57,7 @@ export interface MarkdownProps extends MarkdownEditorProps {
   panelHorizontalPadding?: number;
   /** Url для профиля сотрудника  */
   profileUrl?: string;
+  /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
 }
 
@@ -71,6 +74,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     profileUrl,
     api,
     hideHeadersSelect,
+    borderless,
     ...textareaProps
   } = props;
 
@@ -125,7 +129,7 @@ export const Markdown: FC<MarkdownProps> = props => {
         {!hideMarkdownActions && (
           <MarkdownActions
             textAreaRef={textareaRef}
-            width={props.width}
+            width={fullscreen ? `100%` : textareaProps?.width}
             viewMode={viewMode}
             loadingFile={requestStatus === RequestStatus.isFetching}
             fullscreen={fullscreen}
@@ -167,6 +171,7 @@ export const Markdown: FC<MarkdownProps> = props => {
           theme?.reactUiTheme,
           panelHorizontalPadding,
           fullscreenTextareaPadding,
+          borderless,
         );
 
         return (

@@ -1,3 +1,5 @@
+import { THEME_2022 } from '@skbkontur/react-ui';
+
 export enum ViewMode {
   Preview = 'Preview',
   Edit = 'Edit',
@@ -42,3 +44,5 @@ export interface TestCase<V, E> {
   name: string;
   values: V;
 }
+
+export type ReactUIThemeType = Partial<typeof THEME_2022>;

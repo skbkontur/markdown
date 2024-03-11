@@ -1,5 +1,5 @@
 import { Dropdown, Textarea } from '@skbkontur/react-ui';
-import React, { CSSProperties, FC, RefObject, SyntheticEvent } from 'react';
+import React, { FC, RefObject, SyntheticEvent } from 'react';
 
 import {
   ActionsWrapper,

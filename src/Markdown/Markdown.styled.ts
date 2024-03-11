@@ -1,7 +1,7 @@
 import { Button, MenuItem, ThemeFactory, THEME_2022 } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
 
-import { HorizontalPaddings, Nullable } from './types';
+import { HorizontalPaddings, Nullable, ReactUIThemeType } from './types';
 import styled, { css } from '../styles/styled-components';
 import { MarkdownTheme } from '../styles/theme';
 
@@ -61,6 +61,7 @@ export const MarkdownPreview = styled.div<HorizontalPaddings>`
 export const MarkdownActionsWrapper = styled.div<{ width?: Nullable<number | string> } & HorizontalPaddings>`
   padding: ${p => (p.fullscreenPadding ? '16px' : 0)} ${p => p.fullscreenPadding ?? 0}px 0;
   margin-bottom: 4px;
+  box-sizing: border-box;
   ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
 
   ${({ theme, panelPadding, fullscreenPadding }) => {
@@ -160,6 +161,7 @@ export const getMarkdownReactUiTheme = (
   reactUiTheme?: typeof THEME_2022,
   panelHorizontalPadding?: number,
   fullScreenTextareaPadding?: number,
+  borderless?: boolean,
 ) => {
   const { elementsFontSize, elementsLineHeight, themeMode, colors } = theme;
 
@@ -200,22 +202,27 @@ export const getMarkdownReactUiTheme = (
       selectPaddingXSmall: '8px',
       selectLineHeightSmall: '24px',
       dropdownBorderWidth: '0',
-      ...(panelHorizontalPadding && {
-        textareaBorderColor: 'transparent',
-        textareaBorderColorFocus: 'transparent',
-        textareaBorderTopColor: 'transparent',
-        textareaShadow: 'none',
-        textareaPaddingX: `${panelHorizontalPadding}px`,
-      }),
-      ...(fullScreenTextareaPadding && {
-        textareaMinHeight: '85vh',
-        textareaBorderColor: 'transparent',
-        textareaBorderColorFocus: 'transparent',
-        textareaBorderTopColor: 'transparent',
-        textareaShadow: 'none',
-        textareaPaddingX: `${fullScreenTextareaPadding}px`,
-        textareaPaddingY: `0`,
-      }),
+      ...(panelHorizontalPadding &&
+        ({
+          textareaPaddingX: `${panelHorizontalPadding}px`,
+        } as ReactUIThemeType)),
+      ...(borderless &&
+        ({
+          textareaBorderColor: 'transparent',
+          textareaBorderColorFocus: 'transparent',
+          textareaBorderTopColor: 'transparent',
+          textareaShadow: 'none',
+        } as ReactUIThemeType)),
+      ...(fullScreenTextareaPadding &&
+        ({
+          textareaMinHeight: '85vh',
+          textareaBorderColor: 'transparent',
+          textareaBorderColorFocus: 'transparent',
+          textareaBorderTopColor: 'transparent',
+          textareaShadow: 'none',
+          textareaPaddingX: `${fullScreenTextareaPadding}px`,
+          textareaPaddingY: `0`,
+        } as ReactUIThemeType)),
     },
     reactUiTheme,
   );
