@@ -17,6 +17,8 @@ export interface MarkdownEditorProps
   textareaRef?: RefObject<Textarea>;
   /** Стандартная валидация из react-ui-validations */
   validationInfo?: Nullable<ValidationInfo>;
+  /** Обернуть в ValidationWrapper из react-ui-validations */
+  withValidationWrapper?: boolean;
 }
 
 export const MarkdownEditor: FC<MarkdownEditorProps> = props => {
@@ -28,12 +30,13 @@ export const MarkdownEditor: FC<MarkdownEditorProps> = props => {
     textareaRef,
     validationInfo,
     renderMessage,
+    withValidationWrapper,
     ...rest
   } = props;
 
   const { getInputProps } = useDropzone();
 
-  return validationInfo ? (
+  return withValidationWrapper ? (
     <ValidationWrapper validationInfo={validationInfo} renderMessage={renderMessage}>
       {renderTextarea()}
     </ValidationWrapper>

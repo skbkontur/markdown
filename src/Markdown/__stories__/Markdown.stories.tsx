@@ -52,6 +52,7 @@ export const WithValidation = () => {
   return (
     <ValidationContainer>
       <Markdown
+        withValidationWrapper
         value={value}
         validationInfo={{ type: 'immediate', level: 'error', message: 'error' }}
         onValueChange={setValue}
