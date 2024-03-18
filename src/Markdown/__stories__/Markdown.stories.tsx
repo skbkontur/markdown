@@ -25,9 +25,9 @@ export const WithoutActions = () => <Markdown hideMarkdownActions value={allVari
 
 export const WithActions = () => <Markdown fileApiUrl="/api/file" value={allVariantsMarkdownMock} />;
 
-export const WithPanel = () => <Markdown value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
+export const WithPanel = () => <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
 export const WithoutHeadersSelect = () => (
-  <Markdown hideHeadersSelect value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
+  <Markdown borderless hideHeadersSelect value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
 );
 
 export const Editable = () => {
@@ -113,6 +113,7 @@ export const CustomValidation: Story = () => {
   return (
     <ValidationContainer>
       <Markdown
+        withValidationWrapper
         width={444}
         value={value}
         validationInfo={{ type: 'immediate', level: 'error', message: 'Сообщение валидации об ошибке в текстарии' }}
