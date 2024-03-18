@@ -21,30 +21,33 @@ export const eventKeyCodeToMarkdownFormat: { [key: number]: MarkdownFormat } = {
   52: MarkdownFormat.h4,
   66: MarkdownFormat.bold,
   73: MarkdownFormat.italic,
-  82: MarkdownFormat.crossed,
-  85: MarkdownFormat.ref,
+  83: MarkdownFormat.crossed,
+  75: MarkdownFormat.ref,
   76: MarkdownFormat.list,
   68: MarkdownFormat.checkedList,
   78: MarkdownFormat.numberedList,
-  69: MarkdownFormat.codeBlock,
+  67: MarkdownFormat.codeBlock,
   81: MarkdownFormat.quote,
   80: MarkdownFormat.image,
 };
 
-export const markdownFormatToShortKey: Partial<{ [key in MarkdownFormat]: string }> = {
+export const markdownFormatToShortKeyLong: Partial<{ [key in MarkdownFormat]: string }> = {
   [MarkdownFormat.h2]: '2',
   [MarkdownFormat.h3]: '3',
   [MarkdownFormat.h4]: '4',
-  [MarkdownFormat.bold]: 'B',
-  [MarkdownFormat.italic]: 'I',
-  [MarkdownFormat.crossed]: 'R',
-  [MarkdownFormat.ref]: 'U',
+  [MarkdownFormat.crossed]: 'S',
   [MarkdownFormat.list]: 'L',
   [MarkdownFormat.checkedList]: 'D',
   [MarkdownFormat.numberedList]: 'N',
-  [MarkdownFormat.codeBlock]: 'E',
+  [MarkdownFormat.codeBlock]: 'C',
   [MarkdownFormat.quote]: 'Q',
   [MarkdownFormat.image]: 'P',
+};
+
+export const markdownFormatToShortKeyShort: Partial<{ [key in MarkdownFormat]: string }> = {
+  [MarkdownFormat.bold]: 'B',
+  [MarkdownFormat.italic]: 'I',
+  [MarkdownFormat.ref]: 'K',
 };
 
 export interface MarkdownHelpItem {

@@ -7,6 +7,8 @@ import { MarkdownFormat } from '../MarkdownFormat';
 import {
   checkSpaceSymbol,
   eventKeyCodeToMarkdownFormat,
+  markdownFormatToShortKeyLong,
+  markdownFormatToShortKeyShort,
   markdownHelpFiles,
   markdownHelpItems,
 } from '../MarkdownHelpItems';
@@ -114,15 +116,14 @@ export function createMarkdownHelpKeyDownHandler(
   callback?: (event: ReactKeyboardEvent<HTMLTextAreaElement>) => void,
 ) {
   return (event: ReactKeyboardEvent<HTMLTextAreaElement>) => {
-    if (!ref?.current) {
-      return;
-    }
+    if (!ref?.current) return;
 
     const textareaNode = (ref.current as any).node as HTMLTextAreaElement;
 
     const format = eventKeyCodeToMarkdownFormat[event.keyCode];
+    const isLong = markdownFormatToShortKeyLong[format];
 
-    if (event.ctrlKey && event.altKey && format) {
+    if ((event.metaKey || event.ctrlKey) && (isLong ? event.shiftKey : true) && format) {
       const markdownHelpItem = markdownHelpItems.find(item => item.format === format);
 
       if (markdownHelpItem && textareaNode) {
