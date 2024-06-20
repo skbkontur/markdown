@@ -1,4 +1,4 @@
-import { Modal, THEME_2022 } from '@skbkontur/react-ui';
+import { Modal, SizeProp, THEME_2022 } from '@skbkontur/react-ui';
 import { text, ValidationContainer } from '@skbkontur/react-ui-validations';
 import { Meta, Story } from '@storybook/react';
 import React, { useState } from 'react';
@@ -23,7 +23,23 @@ export default {
 
 export const WithoutActions = () => <Markdown hideMarkdownActions value={allVariantsMarkdownMock} />;
 
-export const WithActions = () => <Markdown fileApiUrl="/api/file" value={allVariantsMarkdownMock} />;
+export const WithSizeControl: Story<{ size: SizeProp }> = args => (
+  <Markdown size={args.size} value={allVariantsMarkdownMock} />
+);
+
+WithSizeControl.args = {
+  size: 'medium',
+};
+
+const sizeOptions: SizeProp[] = ['small', 'medium', 'large'];
+WithSizeControl.argTypes = {
+  size: {
+    control: {
+      type: 'select',
+      options: sizeOptions,
+    },
+  },
+};
 
 export const WithPanel = () => <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
 export const WithoutHeadersSelect = () => (
