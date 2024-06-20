@@ -158,18 +158,14 @@ export const VisuallyHidden = styled.span`
 `;
 
 const extendThemeConfigWithSized = (config: ThemeIn): ThemeIn => {
-  let newConfig: Partial<ThemeIn> = { ...config };
-
-  (Object.keys(config) as (keyof ThemeIn)[]).forEach(field => {
-    newConfig = {
-      ...newConfig,
+  return (Object.keys(config) as (keyof ThemeIn)[]).reduce((prevConfig, field) => {
+    return {
+      ...prevConfig,
       [`${field}Large`]: config[field],
       [`${field}Medium`]: config[field],
       [`${field}Small`]: config[field],
     };
-  });
-
-  return newConfig;
+  }, config);
 };
 
 export const getMarkdownReactUiTheme = (
