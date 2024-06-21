@@ -164,11 +164,11 @@ const extendThemeConfigWithSized = (config: MutableTheme): ReactUIThemeType => {
   const finalConfig: MutableTheme = {};
   const configKeys = Object.keys(config) as KeyOfReactUITheme[];
 
-  configKeys.forEach(e => {
-    if (e !== 'prototype') {
-      finalConfig[`${e}Small` as KeyOfReactUITheme] = config[e];
-      finalConfig[`${e}Medium` as KeyOfReactUITheme] = config[e];
-      finalConfig[`${e}Large` as KeyOfReactUITheme] = config[e];
+  configKeys.forEach(key => {
+    if (key !== 'prototype') {
+      finalConfig[`${key}Small` as KeyOfReactUITheme] = config[key];
+      finalConfig[`${key}Medium` as KeyOfReactUITheme] = config[key];
+      finalConfig[`${key}Large` as KeyOfReactUITheme] = config[key];
     }
   });
 
