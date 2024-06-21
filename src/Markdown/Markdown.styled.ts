@@ -9,6 +9,10 @@ interface PanelProps extends HorizontalPaddings {
   theme: MarkdownTheme;
 }
 
+type MutableTheme = { -readonly [K in keyof ReactUIThemeType]?: ReactUIThemeType[K] };
+
+type KeyOfReactUITheme = keyof ReactUIThemeType;
+
 const panelStyle = ({ panelPadding, theme }: PanelProps) => css`
   padding: 6px ${panelPadding ?? 0}px;
   background-color: ${theme.colors.panelBg};
@@ -156,6 +160,21 @@ export const VisuallyHidden = styled.span`
   border: 0;
 `;
 
+const extendThemeConfigWithSized = (config: MutableTheme): ReactUIThemeType => {
+  const finalConfig: MutableTheme = {};
+  const configKeys = Object.keys(config) as KeyOfReactUITheme[];
+
+  configKeys.forEach(key => {
+    if (key !== 'prototype') {
+      finalConfig[`${key}Small` as KeyOfReactUITheme] = config[key];
+      finalConfig[`${key}Medium` as KeyOfReactUITheme] = config[key];
+      finalConfig[`${key}Large` as KeyOfReactUITheme] = config[key];
+    }
+  });
+
+  return finalConfig;
+};
+
 export const getMarkdownReactUiTheme = (
   theme: MarkdownTheme,
   reactUiTheme?: typeof THEME_2022,
@@ -167,12 +186,19 @@ export const getMarkdownReactUiTheme = (
 
   return ThemeFactory.create(
     {
-      tabFontSize: elementsFontSize,
-      tabPaddingY: '0',
-      tabPaddingX: '6px',
+      ...extendThemeConfigWithSized({
+        tabFontSize: elementsFontSize,
+        tabPaddingY: '0',
+        tabPaddingX: '6px',
+        tabLineHeight: elementsLineHeight,
+        checkboxPaddingY: '0',
+        checkboxBoxSize: elementsFontSize,
+        menuItemFontSize: elementsFontSize,
+        menuItemPaddingY: '4px',
+        menuItemPaddingX: '28px',
+      }),
       tabColorHover: 'transparent',
       tabColorFocus: 'transparent',
-      tabLineHeight: elementsLineHeight,
       tabBorderWidth: '0',
       selectBorderWidth: '0',
       btnDefaultBg: 'transparent',
@@ -182,7 +208,6 @@ export const getMarkdownReactUiTheme = (
       btnDisabledTextColor: colors.disabledButton,
       btnDefaultHoverBg: themeMode === 'light' ? reactUiTheme?.btnDefaultHoverBg : reactUiTheme?.btnDisabledBg,
       btnFontSizeSmall: elementsFontSize,
-      checkboxPaddingY: '0',
       checkboxBg: 'transparent',
       checkboxHoverBg: 'transparent',
       checkboxCheckedBg: 'transparent',
@@ -193,19 +218,15 @@ export const getMarkdownReactUiTheme = (
       checkboxCheckedActiveShadow: `0 0 0 1px ${colors.grayDefault}`,
       checkboxShadowActive: `0 0 0 1px ${colors.grayDefault}`,
       checkboxCheckedColor: colors.grayDefault,
-      checkboxBoxSize: elementsFontSize,
-      menuItemFontSize: elementsFontSize,
-      menuItemPaddingY: '4px',
-      menuItemPaddingX: '28px',
       hintFontSize: elementsFontSize,
       hintColor: themeMode === 'light' ? colors.white : colors.grayDefault,
       selectPaddingXSmall: '8px',
       selectLineHeightSmall: '24px',
       dropdownBorderWidth: '0',
       ...(panelHorizontalPadding &&
-        ({
+        (extendThemeConfigWithSized({
           textareaPaddingX: `${panelHorizontalPadding}px`,
-        } as ReactUIThemeType)),
+        }) as ReactUIThemeType)),
       ...(borderless &&
         ({
           textareaBorderColor: 'transparent',
@@ -215,13 +236,15 @@ export const getMarkdownReactUiTheme = (
         } as ReactUIThemeType)),
       ...(fullScreenTextareaPadding &&
         ({
-          textareaMinHeight: '85vh',
           textareaBorderColor: 'transparent',
           textareaBorderColorFocus: 'transparent',
           textareaBorderTopColor: 'transparent',
           textareaShadow: 'none',
-          textareaPaddingX: `${fullScreenTextareaPadding}px`,
-          textareaPaddingY: `0`,
+          ...extendThemeConfigWithSized({
+            textareaMinHeight: '85vh',
+            textareaPaddingX: `${fullScreenTextareaPadding}px`,
+            textareaPaddingY: '0',
+          }),
         } as ReactUIThemeType)),
     },
     reactUiTheme,
