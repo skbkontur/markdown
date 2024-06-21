@@ -1,5 +1,4 @@
 import { Button, MenuItem, ThemeFactory, THEME_2022 } from '@skbkontur/react-ui';
-import { ThemeIn } from '@skbkontur/react-ui/cjs/lib/theming/Theme';
 import { CSSProperties } from 'react';
 
 import { HorizontalPaddings, Nullable, ReactUIThemeType } from './types';
@@ -9,6 +8,10 @@ import { MarkdownTheme } from '../styles/theme';
 interface PanelProps extends HorizontalPaddings {
   theme: MarkdownTheme;
 }
+
+type MutableTheme = { -readonly [K in keyof ReactUIThemeType]?: ReactUIThemeType[K] };
+
+type KeyOfReactUITheme = keyof ReactUIThemeType;
 
 const panelStyle = ({ panelPadding, theme }: PanelProps) => css`
   padding: 6px ${panelPadding ?? 0}px;
@@ -157,15 +160,23 @@ export const VisuallyHidden = styled.span`
   border: 0;
 `;
 
-const extendThemeConfigWithSized = (config: ThemeIn): ThemeIn => {
-  return (Object.keys(config) as (keyof ThemeIn)[]).reduce((prevConfig, field) => {
-    return {
-      ...prevConfig,
-      [`${field}Large`]: config[field],
-      [`${field}Medium`]: config[field],
-      [`${field}Small`]: config[field],
-    };
-  }, config);
+const extendThemeConfigWithSized = (config: MutableTheme): ReactUIThemeType => {
+  const finalConfig: MutableTheme = {};
+  const configKeys = Object.keys(config) as KeyOfReactUITheme[];
+
+  configKeys.forEach(e => {
+    if (e !== 'prototype') {
+      const smallKey = `${e}Small` as KeyOfReactUITheme;
+      const mediumKey = `${e}Medium` as KeyOfReactUITheme;
+      const largeKey = `${e}Large` as KeyOfReactUITheme;
+
+      if (smallKey in finalConfig) finalConfig[smallKey] = config[e];
+      if (mediumKey in finalConfig) finalConfig[mediumKey] = config[e];
+      if (largeKey in finalConfig) finalConfig[largeKey] = config[e];
+    }
+  });
+
+  return finalConfig;
 };
 
 export const getMarkdownReactUiTheme = (
