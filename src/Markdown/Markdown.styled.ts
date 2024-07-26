@@ -84,6 +84,7 @@ export const ButtonsWrapper = styled.div`
 export const ActionsWrapper = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 export const MarkdownButtonWrapper = styled(Button)`
