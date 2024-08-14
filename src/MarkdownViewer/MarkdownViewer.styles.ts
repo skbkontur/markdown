@@ -65,6 +65,15 @@ export const BlockQuote = styled.blockquote`
 
 export const FileButtonWrapper = styled.div`
   display: flex;
+  white-space: pre-wrap;
+`;
+
+export const Href = styled.a`
+  white-space: pre-wrap;
+`;
+
+export const FileName = styled.span`
+  white-space: pre-wrap;
 `;
 
 export const ImgHref = styled.a`

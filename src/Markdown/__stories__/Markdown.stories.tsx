@@ -4,7 +4,7 @@ import { Meta, Story } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { a11yRules } from '../../../a11y/rules';
-import { MarkdownThemeProvider } from '../../../index';
+import { MarkdownThemeProvider, MarkdownViewer } from '../../../index';
 import { allVariantsMarkdownMock } from '../__mocks__/markdown.mock';
 import { Markdown } from '../Markdown';
 
@@ -139,3 +139,9 @@ export const CustomValidation: Story = () => {
     </ValidationContainer>
   );
 };
+
+export const Viewer = () => (
+  <div style={{ width: 320 }}>
+    <MarkdownViewer fileApiUrl="/api/file/download" source={allVariantsMarkdownMock} />
+  </div>
+);

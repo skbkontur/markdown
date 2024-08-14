@@ -4,7 +4,7 @@ import { ZIndex } from '@skbkontur/react-ui/internal/ZIndex';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { markdownRenderContainer, textEditorDebounceTime } from './constants';
+import { MARKDOWN_RENDER_CONTAINER, INPUT_DEBOUNCE_TIME } from './constants';
 import { getMarkdownMentionStyle, MentionMenuItem, UserDescriptions, UserWrapper, Avatar } from './Markdown.styled';
 import { getAvatarUrl, useMenuKeyListener } from './MarkdownHelpers/markdownMentionHelpers';
 import { User } from './types';
@@ -21,12 +21,12 @@ export const MarkdownMention: FC<Props> = ({ value, onUserSelect, x, y, getUsers
   const [users, setUsers] = useState<User[]>();
 
   const menuRef = useRef<Menu>(null);
-  const markdownMentionsRef = useRef(document.getElementById(markdownRenderContainer));
-  const timerRef = useRef<number>(textEditorDebounceTime);
+  const markdownMentionsRef = useRef(document.getElementById(MARKDOWN_RENDER_CONTAINER));
+  const timerRef = useRef<number>(INPUT_DEBOUNCE_TIME);
 
   if (!markdownMentionsRef.current) {
     const container = document.createElement('div');
-    container.id = markdownRenderContainer;
+    container.id = MARKDOWN_RENDER_CONTAINER;
     document.body.appendChild(container);
     markdownMentionsRef.current = container;
   }
@@ -41,7 +41,7 @@ export const MarkdownMention: FC<Props> = ({ value, onUserSelect, x, y, getUsers
         result && setUsers(result);
       };
 
-      timerRef.current = window.setTimeout(() => void load(), textEditorDebounceTime);
+      timerRef.current = window.setTimeout(() => void load(), INPUT_DEBOUNCE_TIME);
     } catch (e) {
       Toast.push('Ошибка в получении списка пользователей');
     }

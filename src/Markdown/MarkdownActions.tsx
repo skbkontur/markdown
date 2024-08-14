@@ -1,6 +1,7 @@
 import { Dropdown, Textarea } from '@skbkontur/react-ui';
 import React, { FC, RefObject, SyntheticEvent } from 'react';
 
+import { COMMONMARK_HELP_URL } from './constants';
 import {
   ActionsWrapper,
   ButtonsWrapper,
@@ -9,14 +10,15 @@ import {
   MarkdownActionsWrapper,
 } from './Markdown.styled';
 import { MarkdownFormat } from './MarkdownFormat';
-import { MarkdownButtonProps } from './MarkdownHelpers/MarkdownButton';
 import { MarkdownCombination } from './MarkdownHelpers/MarkdownCombination';
 import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
+import { MarkdownButtonProps } from './MarkdownHelpers/types';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
 import { HorizontalPaddings, Nullable, ViewMode } from './types';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 import { Collapse } from '../MarkdownIcons/Collapse';
+import { DocIcon } from '../MarkdownIcons/DocIcon';
 import { Expand } from '../MarkdownIcons/Expand';
 import { EyeOpen } from '../MarkdownIcons/EyeOpen';
 import { ToolPencil } from '../MarkdownIcons/ToolPencil';
@@ -115,6 +117,12 @@ export const MarkdownActions: FC<Props> = ({
               onClick={onOpenFileDialog}
             />
           )}
+          <MarkdownFormatButton
+            hintText="Документация Markdown"
+            icon={<DocIcon />}
+            text="Документация Markdown"
+            href={COMMONMARK_HELP_URL}
+          />
         </ActionsWrapper>
         <ActionsWrapper>
           {renderViewModeButton()}
