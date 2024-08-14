@@ -1,16 +1,24 @@
 import { Hint } from '@skbkontur/react-ui';
 import React, { FC } from 'react';
 
-import { MarkdownButtonProps } from './MarkdownButton';
 import { MarkdownCombination } from './MarkdownCombination';
+import { MarkdownButtonProps } from './types';
 import { MarkdownButtonIcon, MarkdownButtonWrapper, VisuallyHidden } from '../Markdown.styled';
 import { MarkdownFormat } from '../MarkdownFormat';
 
 interface Props extends MarkdownButtonProps {
   format?: MarkdownFormat;
+  href?: string;
 }
 
-export const MarkdownFormatButton: FC<Props> = ({ icon, hintText, onClick, format, disabled, text }) => {
+export const MarkdownFormatButton: FC<Props> = ({ icon, hintText, onClick, format, disabled, text, href }) => {
+  const button = (
+    <MarkdownButtonWrapper borderless disabled={disabled} onClick={onClick}>
+      <MarkdownButtonIcon>{icon}</MarkdownButtonIcon>
+      <VisuallyHidden>{text}</VisuallyHidden>
+    </MarkdownButtonWrapper>
+  );
+
   return (
     <Hint
       manual={disabled}
@@ -18,10 +26,13 @@ export const MarkdownFormatButton: FC<Props> = ({ icon, hintText, onClick, forma
       pos="top center"
       maxWidth={360}
     >
-      <MarkdownButtonWrapper borderless disabled={disabled} onClick={onClick}>
-        <MarkdownButtonIcon>{icon}</MarkdownButtonIcon>
-        <VisuallyHidden>{text}</VisuallyHidden>
-      </MarkdownButtonWrapper>
+      {href ? (
+        <a href={href} tabIndex={-1} target="_blank" rel="noopener noreferrer nofollow">
+          {button}
+        </a>
+      ) : (
+        button
+      )}
     </Hint>
   );
 };

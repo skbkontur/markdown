@@ -6,7 +6,7 @@ export const allVariantsMarkdownMock = `# Заголовок 1
 
 **Жирный**
 ~~Зачеркнутый~~
-[Максим Цыпилов](@tsypilov_m)
+[Максим Цыпилов довлвоадывоадвыаодыаоыдаоыдвоаывдаоывдаоыдваовдаовда](@tsypilov_m)
 
 1. Список
 2. Список
@@ -35,7 +35,7 @@ export const allVariantsMarkdownMock = `# Заголовок 1
 линия
 линия
 
-[text.txt](/api/file/download/)
+[text.txt lkjlkjlkjlkjlkjlk;jlkj;klj;j;kkj;j;j;ljjhbhvhcxzxhcjvbnmnbcvkb](/api/file/download/)
 
 ![img](https://s.kontur.ru/common-v2/logos/logo-matrix-32.svg)
 

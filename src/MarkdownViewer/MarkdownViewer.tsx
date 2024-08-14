@@ -12,6 +12,7 @@ import { MarkdownLink } from './Helpers/MarkdownLink';
 import {
   BlockQuote,
   FileButtonWrapper,
+  FileName,
   getListStyle,
   ListItem,
   Paragraph,
@@ -96,7 +97,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
       return (
         <FileButtonWrapper>
           <Button use="link" icon={<AttachPaperclip />} onClick={() => downloadFile(id)}>
-            {children}
+            <FileName>{children}</FileName>
             <VisuallyHidden>Загрузить файл ${children}</VisuallyHidden>
           </Button>
         </FileButtonWrapper>
