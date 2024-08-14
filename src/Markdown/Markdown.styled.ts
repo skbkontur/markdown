@@ -67,10 +67,14 @@ export const MarkdownActionsWrapper = styled.div<{ width?: Nullable<number | str
   margin-bottom: 4px;
   box-sizing: border-box;
   ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
-
   ${({ theme, panelPadding, fullscreenPadding }) => {
     if (panelPadding && !fullscreenPadding) return panelStyle({ theme, panelPadding });
   }}
+  
+  a {
+    border: none !important;
+    text-decoration: none !important;
+  }
 `;
 
 export const ButtonsWrapper = styled.div`
