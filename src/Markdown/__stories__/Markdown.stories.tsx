@@ -11,7 +11,7 @@ import { Markdown } from '../Markdown';
 export default {
   title: 'Markdown',
   component: Markdown,
-  decorators: [story => <div style={{ width: 486, minHeight: 388, marginTop: 100 }}>{story()}</div>],
+  decorators: [story => <div style={{ width: 486, minHeight: 388 }}>{story()}</div>],
   parameters: {
     a11y: {
       config: {
