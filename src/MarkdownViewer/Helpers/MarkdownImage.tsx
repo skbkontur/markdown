@@ -8,7 +8,7 @@ interface Props {
 
 export const MarkdownImage: FC<Props> = ({ src }) => {
   return (
-    <ImgHref href={src} target="_blank" rel="noopener noreferrer">
+    <ImgHref aria-label="Изображение" href={src} target="_blank" rel="noopener noreferrer">
       <img src={src} alt="" />
     </ImgHref>
   );
