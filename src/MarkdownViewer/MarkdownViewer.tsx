@@ -9,6 +9,7 @@ import gfm from 'remark-gfm';
 
 import { MarkdownImage } from './Helpers/MarkdownImage';
 import { MarkdownLink } from './Helpers/MarkdownLink';
+import { MarkdownTable } from './Helpers/MarkdownTable';
 import {
   BlockQuote,
   FileButtonWrapper,
@@ -77,6 +78,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
       blockquote: props => <BlockQuote>{props.children}</BlockQuote>,
       p: props => <Paragraph>{props.children}</Paragraph>,
       img: props => <MarkdownImage src={props.src ?? ''} />,
+      table: props => <MarkdownTable>{props.children}</MarkdownTable>,
     };
   }
 

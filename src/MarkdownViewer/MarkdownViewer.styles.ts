@@ -81,6 +81,11 @@ export const ImgHref = styled.a`
   border: none !important;
 `;
 
+export const TableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+`;
+
 export function getListStyle(depth: boolean): CSSProperties {
   return depth ? { marginTop: 4 } : { marginBottom: 16 };
 }
