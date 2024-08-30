@@ -11,13 +11,31 @@ interface Props extends MarkdownButtonProps {
   href?: string;
 }
 
-export const MarkdownFormatButton: FC<Props> = ({ icon, hintText, onClick, format, disabled, text, href }) => {
+export const MarkdownFormatButton: FC<Props> = ({
+  icon,
+  hintText,
+  onClick,
+  format,
+  disabled,
+  text,
+  href,
+  showShortKey,
+}) => {
   const button = (
     <MarkdownButtonWrapper borderless disabled={disabled} onClick={onClick}>
       <MarkdownButtonIcon>{icon}</MarkdownButtonIcon>
       <VisuallyHidden>{text}</VisuallyHidden>
     </MarkdownButtonWrapper>
   );
+  const content = href ? (
+    <a href={href} tabIndex={-1} target="_blank" rel="noopener noreferrer nofollow">
+      {button}
+    </a>
+  ) : (
+    button
+  );
+
+  if (!showShortKey) return content;
 
   return (
     <Hint
@@ -26,13 +44,7 @@ export const MarkdownFormatButton: FC<Props> = ({ icon, hintText, onClick, forma
       pos="top center"
       maxWidth={360}
     >
-      {href ? (
-        <a href={href} tabIndex={-1} target="_blank" rel="noopener noreferrer nofollow">
-          {button}
-        </a>
-      ) : (
-        button
-      )}
+      {content}
     </Hint>
   );
 };

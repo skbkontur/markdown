@@ -59,6 +59,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   profileUrl?: string;
   /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
+  /** Показывать шорткеи (убирает хинты действий и подсказки) */
+  showShotKeys?: boolean;
 }
 
 export const Markdown: FC<MarkdownProps> = props => {
@@ -75,6 +77,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     api,
     hideHeadersSelect,
     borderless,
+    showShotKeys = true,
     ...textareaProps
   } = props;
 
@@ -128,6 +131,7 @@ export const Markdown: FC<MarkdownProps> = props => {
       <Wrapper {...getRootProps()}>
         {!hideMarkdownActions && (
           <MarkdownActions
+            showShortKeys={showShotKeys}
             textAreaRef={textareaRef}
             width={fullscreen ? `100%` : textareaProps?.width}
             viewMode={viewMode}

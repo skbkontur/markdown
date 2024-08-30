@@ -28,6 +28,7 @@ interface Props {
   onChangeViewMode: (viewMode: ViewMode) => void;
   onClickFullscreen: () => void;
   onOpenFileDialog: () => void;
+  showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
   fullscreen?: boolean;
@@ -53,6 +54,7 @@ export const MarkdownActions: FC<Props> = ({
   hasFilesApi,
   hideHeadersSelect,
   width,
+  showShortKeys,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
@@ -68,7 +70,7 @@ export const MarkdownActions: FC<Props> = ({
                     key={idx}
                     onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
                   >
-                    <MarkdownCombination format={helper.format} text={helper.node} />
+                    <MarkdownCombination showShortKey={showShortKeys} format={helper.format} text={helper.node} />
                   </MarkdownMenuItem>
                 ))}
               </Dropdown>
@@ -77,6 +79,7 @@ export const MarkdownActions: FC<Props> = ({
           {markdownHelpText.map((helper, idx) => (
             <MarkdownFormatButton
               key={idx}
+              showShortKey={showShortKeys}
               disabled={isPreviewMode}
               format={helper.format}
               hintText={helper.node}
@@ -88,6 +91,7 @@ export const MarkdownActions: FC<Props> = ({
           {markdownHelpLists.map((helper, idx) => (
             <MarkdownFormatButton
               key={idx}
+              showShortKey={showShortKeys}
               disabled={isPreviewMode}
               format={helper.format}
               hintText={helper.node}
@@ -99,6 +103,7 @@ export const MarkdownActions: FC<Props> = ({
           {markdownHelpOther.map((helper, idx) => (
             <MarkdownFormatButton
               key={idx}
+              showShortKey={showShortKeys}
               disabled={isPreviewMode}
               format={helper.format}
               hintText={helper.node}
@@ -143,6 +148,7 @@ export const MarkdownActions: FC<Props> = ({
       icon: isPreviewMode ? <ToolPencil /> : <EyeOpen />,
       onClick: () => onChangeViewMode(isPreviewMode ? ViewMode.Edit : ViewMode.Preview),
       text: isPreviewMode ? 'Вернуться в редактор' : 'Превью',
+      showShortKey: showShortKeys,
     };
 
     return <MarkdownFormatButton {...buttonProps} />;

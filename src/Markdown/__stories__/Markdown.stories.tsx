@@ -140,6 +140,18 @@ export const CustomValidation: Story = () => {
   );
 };
 
+export const WithoutHints: Story = () => {
+  return (
+    <Markdown
+      withValidationWrapper
+      showShotKeys={false}
+      value={allVariantsMarkdownMock}
+      validationInfo={{ type: 'immediate', level: 'error', message: 'Сообщение валидации об ошибке в текстарии' }}
+      renderMessage={text('bottom')}
+    />
+  );
+};
+
 export const Viewer = () => (
   <div style={{ width: 320 }}>
     <MarkdownViewer fileApiUrl="/api/file/download" source={allVariantsMarkdownMock} />

@@ -8,9 +8,10 @@ import { isMacintosh } from '../utils/isMacintosh';
 interface Props {
   format: MarkdownFormat;
   text: ReactNode;
+  showShortKey?: boolean;
 }
 
-export const MarkdownCombination: FC<Props> = ({ format, text }) => {
+export const MarkdownCombination: FC<Props> = ({ format, text, showShortKey }) => {
   const shortKeyLong = markdownFormatToShortKeyLong[format];
   const shortKeyShort = markdownFormatToShortKeyShort[format];
   const shortKey = shortKeyLong || shortKeyShort;
@@ -18,7 +19,7 @@ export const MarkdownCombination: FC<Props> = ({ format, text }) => {
   return (
     <HintContentWrapper>
       <span>{text}</span>
-      {!!shortKey && renderHint()}
+      {showShortKey && !!shortKey && renderHint()}
     </HintContentWrapper>
   );
 

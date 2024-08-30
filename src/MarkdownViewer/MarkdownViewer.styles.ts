@@ -86,6 +86,10 @@ export const TableWrapper = styled.div`
   overflow-x: auto;
 `;
 
+export const Table = styled.table`
+  width: max-content;
+`;
+
 export function getListStyle(depth: boolean): CSSProperties {
   return depth ? { marginTop: 4 } : { marginBottom: 16 };
 }
