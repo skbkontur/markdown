@@ -91,6 +91,7 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   const guid = useRef(new Guid().generate()).current;
   const isEditMode = viewMode === ViewMode.Edit;
+  const width = fullscreen ? `100%` : textareaProps?.width;
 
   const { getRootProps, isDragActive, requestStatus, open, error, onResetError } = useFileLogic(
     api?.fileUploadApi,
@@ -133,7 +134,7 @@ export const Markdown: FC<MarkdownProps> = props => {
           <MarkdownActions
             showShortKeys={showShotKeys}
             textAreaRef={textareaRef}
-            width={fullscreen ? `100%` : textareaProps?.width}
+            width={width}
             viewMode={viewMode}
             loadingFile={requestStatus === RequestStatus.isFetching}
             fullscreen={fullscreen}
@@ -152,7 +153,7 @@ export const Markdown: FC<MarkdownProps> = props => {
         {isDragActive && isEditMode && <DroppablePlaceholder {...horizontalPaddings} />}
       </Wrapper>
       {!isEditMode && (
-        <MarkdownPreview {...horizontalPaddings}>
+        <MarkdownPreview {...horizontalPaddings} width={width}>
           {markdownViewer?.(props.value as string) || (
             <MarkdownViewer
               source={(props.value as string) ?? ''}
@@ -209,7 +210,7 @@ export const Markdown: FC<MarkdownProps> = props => {
         {showMention && renderMentions()}
         <MarkdownEditor
           {...textareaProps}
-          width={fullscreen ? `100%` : textareaProps?.width}
+          width={width}
           textareaRef={textareaRef}
           onChange={listenChange}
           onSelect={listenSelection}

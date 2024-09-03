@@ -8,7 +8,6 @@ import {
   checkSpaceSymbol,
   eventKeyCodeToMarkdownFormat,
   markdownFormatToShortKeyLong,
-  markdownFormatToShortKeyShort,
   markdownHelpFiles,
   markdownHelpItems,
 } from '../MarkdownHelpItems';

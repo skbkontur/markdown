@@ -13,6 +13,8 @@ type MutableTheme = { -readonly [K in keyof ReactUIThemeType]?: ReactUIThemeType
 
 type KeyOfReactUITheme = keyof ReactUIThemeType;
 
+type WrapperBaseProps = { width?: Nullable<number | string> } & HorizontalPaddings;
+
 const panelStyle = ({ panelPadding, theme }: PanelProps) => css`
   padding: 6px ${panelPadding ?? 0}px;
   background-color: ${theme.colors.panelBg};
@@ -58,11 +60,12 @@ export const DroppablePlaceholder = styled.div<HorizontalPaddings>`
 
 export const MentionWrapper = styled.div``;
 
-export const MarkdownPreview = styled.div<HorizontalPaddings>`
+export const MarkdownPreview = styled.div<WrapperBaseProps>`
   padding: 6px ${({ panelPadding, fullscreenPadding }) => fullscreenPadding ?? panelPadding ?? 8}px;
+  ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
 `;
 
-export const MarkdownActionsWrapper = styled.div<{ width?: Nullable<number | string> } & HorizontalPaddings>`
+export const MarkdownActionsWrapper = styled.div<WrapperBaseProps>`
   padding: ${p => (p.fullscreenPadding ? '16px' : 0)} ${p => p.fullscreenPadding ?? 0}px 0;
   margin-bottom: 4px;
   box-sizing: border-box;
