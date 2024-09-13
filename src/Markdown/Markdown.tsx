@@ -107,7 +107,7 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   useLayoutEffect(() => {
     const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
-    setInitialWidth(textareaNode.getBoundingClientRect().width);
+    setInitialWidth(textareaNode.clientWidth);
   }, []);
 
   useEffect(() => {

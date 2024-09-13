@@ -244,6 +244,8 @@ export const getMarkdownReactUiTheme = (
         } as ReactUIThemeType)),
       ...(fullScreenTextareaPadding &&
         ({
+          sidePagePaddingLeft: '0',
+          sidePagePaddingRight: '0',
           textareaBorderColor: 'transparent',
           textareaBorderColorFocus: 'transparent',
           textareaBorderTopColor: 'transparent',
