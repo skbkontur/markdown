@@ -87,7 +87,8 @@ export const TableWrapper = styled.div`
 `;
 
 export const Table = styled.table`
-  width: max-content;
+  width: 100%;
+  min-width: 400px;
 `;
 
 export function getListStyle(depth: boolean): CSSProperties {
