@@ -60,7 +60,7 @@ export const MarkdownActions: FC<Props> = ({
 
   return (
     <MarkdownActionsWrapper {...horizontalPaddings} width={width}>
-      <ButtonsWrapper>
+      <ButtonsWrapper {...horizontalPaddings}>
         <ActionsWrapper>
           {hideHeadersSelect || (
             <MarkdownDropdown>

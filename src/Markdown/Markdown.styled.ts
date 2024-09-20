@@ -69,6 +69,7 @@ export const MarkdownActionsWrapper = styled.div<WrapperBaseProps>`
   padding: ${p => (p.fullscreenPadding ? '16px' : 0)} ${p => p.fullscreenPadding ?? 0}px 0;
   margin-bottom: 4px;
   box-sizing: border-box;
+  position: ${p => (p.fullscreenPadding ? 'sticky' : 'relative')};
   ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
   ${({ theme, panelPadding, fullscreenPadding }) => {
     if (panelPadding && !fullscreenPadding) return panelStyle({ theme, panelPadding });
@@ -80,12 +81,13 @@ export const MarkdownActionsWrapper = styled.div<WrapperBaseProps>`
   }
 `;
 
-export const ButtonsWrapper = styled.div`
+export const ButtonsWrapper = styled.div<WrapperBaseProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 0 -7px;
+  border-bottom: ${p => (p.fullscreenPadding ? `1px solid ${p.theme.colors.grayDefault}` : 'none')};
 `;
 
 export const ActionsWrapper = styled.div`
