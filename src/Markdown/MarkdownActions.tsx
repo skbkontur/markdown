@@ -10,12 +10,12 @@ import {
   MarkdownActionsWrapper,
 } from './Markdown.styled';
 import { MarkdownFormat } from './MarkdownFormat';
-import { MarkdownCombination } from './MarkdownHelpers/MarkdownCombination';
 import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
 import { MarkdownButtonProps } from './MarkdownHelpers/types';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
 import { HorizontalPaddings, Nullable, ViewMode } from './types';
+import { MarkdownCombination } from '../MarkdownCombination/MarkdownCombination';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 import { Collapse } from '../MarkdownIcons/Collapse';
 import { DocIcon } from '../MarkdownIcons/DocIcon';
