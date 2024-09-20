@@ -1,5 +1,5 @@
 export { Markdown, MarkdownProps } from './src/Markdown/Markdown';
-export { MarkdownCombination } from './src/Markdown/MarkdownHelpers/MarkdownCombination';
+export { MarkdownCombination } from './src/MarkdownCombination/MarkdownCombination';
 export {
   markdownHelpItems,
   markdownHelpFiles,

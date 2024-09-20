@@ -1,8 +1,8 @@
 import { Hint } from '@skbkontur/react-ui';
 import React, { FC } from 'react';
 
-import { MarkdownCombination } from './MarkdownCombination';
 import { MarkdownButtonProps } from './types';
+import { MarkdownCombination } from '../../MarkdownCombination/MarkdownCombination';
 import { MarkdownButtonIcon, MarkdownButtonWrapper, VisuallyHidden } from '../Markdown.styled';
 import { MarkdownFormat } from '../MarkdownFormat';
 

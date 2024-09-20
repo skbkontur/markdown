@@ -128,14 +128,6 @@ export const MarkdownMenuItem = styled(MenuItem)`
   color: ${p => p.theme.colors.grayDefault};
 `;
 
-export const HintContentWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
-`;
-
 export const MarkdownEditorBlock = styled.div`
   position: relative;
 `;
