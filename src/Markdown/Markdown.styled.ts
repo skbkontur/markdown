@@ -63,6 +63,7 @@ export const MentionWrapper = styled.div``;
 export const MarkdownPreview = styled.div<WrapperBaseProps>`
   padding: 6px ${({ panelPadding, fullscreenPadding }) => fullscreenPadding ?? panelPadding ?? 8}px;
   ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
+  box-sizing: border-box;
 `;
 
 export const MarkdownActionsWrapper = styled.div<WrapperBaseProps>`
@@ -177,6 +178,14 @@ const extendThemeConfigWithSized = (config: MutableTheme): ReactUIThemeType => {
   return finalConfig;
 };
 
+const borderlessTextareaVariables: Partial<typeof THEME_2022> = {
+  textareaBorderColor: 'transparent',
+  textareaBorderColorFocus: 'transparent',
+  textareaBorderTopColor: 'transparent',
+  textareaBorderColorHover: 'transparent',
+  textareaShadow: 'none',
+};
+
 export const getMarkdownReactUiTheme = (
   theme: MarkdownTheme,
   reactUiTheme?: typeof THEME_2022,
@@ -229,26 +238,20 @@ export const getMarkdownReactUiTheme = (
         (extendThemeConfigWithSized({
           textareaPaddingX: `${panelHorizontalPadding}px`,
         }) as ReactUIThemeType)),
-      ...(borderless &&
-        ({
-          textareaBorderColor: 'transparent',
-          textareaBorderColorFocus: 'transparent',
-          textareaBorderTopColor: 'transparent',
-          textareaShadow: 'none',
-        } as ReactUIThemeType)),
+      ...(borderless && borderlessTextareaVariables),
       ...(fullScreenTextareaPadding &&
         ({
           sidePagePaddingLeft: '0',
           sidePagePaddingRight: '0',
-          textareaBorderColor: 'transparent',
-          textareaBorderColorFocus: 'transparent',
-          textareaBorderTopColor: 'transparent',
+          textareaBorderColorError: 'transparent',
+          textareaBorderColorWarning: 'transparent',
           textareaShadow: 'none',
           ...extendThemeConfigWithSized({
             textareaMinHeight: '85vh',
             textareaPaddingX: `${fullScreenTextareaPadding}px`,
             textareaPaddingY: '0',
           }),
+          ...borderlessTextareaVariables,
         } as ReactUIThemeType)),
     },
     reactUiTheme,

@@ -96,10 +96,15 @@ export const useListenTextareaScroll = (setMention: (value: undefined) => void, 
 
 export const useFullscreenHorizontalPadding = (fullscreen: boolean, textareaWidth?: number) => {
   const [padding, setPadding] = useState<number>();
+
   useEffect(() => {
     if (fullscreen && textareaWidth) {
       const observable = document.body;
-      const handleChangeWidth = (width: number) => setPadding((width - textareaWidth) / 2);
+      const handleChangeWidth = (width: number) => {
+        const newPadding = (width - textareaWidth) / 2;
+
+        setPadding(newPadding ? newPadding : undefined);
+      };
 
       handleChangeWidth(observable.clientWidth);
 
@@ -109,7 +114,7 @@ export const useFullscreenHorizontalPadding = (fullscreen: boolean, textareaWidt
 
       return () => observer.disconnect();
     } else {
-      setPadding(0);
+      setPadding(undefined);
     }
   }, [fullscreen, textareaWidth]);
 

@@ -24,7 +24,7 @@ export default {
 export const WithoutActions = () => <Markdown hideMarkdownActions value={allVariantsMarkdownMock} />;
 
 export const WithSizeControl: Story<{ size: SizeProp }> = args => (
-  <Markdown size={args.size} value={allVariantsMarkdownMock} />
+  <Markdown disabled size={args.size} value={allVariantsMarkdownMock} />
 );
 
 WithSizeControl.args = {
