@@ -7,8 +7,8 @@ export const MarkdownTextareaHelpersTestCases: TestCase<string, Token[]>[] = [
     values: 'test\ntest',
     expected: [
       { value: 'test', positions: [0, 4] },
-      { value: '\n', positions: [5, 4] },
-      { value: 'test', positions: [5, 8] },
+      { value: '\n', positions: [5, 5] },
+      { value: 'test', positions: [6, 9] },
     ],
   },
   {
@@ -16,10 +16,10 @@ export const MarkdownTextareaHelpersTestCases: TestCase<string, Token[]>[] = [
     values: 'test\ntest @Цып',
     expected: [
       { value: 'test', positions: [0, 4] },
-      { value: '\n', positions: [5, 4] },
-      { value: 'test', positions: [5, 8] },
-      { value: ' ', positions: [9, 9] },
-      { value: '@Цып', positions: [10, 13] },
+      { value: '\n', positions: [5, 5] },
+      { value: 'test', positions: [6, 9] },
+      { value: ' ', positions: [10, 10] },
+      { value: '@Цып', positions: [11, 14] },
     ],
   },
   {
@@ -27,14 +27,14 @@ export const MarkdownTextareaHelpersTestCases: TestCase<string, Token[]>[] = [
     values: 'test\ntest @Цып\n[Цыпилов Максим](@tsypilov_m) test',
     expected: [
       { value: 'test', positions: [0, 4] },
-      { value: '\n', positions: [5, 4] },
-      { value: 'test', positions: [5, 8] },
-      { value: ' ', positions: [9, 9] },
-      { value: '@Цып', positions: [10, 13] },
-      { value: '\n', positions: [14, 13] },
-      { value: '[Цыпилов Максим](@tsypilov_m)', positions: [14, 42] },
-      { value: ' ', positions: [43, 43] },
-      { value: 'test', positions: [44, 47] },
+      { value: '\n', positions: [5, 5] },
+      { value: 'test', positions: [6, 9] },
+      { value: ' ', positions: [10, 10] },
+      { value: '@Цып', positions: [11, 14] },
+      { value: '\n', positions: [15, 15] },
+      { value: '[Цыпилов Максим](@tsypilov_m)', positions: [16, 44] },
+      { value: ' ', positions: [45, 45] },
+      { value: 'test', positions: [46, 49] },
     ],
   },
 ];
