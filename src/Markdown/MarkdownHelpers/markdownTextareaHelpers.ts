@@ -19,8 +19,7 @@ export const getTextareaTokens = (value: string): Token[] => {
     const val = splitValue[i] || '';
     let end = i ? start + (val.length - 1 || 0) : val.length;
 
-    if (val === ' ') end = start;
-    if (val === '\n') end = end - 1;
+    if (val === ' ' || val === '\n') end = start;
 
     tokens.push({
       value: val,
