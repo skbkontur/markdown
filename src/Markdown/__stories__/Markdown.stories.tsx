@@ -4,7 +4,7 @@ import { Meta, Story } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { a11yRules } from '../../../a11y/rules';
-import { MarkdownThemeProvider, MarkdownViewer } from '../../../index';
+import { MarkdownApi, MarkdownThemeProvider, MarkdownViewer, RefItem, User } from '../../../index';
 import { allVariantsMarkdownMock } from '../__mocks__/markdown.mock';
 import { Markdown } from '../Markdown';
 
@@ -20,6 +20,12 @@ export default {
     },
   },
 } as Meta;
+
+const apiMock: MarkdownApi = {
+  fileDownloadApi: () => new Promise<File>(resolve => resolve(new File(['a'], 'test.txt'))),
+  fileUploadApi: () => new Promise<RefItem>(resolve => resolve({ id: 'i', caption: 'test.txt' })),
+  getUsersApi: () => new Promise<User[]>(resolve => resolve([{ id: '1', name: 'Максим', login: 'login', teams: [] }])),
+};
 
 export const WithoutActions = () => <Markdown hideMarkdownActions value={allVariantsMarkdownMock} />;
 
@@ -50,15 +56,7 @@ export const Editable = () => {
   const [value, setValue] = useState<string>('');
 
   return (
-    <Markdown
-      api={{
-        fileDownloadApi: () => new Promise<File>(() => new File(['a'], 'test.txt')),
-        fileUploadApi: () => new Promise(() => ({ id: 'i', caption: 'test.txt' })),
-      }}
-      value={value}
-      maxLength={50000}
-      onValueChange={setValue}
-    />
+    <Markdown api={apiMock} fileApiUrl="/api/file/download" value={value} maxLength={50000} onValueChange={setValue} />
   );
 };
 
@@ -100,15 +98,7 @@ export const InModal: Story = () => {
       <Modal width={600}>
         <Modal.Header>In Modal</Modal.Header>
         <Modal.Body>
-          <Markdown
-            api={{
-              fileDownloadApi: () => new Promise<File>(() => new File(['a'], 'test.txt')),
-              fileUploadApi: () => new Promise(() => ({ id: 'i', caption: 'test.txt' })),
-            }}
-            value={value}
-            maxLength={50000}
-            onValueChange={setValue}
-          />
+          <Markdown api={apiMock} value={value} maxLength={50000} onValueChange={setValue} />
         </Modal.Body>
       </Modal>
     </MarkdownThemeProvider>
@@ -117,9 +107,11 @@ export const InModal: Story = () => {
 
 InModal.parameters = { creevey: { captureElement: 'body > div.react-ui > div' } };
 
-export const CustomWidth: Story = () => (
-  <Markdown width="550px" fileApiUrl="/api/file" value={allVariantsMarkdownMock} />
-);
+export const CustomWidth: Story = () => {
+  const [value, setValue] = useState<string>(allVariantsMarkdownMock);
+
+  return <Markdown width="550px" fileApiUrl="/api/file" value={value} onValueChange={setValue} />;
+};
 
 CustomWidth.decorators = [];
 
