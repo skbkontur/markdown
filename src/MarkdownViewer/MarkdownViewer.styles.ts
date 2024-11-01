@@ -1,6 +1,17 @@
 import { CSSProperties } from 'react';
 
-import styled from '../styles/styled-components';
+import styled, { css } from '../styles/styled-components';
+
+const baseVisuallyHiddenStyle = css`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+`;
 
 export const Wrapper = styled.div`
   overflow-wrap: break-word;
@@ -10,7 +21,8 @@ export const Wrapper = styled.div`
 
   p,
   table,
-  blockquote {
+  blockquote,
+  .math {
     margin-bottom: 16px;
 
     &:last-child {
@@ -45,6 +57,10 @@ export const Wrapper = styled.div`
 
   table {
     background: transparent;
+  }
+
+  [aria-hidden='true'] {
+    ${baseVisuallyHiddenStyle};
   }
 `;
 
@@ -96,12 +112,5 @@ export function getListStyle(depth: boolean): CSSProperties {
 }
 
 export const VisuallyHidden = styled.span`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+  ${baseVisuallyHiddenStyle};
 `;

@@ -2,10 +2,12 @@ import { Button, Checkbox } from '@skbkontur/react-ui';
 import React, { FC, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react';
+import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
-import rehypeSanitize from 'rehype-sanitize';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
 import gfm from 'remark-gfm';
+import remarkMath from 'remark-math';
 
 import { MarkdownImage } from './Helpers/MarkdownImage';
 import { MarkdownLink } from './Helpers/MarkdownLink';
@@ -25,6 +27,7 @@ import { useFileLogic } from '../Markdown/Files/Files.logic';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 import { ThemeProvider } from '../styles/styled-components';
 import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
+// import 'katex/dist/katex.min.css';
 
 export interface MarkdownViewerProps {
   /** Метод апи для скачивания файлов */
@@ -56,8 +59,21 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
           <Wrapper aria-label="Форматированный текст">
             <ReactMarkdown
               components={getCustomComponents()}
-              remarkPlugins={[gfm, remarkBreaks]}
-              rehypePlugins={[rehypeRaw, rehypeSanitize]}
+              remarkPlugins={[gfm, remarkMath, remarkBreaks]}
+              rehypePlugins={[
+                rehypeRaw,
+                [
+                  rehypeSanitize,
+                  {
+                    attributes: {
+                      ...defaultSchema.attributes,
+                      // The `language-*` regex is allowed by default.
+                      '*': ['className', /^language-./, 'math-inline', 'math-display', 'math'],
+                    },
+                  },
+                ],
+                rehypeKatex,
+              ]}
               linkTarget="_blank"
             >
               {source}
