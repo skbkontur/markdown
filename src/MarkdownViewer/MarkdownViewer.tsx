@@ -1,4 +1,4 @@
-import { Button, Checkbox } from '@skbkontur/react-ui';
+import { Button } from '@skbkontur/react-ui';
 import React, { FC, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react';
@@ -14,6 +14,7 @@ import { MarkdownLink } from './Helpers/MarkdownLink';
 import { MarkdownTable } from './Helpers/MarkdownTable';
 import {
   BlockQuote,
+  CheckBoxWrapper,
   FileButtonWrapper,
   FileName,
   getListStyle,
@@ -68,7 +69,9 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
                     attributes: {
                       ...defaultSchema.attributes,
                       // The `language-*` regex is allowed by default.
-                      '*': ['className', /^language-./, 'math-inline', 'math-display', 'math'],
+                      div: [['className', /^language-./, 'math-inline', 'math-display', 'math']],
+                      span: [['className', /^language-./, 'math-inline', 'math-display', 'math']],
+                      /*'*': ['className', /^language-./, 'math-inline', 'math-display', 'math'],*/
                     },
                   },
                 ],
@@ -138,7 +141,12 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
   }
 
   function renderInput(props: MarkdownInputProps) {
-    return <Checkbox checked={props.checked}>{props.children}</Checkbox>;
+    return (
+      <>
+        <CheckBoxWrapper checked={props.checked}></CheckBoxWrapper>
+        {props.children}
+      </>
+    );
   }
 
   function renderList(props: UnorderedListProps) {

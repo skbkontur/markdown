@@ -1,3 +1,4 @@
+import { Checkbox } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
 
 import styled, { css } from '../styles/styled-components';
@@ -59,14 +60,31 @@ export const Wrapper = styled.div`
     background: transparent;
   }
 
-  [aria-hidden='true'] {
-    ${baseVisuallyHiddenStyle};
+  ul,
+  ol {
+    padding-inline-start: 0;
+
+    li {
+      margin-inline-start: 0;
+    }
+
+    li {
+      margin-left: 20px;
+    }
+  }
+
+  .math {
+    [aria-hidden='true'] {
+      ${baseVisuallyHiddenStyle};
+    }
   }
 `;
 
 export const ListItem = styled.li`
   list-style: none;
-  margin-inline-start: -20px;
+  margin-left: 0 !important;
+  padding-inline-start: 20px;
+  position: relative;
 `;
 
 export const Paragraph = styled.p`
@@ -105,6 +123,14 @@ export const TableWrapper = styled.div`
 export const Table = styled.table`
   width: 100%;
   min-width: 400px;
+`;
+
+export const CheckBoxWrapper = styled(Checkbox)`
+  display: inline-flex;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  padding: 2px 0;
 `;
 
 export function getListStyle(depth: boolean): CSSProperties {
