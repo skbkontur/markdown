@@ -68,10 +68,8 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
                   {
                     attributes: {
                       ...defaultSchema.attributes,
-                      // The `language-*` regex is allowed by default.
                       div: [['className', /^language-./, 'math-inline', 'math-display', 'math']],
                       span: [['className', /^language-./, 'math-inline', 'math-display', 'math']],
-                      /*'*': ['className', /^language-./, 'math-inline', 'math-display', 'math'],*/
                     },
                   },
                 ],
