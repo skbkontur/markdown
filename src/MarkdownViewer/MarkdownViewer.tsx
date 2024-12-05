@@ -28,7 +28,6 @@ import { useFileLogic } from '../Markdown/Files/Files.logic';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 import { ThemeProvider } from '../styles/styled-components';
 import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
-// import 'katex/dist/katex.min.css';
 
 export interface MarkdownViewerProps {
   /** Метод апи для скачивания файлов */

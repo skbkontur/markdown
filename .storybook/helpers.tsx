@@ -1,7 +1,6 @@
 import { StoryContext } from '@storybook/react';
-import { CSSProperties } from 'react';
+import React, { CSSProperties } from 'react';
 import { DEFAULT_MARKDOWN_THEME } from '../src/styles/theme';
-import React from 'react';
 import { createGlobalStyle, ThemeProvider } from '../src/styles/styled-components';
 
 const style: CSSProperties = { padding: 4, boxSizing: 'border-box' };
