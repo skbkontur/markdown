@@ -1,5 +1,7 @@
 import { THEME_2022 } from '@skbkontur/react-ui';
 
+import { MarkdownFormat } from './MarkdownFormat';
+
 export enum ViewMode {
   Preview = 'Preview',
   Edit = 'Edit',
@@ -46,3 +48,5 @@ export interface TestCase<V, E> {
 }
 
 export type ReactUIThemeType = Partial<typeof THEME_2022>;
+
+export type HideActionsOptions = Partial<Record<MarkdownFormat, boolean>>;

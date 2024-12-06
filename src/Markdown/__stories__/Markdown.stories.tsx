@@ -6,7 +6,8 @@ import React, { useState } from 'react';
 import { a11yRules } from '../../../a11y/rules';
 import { MarkdownViewer } from '../../MarkdownViewer';
 import { MarkdownThemeProvider } from '../../styles/theme';
-import { allVariantsMarkdownMock } from '../__mocks__/markdown.mock';
+import { DEFAULT_MARKDOWN_THEME } from '../../styles/theme';
+import { allVariantsMarkdownMock, emojiMarkdownMock } from '../__mocks__/markdown.mock';
 import { Markdown } from '../Markdown';
 import { MarkdownApi, RefItem, User } from '../types';
 
@@ -156,4 +157,74 @@ export const Viewer: StoryFn = () => (
 
 Viewer.parameters = {
   creevey: { delay: 5000 },
+};
+
+export const WithEmoji = () => {
+  return <Markdown showEmojiPicker value={emojiMarkdownMock} />;
+};
+
+export const WithEmojiEditable = () => {
+  const [value, setValue] = useState<string>('');
+
+  return <Markdown showEmojiPicker value={value} onValueChange={setValue} />;
+};
+
+export const WithEmojiDarkMode = () => {
+  const [value, setValue] = useState<string>('');
+
+  return (
+    <MarkdownThemeProvider value={{ ...DEFAULT_MARKDOWN_THEME, themeMode: 'dark' }}>
+      <Markdown showEmojiPicker value={value} onValueChange={setValue} />
+    </MarkdownThemeProvider>
+  );
+};
+
+export const HiddenOptions = () => {
+  const wrapStyles: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+    width: 600,
+    fontSize: 12,
+  };
+
+  const itemStyle: React.CSSProperties = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderStyle: 'dashed',
+  };
+
+  return (
+    <div style={wrapStyles}>
+      <fieldset style={itemStyle}>
+        <legend>Без заголовок</legend>
+        <Markdown showEmojiPicker hideActionsOptions={{ h2: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyle}>
+        <legend>Без формата текста</legend>
+        <Markdown showEmojiPicker hideActionsOptions={{ bold: true, italic: true, crossed: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyle}>
+        <legend>Без ссылки</legend>
+        <Markdown showEmojiPicker hideActionsOptions={{ ref: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyle}>
+        <legend>Без списков</legend>
+        <Markdown showEmojiPicker hideActionsOptions={{ list: true, checkedList: true, numberedList: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyle}>
+        <legend>Без блока кода</legend>
+        <Markdown showEmojiPicker hideActionsOptions={{ codeBlock: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyle}>
+        <legend>Без цитаты</legend>
+        <Markdown showEmojiPicker hideActionsOptions={{ quote: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyle}>
+        <legend>Без таблицы</legend>
+        <Markdown showEmojiPicker hideActionsOptions={{ table: true }} rows={1} />
+      </fieldset>
+    </div>
+  );
 };
