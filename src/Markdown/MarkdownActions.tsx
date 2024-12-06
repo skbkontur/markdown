@@ -2,6 +2,8 @@ import { Dropdown, Textarea } from '@skbkontur/react-ui';
 import React, { FC, RefObject, SyntheticEvent } from 'react';
 
 import { COMMONMARK_HELP_URL } from './constants';
+import { IEmojiData } from './Emoji/Emoji.logic';
+import { EmojiDropdown } from './Emoji/EmojiDropdown';
 import {
   ActionsWrapper,
   ButtonsWrapper,
@@ -28,6 +30,7 @@ interface Props {
   onChangeViewMode: (viewMode: ViewMode) => void;
   onClickFullscreen: () => void;
   onOpenFileDialog: () => void;
+  onSelectEmoji: (emoji: IEmojiData) => void;
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
@@ -37,6 +40,7 @@ interface Props {
   loadingFile?: boolean;
   selectionEnd?: Nullable<number>;
   selectionStart?: Nullable<number>;
+  showEmojiPicker?: boolean;
   width?: Nullable<number | string>;
 }
 
@@ -55,6 +59,8 @@ export const MarkdownActions: FC<Props> = ({
   hideHeadersSelect,
   width,
   showShortKeys,
+  showEmojiPicker = false,
+  onSelectEmoji,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
@@ -122,6 +128,7 @@ export const MarkdownActions: FC<Props> = ({
               onClick={onOpenFileDialog}
             />
           )}
+          {showEmojiPicker && <EmojiDropdown isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />}
           <MarkdownFormatButton
             hintText="Документация Markdown"
             icon={<DocIcon />}

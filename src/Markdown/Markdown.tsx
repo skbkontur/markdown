@@ -14,6 +14,7 @@ import React, {
 import Foco from 'react-foco/lib';
 
 import { MENTION_WRAPPER_ID_POSTFIX } from './constants';
+import { useEmojiLogic } from './Emoji/Emoji.logic';
 import { useFileLogic } from './Files/Files.logic';
 import {
   DroppablePlaceholder,
@@ -59,6 +60,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   profileUrl?: string;
   /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
+  /** Показывать селект выбора emoji */
+  showEmojiPicker?: boolean;
   /** Показывать шорткеи (убирает хинты действий и подсказки) */
   showShotKeys?: boolean;
 }
@@ -78,6 +81,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     hideHeadersSelect,
     borderless,
     showShotKeys = true,
+    showEmojiPicker = false,
     ...textareaProps
   } = props;
 
@@ -101,6 +105,8 @@ export const Markdown: FC<MarkdownProps> = props => {
     selectionStart,
     !isEditMode,
   );
+
+  const { onSelectEmoji } = useEmojiLogic(textareaRef.current);
 
   usePasteFromClipboard(textareaRef.current, api?.fileUploadApi, api?.fileDownloadApi, fileApiUrl);
   useListenTextareaScroll(resetMention, textareaRef.current);
@@ -142,10 +148,12 @@ export const Markdown: FC<MarkdownProps> = props => {
             selectionStart={selectionStart}
             selectionEnd={selectionEnd}
             horizontalPaddings={horizontalPaddings}
+            showEmojiPicker={showEmojiPicker}
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             onOpenFileDialog={open}
             onChangeViewMode={setViewMode}
             onClickFullscreen={handleClickFullscreen}
+            onSelectEmoji={onSelectEmoji}
           />
         )}
         {isEditMode && error && api?.getUsersApi && renderFilesValidation?.(horizontalPaddings, onResetError)}

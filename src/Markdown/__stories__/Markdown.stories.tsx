@@ -6,7 +6,8 @@ import React, { useState } from 'react';
 import { a11yRules } from '../../../a11y/rules';
 import { MarkdownViewer } from '../../MarkdownViewer';
 import { MarkdownThemeProvider } from '../../styles/theme';
-import { allVariantsMarkdownMock } from '../__mocks__/markdown.mock';
+import { DEFAULT_MARKDOWN_THEME } from '../../styles/theme';
+import { allVariantsMarkdownMock, emojiMarkdownMock } from '../__mocks__/markdown.mock';
 import { Markdown } from '../Markdown';
 import { MarkdownApi, RefItem, User } from '../types';
 
@@ -156,4 +157,24 @@ export const Viewer: StoryFn = () => (
 
 Viewer.parameters = {
   creevey: { delay: 5000 },
+};
+
+export const WithEmoji = () => {
+  return <Markdown showEmojiPicker api={apiMock} value={emojiMarkdownMock} />;
+};
+
+export const WithEmojiEditable = () => {
+  const [value, setValue] = useState<string>('');
+
+  return <Markdown showEmojiPicker api={apiMock} value={value} onValueChange={setValue} />;
+};
+
+export const WithEmojiDarkMode = () => {
+  const [value, setValue] = useState<string>('');
+
+  return (
+    <MarkdownThemeProvider value={{ ...DEFAULT_MARKDOWN_THEME, themeMode: 'dark' }}>
+      <Markdown showEmojiPicker value={value} onValueChange={setValue} />
+    </MarkdownThemeProvider>
+  );
 };
