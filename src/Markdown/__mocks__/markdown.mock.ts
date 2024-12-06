@@ -25,9 +25,9 @@ export const allVariantsMarkdownMock = `# Заголовок 1
 * level 1
   * level 2
     * [ ] level 3
-    * level 3
+    * level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3
     1. level 3
-    * [x] level 3
+    * [x] level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3
   1. level 2
 
 \`const { bar } = foo\`
@@ -42,4 +42,7 @@ export const allVariantsMarkdownMock = `# Заголовок 1
 | Заголовок | Заголовок | Заголовок | Заголовок | Заголовок | Заголовок |
 | ------ | ------ | ------ | ------ | ------ | ------ |
 | Ячейка | Ячейка | Ячейка | Ячейка | Ячейка | Ячейка |
-| Ячейка | Ячейка | Ячейка | Ячейка | Ячейка | Ячейка |`;
+| Ячейка | Ячейка | Ячейка | Ячейка | Ячейка | Ячейка |
+
+$$L = \\frac{1}{2} \\rho v^2 S C_L$$
+`;

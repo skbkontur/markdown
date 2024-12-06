@@ -1,17 +1,20 @@
-import { Button, Checkbox } from '@skbkontur/react-ui';
+import { Button } from '@skbkontur/react-ui';
 import React, { FC, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react';
+import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
-import rehypeSanitize from 'rehype-sanitize';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
 import gfm from 'remark-gfm';
+import remarkMath from 'remark-math';
 
 import { MarkdownImage } from './Helpers/MarkdownImage';
 import { MarkdownLink } from './Helpers/MarkdownLink';
 import { MarkdownTable } from './Helpers/MarkdownTable';
 import {
   BlockQuote,
+  CheckBoxWrapper,
   FileButtonWrapper,
   FileName,
   getListStyle,
@@ -56,8 +59,21 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
           <Wrapper aria-label="Форматированный текст">
             <ReactMarkdown
               components={getCustomComponents()}
-              remarkPlugins={[gfm, remarkBreaks]}
-              rehypePlugins={[rehypeRaw, rehypeSanitize]}
+              remarkPlugins={[gfm, remarkMath, remarkBreaks]}
+              rehypePlugins={[
+                rehypeRaw,
+                [
+                  rehypeSanitize,
+                  {
+                    attributes: {
+                      ...defaultSchema.attributes,
+                      div: [['className', /^language-./, 'math-inline', 'math-display', 'math']],
+                      span: [['className', /^language-./, 'math-inline', 'math-display', 'math']],
+                    },
+                  },
+                ],
+                rehypeKatex,
+              ]}
               linkTarget="_blank"
             >
               {source}
@@ -122,7 +138,12 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
   }
 
   function renderInput(props: MarkdownInputProps) {
-    return <Checkbox checked={props.checked}>{props.children}</Checkbox>;
+    return (
+      <>
+        <CheckBoxWrapper checked={props.checked}></CheckBoxWrapper>
+        {props.children}
+      </>
+    );
   }
 
   function renderList(props: UnorderedListProps) {

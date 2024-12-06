@@ -95,3 +95,5 @@ node_modules
 lerna-debug.log
 .DS_Store
 creevey/report
+.swc
+/storybook-static

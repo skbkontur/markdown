@@ -1,6 +1,18 @@
+import { Checkbox } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
 
-import styled from '../styles/styled-components';
+import styled, { css } from '../styles/styled-components';
+
+const baseVisuallyHiddenStyle = css`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+`;
 
 export const Wrapper = styled.div`
   overflow-wrap: break-word;
@@ -10,7 +22,8 @@ export const Wrapper = styled.div`
 
   p,
   table,
-  blockquote {
+  blockquote,
+  .math {
     margin-bottom: 16px;
 
     &:last-child {
@@ -46,11 +59,32 @@ export const Wrapper = styled.div`
   table {
     background: transparent;
   }
+
+  ul,
+  ol {
+    padding-inline-start: 0;
+
+    li {
+      margin-inline-start: 0;
+    }
+
+    li {
+      margin-left: 20px;
+    }
+  }
+
+  .math {
+    [aria-hidden='true'] {
+      ${baseVisuallyHiddenStyle};
+    }
+  }
 `;
 
 export const ListItem = styled.li`
   list-style: none;
-  margin-inline-start: -20px;
+  margin-left: 0 !important;
+  padding-inline-start: 20px;
+  position: relative;
 `;
 
 export const Paragraph = styled.p`
@@ -91,17 +125,18 @@ export const Table = styled.table`
   min-width: 400px;
 `;
 
+export const CheckBoxWrapper = styled(Checkbox)`
+  display: inline-flex;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  padding: 2px 0;
+`;
+
 export function getListStyle(depth: boolean): CSSProperties {
   return depth ? { marginTop: 4 } : { marginBottom: 16 };
 }
 
 export const VisuallyHidden = styled.span`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+  ${baseVisuallyHiddenStyle};
 `;
