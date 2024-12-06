@@ -7,6 +7,14 @@ export {
   markdownHelpOther,
 } from './src/Markdown/MarkdownHelpItems';
 export { MarkdownViewer } from './src/MarkdownViewer/MarkdownViewer';
-export { MarkdownApi, RefItem, User, Token, HorizontalPaddings, ViewMode } from '././src/Markdown/types';
+export {
+  MarkdownApi,
+  RefItem,
+  User,
+  Token,
+  HorizontalPaddings,
+  ViewMode,
+  HideActionsOptions,
+} from '././src/Markdown/types';
 export { ThemeMode, ColorScheme } from './src/styles/types';
 export { MarkdownTheme, MarkdownThemeProvider, MarkdownThemeConsumer, MarkdownThemeContext } from './src/styles/theme';

@@ -34,7 +34,7 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { HorizontalPaddings, ViewMode, Token, MarkdownApi } from './types';
+import { HorizontalPaddings, ViewMode, Token, MarkdownApi, HideActionsOptions } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
@@ -48,6 +48,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   borderless?: boolean;
   /** Url апи для файлов  */
   fileApiUrl?: string;
+  /** Скрывать выборочно опции */
+  hideActionsOptions?: HideActionsOptions;
   /** Скрыть селект выбора размера текста */
   hideHeadersSelect?: boolean;
   /** Скрыть панель действий (кнопки помощи форматирования текста) */
@@ -82,6 +84,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     borderless,
     showShotKeys = true,
     showEmojiPicker = false,
+    hideActionsOptions,
     ...textareaProps
   } = props;
 
@@ -149,6 +152,7 @@ export const Markdown: FC<MarkdownProps> = props => {
             selectionEnd={selectionEnd}
             horizontalPaddings={horizontalPaddings}
             showEmojiPicker={showEmojiPicker}
+            hideOptions={hideActionsOptions}
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             onOpenFileDialog={open}
             onChangeViewMode={setViewMode}
