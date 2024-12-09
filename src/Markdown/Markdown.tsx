@@ -14,6 +14,7 @@ import React, {
 import Foco from 'react-foco/lib';
 
 import { MENTION_WRAPPER_ID_POSTFIX } from './constants';
+import { useEmojiLogic } from './Emoji/Emoji.logic';
 import { useFileLogic } from './Files/Files.logic';
 import {
   DroppablePlaceholder,
@@ -33,7 +34,7 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { HorizontalPaddings, ViewMode, Token, MarkdownApi } from './types';
+import { HorizontalPaddings, ViewMode, Token, MarkdownApi, HideActionsOptions } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
@@ -47,8 +48,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   borderless?: boolean;
   /** Url апи для файлов  */
   fileApiUrl?: string;
-  /** Скрыть селект выбора размера текста */
-  hideHeadersSelect?: boolean;
+  /** Скрывать выборочно опции */
+  hideActionsOptions?: HideActionsOptions;
   /** Скрыть панель действий (кнопки помощи форматирования текста) */
   hideMarkdownActions?: boolean;
   /** Превьювер мардауна, по умолчанию используется MarkdownViewer */
@@ -59,6 +60,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   profileUrl?: string;
   /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
+  /** Показывать селект выбора emoji */
+  showEmojiPicker?: boolean;
   /** Показывать шорткеи (убирает хинты действий и подсказки) */
   showShotKeys?: boolean;
 }
@@ -75,9 +78,10 @@ export const Markdown: FC<MarkdownProps> = props => {
     fileApiUrl,
     profileUrl,
     api,
-    hideHeadersSelect,
     borderless,
     showShotKeys = true,
+    showEmojiPicker = false,
+    hideActionsOptions,
     ...textareaProps
   } = props;
 
@@ -101,6 +105,8 @@ export const Markdown: FC<MarkdownProps> = props => {
     selectionStart,
     !isEditMode,
   );
+
+  const { onSelectEmoji } = useEmojiLogic(textareaRef.current);
 
   usePasteFromClipboard(textareaRef.current, api?.fileUploadApi, api?.fileDownloadApi, fileApiUrl);
   useListenTextareaScroll(resetMention, textareaRef.current);
@@ -138,14 +144,16 @@ export const Markdown: FC<MarkdownProps> = props => {
             viewMode={viewMode}
             loadingFile={requestStatus === RequestStatus.isFetching}
             fullscreen={fullscreen}
-            hideHeadersSelect={hideHeadersSelect}
             selectionStart={selectionStart}
             selectionEnd={selectionEnd}
             horizontalPaddings={horizontalPaddings}
+            showEmojiPicker={showEmojiPicker}
+            hideOptions={hideActionsOptions}
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             onOpenFileDialog={open}
             onChangeViewMode={setViewMode}
             onClickFullscreen={handleClickFullscreen}
+            onSelectEmoji={onSelectEmoji}
           />
         )}
         {isEditMode && error && api?.getUsersApi && renderFilesValidation?.(horizontalPaddings, onResetError)}

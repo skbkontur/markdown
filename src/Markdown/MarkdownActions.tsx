@@ -2,6 +2,8 @@ import { Dropdown, Textarea } from '@skbkontur/react-ui';
 import React, { FC, RefObject, SyntheticEvent } from 'react';
 
 import { COMMONMARK_HELP_URL } from './constants';
+import { IEmojiData } from './Emoji/Emoji.logic';
+import { EmojiDropdown } from './Emoji/EmojiDropdown';
 import {
   ActionsWrapper,
   ButtonsWrapper,
@@ -14,7 +16,7 @@ import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
 import { MarkdownButtonProps } from './MarkdownHelpers/types';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
-import { HorizontalPaddings, Nullable, ViewMode } from './types';
+import { HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from './types';
 import { MarkdownCombination } from '../MarkdownCombination/MarkdownCombination';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 import { Collapse } from '../MarkdownIcons/Collapse';
@@ -28,15 +30,17 @@ interface Props {
   onChangeViewMode: (viewMode: ViewMode) => void;
   onClickFullscreen: () => void;
   onOpenFileDialog: () => void;
+  onSelectEmoji: (emoji: IEmojiData) => void;
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
-  hideHeadersSelect?: boolean;
+  hideOptions?: HideActionsOptions;
   loadingFile?: boolean;
   selectionEnd?: Nullable<number>;
   selectionStart?: Nullable<number>;
+  showEmojiPicker?: boolean;
   width?: Nullable<number | string>;
 }
 
@@ -52,9 +56,11 @@ export const MarkdownActions: FC<Props> = ({
   onChangeViewMode,
   horizontalPaddings,
   hasFilesApi,
-  hideHeadersSelect,
   width,
   showShortKeys,
+  showEmojiPicker = false,
+  hideOptions,
+  onSelectEmoji,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
@@ -62,7 +68,7 @@ export const MarkdownActions: FC<Props> = ({
     <MarkdownActionsWrapper {...horizontalPaddings} width={width}>
       <ButtonsWrapper {...horizontalPaddings}>
         <ActionsWrapper>
-          {hideHeadersSelect || (
+          {!hideOptions?.heading && (
             <MarkdownDropdown>
               <Dropdown disablePortal disabled={isPreviewMode} menuWidth={280} caption="Заголовок">
                 {markdownHelpHeaders.map((helper, idx) => (
@@ -76,43 +82,55 @@ export const MarkdownActions: FC<Props> = ({
               </Dropdown>
             </MarkdownDropdown>
           )}
-          {markdownHelpText.map((helper, idx) => (
-            <MarkdownFormatButton
-              key={idx}
-              showShortKey={showShortKeys}
-              disabled={isPreviewMode}
-              format={helper.format}
-              hintText={helper.node}
-              icon={helper.icon}
-              text={helper.text}
-              onClick={event => handleMarkdownItemClick(event, helper.format)}
-            />
-          ))}
-          {markdownHelpLists.map((helper, idx) => (
-            <MarkdownFormatButton
-              key={idx}
-              showShortKey={showShortKeys}
-              disabled={isPreviewMode}
-              format={helper.format}
-              hintText={helper.node}
-              icon={helper.icon}
-              text={helper.text}
-              onClick={event => handleMarkdownItemClick(event, helper.format)}
-            />
-          ))}
-          {markdownHelpOther.map((helper, idx) => (
-            <MarkdownFormatButton
-              key={idx}
-              showShortKey={showShortKeys}
-              disabled={isPreviewMode}
-              format={helper.format}
-              hintText={helper.node}
-              icon={helper.icon}
-              text={helper.text}
-              onClick={event => handleMarkdownItemClick(event, helper.format)}
-            />
-          ))}
-          {hasFilesApi && (
+          {markdownHelpText.map((helper, idx) => {
+            if (isHiddenOptions(helper.format)) return null;
+
+            return (
+              <MarkdownFormatButton
+                key={idx}
+                showShortKey={showShortKeys}
+                disabled={isPreviewMode}
+                format={helper.format}
+                hintText={helper.node}
+                icon={helper.icon}
+                text={helper.text}
+                onClick={event => handleMarkdownItemClick(event, helper.format)}
+              />
+            );
+          })}
+          {markdownHelpLists.map((helper, idx) => {
+            if (isHiddenOptions(helper.format)) return null;
+
+            return (
+              <MarkdownFormatButton
+                key={idx}
+                showShortKey={showShortKeys}
+                disabled={isPreviewMode}
+                format={helper.format}
+                hintText={helper.node}
+                icon={helper.icon}
+                text={helper.text}
+                onClick={event => handleMarkdownItemClick(event, helper.format)}
+              />
+            );
+          })}
+          {markdownHelpOther.map((helper, idx) => {
+            if (isHiddenOptions(helper.format)) return null;
+
+            return (
+              <MarkdownFormatButton
+                key={idx}
+                showShortKey={showShortKeys}
+                disabled={isPreviewMode}
+                format={helper.format}
+                hintText={helper.node}
+                icon={helper.icon}
+                text={helper.text}
+                onClick={event => handleMarkdownItemClick(event, helper.format)}
+              />
+            );
+          })}
+          {hasFilesApi && !hideOptions?.file && (
             <MarkdownFormatButton
               hintText="Прикрепить файл"
               disabled={isPreviewMode}
@@ -122,6 +140,7 @@ export const MarkdownActions: FC<Props> = ({
               onClick={onOpenFileDialog}
             />
           )}
+          {showEmojiPicker && <EmojiDropdown isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />}
           <MarkdownFormatButton
             hintText="Документация Markdown"
             icon={<DocIcon />}
@@ -170,5 +189,9 @@ export const MarkdownActions: FC<Props> = ({
         setMarkdown(htmlTextArea, (htmlTextArea.value as string) ?? '', format, Number(selectionStart), selectionEnd);
       }
     }
+  }
+
+  function isHiddenOptions(format: MarkdownFormat) {
+    return hideOptions?.[format];
   }
 };
