@@ -50,8 +50,6 @@ export interface MarkdownProps extends MarkdownEditorProps {
   fileApiUrl?: string;
   /** Скрывать выборочно опции */
   hideActionsOptions?: HideActionsOptions;
-  /** Скрыть селект выбора размера текста */
-  hideHeadersSelect?: boolean;
   /** Скрыть панель действий (кнопки помощи форматирования текста) */
   hideMarkdownActions?: boolean;
   /** Превьювер мардауна, по умолчанию используется MarkdownViewer */
@@ -80,7 +78,6 @@ export const Markdown: FC<MarkdownProps> = props => {
     fileApiUrl,
     profileUrl,
     api,
-    hideHeadersSelect,
     borderless,
     showShotKeys = true,
     showEmojiPicker = false,
@@ -147,7 +144,6 @@ export const Markdown: FC<MarkdownProps> = props => {
             viewMode={viewMode}
             loadingFile={requestStatus === RequestStatus.isFetching}
             fullscreen={fullscreen}
-            hideHeadersSelect={hideHeadersSelect}
             selectionStart={selectionStart}
             selectionEnd={selectionEnd}
             horizontalPaddings={horizontalPaddings}

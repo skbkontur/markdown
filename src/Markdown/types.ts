@@ -49,4 +49,4 @@ export interface TestCase<V, E> {
 
 export type ReactUIThemeType = Partial<typeof THEME_2022>;
 
-export type HideActionsOptions = Partial<Record<MarkdownFormat, boolean>>;
+export type HideActionsOptions = Partial<Record<MarkdownFormat | 'heading', boolean>>;

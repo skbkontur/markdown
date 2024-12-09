@@ -52,7 +52,7 @@ WithSizeControl.argTypes = {
 
 export const WithPanel = () => <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
 export const WithoutHeadersSelect = () => (
-  <Markdown borderless hideHeadersSelect value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
+  <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
 );
 
 export const Editable = () => {

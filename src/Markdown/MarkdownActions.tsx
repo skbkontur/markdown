@@ -36,7 +36,6 @@ interface Props {
   viewMode: ViewMode;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
-  hideHeadersSelect?: boolean;
   hideOptions?: HideActionsOptions;
   loadingFile?: boolean;
   selectionEnd?: Nullable<number>;
@@ -57,7 +56,6 @@ export const MarkdownActions: FC<Props> = ({
   onChangeViewMode,
   horizontalPaddings,
   hasFilesApi,
-  hideHeadersSelect,
   width,
   showShortKeys,
   showEmojiPicker = false,
@@ -66,13 +64,11 @@ export const MarkdownActions: FC<Props> = ({
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
-  const hideHeader = hideHeadersSelect || hideOptions?.h2 || hideOptions?.h3 || hideOptions?.h4;
-
   return (
     <MarkdownActionsWrapper {...horizontalPaddings} width={width}>
       <ButtonsWrapper {...horizontalPaddings}>
         <ActionsWrapper>
-          {!hideHeader && (
+          {!hideOptions?.heading && (
             <MarkdownDropdown>
               <Dropdown disablePortal disabled={isPreviewMode} menuWidth={280} caption="Заголовок">
                 {markdownHelpHeaders.map((helper, idx) => (
