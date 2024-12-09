@@ -51,9 +51,6 @@ WithSizeControl.argTypes = {
 };
 
 export const WithPanel = () => <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
-export const WithoutHeadersSelect = () => (
-  <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
-);
 
 export const Editable = () => {
   const [value, setValue] = useState<string>('');
@@ -199,7 +196,7 @@ export const HiddenOptions = () => {
     <div style={wrapStyles}>
       <fieldset style={itemStyle}>
         <legend>Без заголовок</legend>
-        <Markdown showEmojiPicker hideActionsOptions={{ h2: true }} rows={1} />
+        <Markdown showEmojiPicker hideActionsOptions={{ heading: true }} rows={1} />
       </fieldset>
       <fieldset style={itemStyle}>
         <legend>Без формата текста</legend>
