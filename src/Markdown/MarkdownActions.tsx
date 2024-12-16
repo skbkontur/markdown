@@ -40,7 +40,6 @@ interface Props {
   loadingFile?: boolean;
   selectionEnd?: Nullable<number>;
   selectionStart?: Nullable<number>;
-  showEmojiPicker?: boolean;
   width?: Nullable<number | string>;
 }
 
@@ -58,7 +57,6 @@ export const MarkdownActions: FC<Props> = ({
   hasFilesApi,
   width,
   showShortKeys,
-  showEmojiPicker = false,
   hideOptions,
   onSelectEmoji,
 }) => {
@@ -140,7 +138,7 @@ export const MarkdownActions: FC<Props> = ({
               onClick={onOpenFileDialog}
             />
           )}
-          {showEmojiPicker && <EmojiDropdown isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />}
+          {!hideOptions?.emoji && <EmojiDropdown isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />}
           <MarkdownFormatButton
             hintText="Документация Markdown"
             icon={<DocIcon />}

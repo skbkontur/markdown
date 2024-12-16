@@ -23,7 +23,6 @@
 | api?                    | MarkdownApi                                                               | undefined | Методы апи для загрузки/скачивания файлов и меншена                                 |
 | fileApiUrl?             | string                                                                    | undefined | Url апи для файлов                                                                  |
 | profileUrl?             | string                                                                    | undefined | Url для профиля сотрудника                                                          |
-| hideMarkdownActions?    | boolean                                                                   | undefined | Скрыть панель действий (кнопки помощи форматирования текста)                        |
 | markdownViewer?         | (value: string) => ReactNode                                              | undefined | Превьювер мардауна, по умолчанию используется MarkdownViewer                        |
 | panelHorizontalPadding? | number                                                                    | undefined | Padding markdownActions (кнопки помощи форматирования текста), включает режим panel |
 | renderFilesValidation?  | (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode | undefined | Render валидации файла, если она нужна, максимальный размер файла = 10mb            |

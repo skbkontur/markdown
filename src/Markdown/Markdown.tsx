@@ -50,8 +50,6 @@ export interface MarkdownProps extends MarkdownEditorProps {
   fileApiUrl?: string;
   /** Скрывать выборочно опции */
   hideActionsOptions?: HideActionsOptions;
-  /** Скрыть панель действий (кнопки помощи форматирования текста) */
-  hideMarkdownActions?: boolean;
   /** Превьювер мардауна, по умолчанию используется MarkdownViewer */
   markdownViewer?: (value: string) => ReactNode;
   /** Padding markdownActions (кнопки помощи форматирования текста), включает режим panel */
@@ -60,8 +58,6 @@ export interface MarkdownProps extends MarkdownEditorProps {
   profileUrl?: string;
   /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
-  /** Показывать селект выбора emoji */
-  showEmojiPicker?: boolean;
   /** Показывать шорткеи (убирает хинты действий и подсказки) */
   showShotKeys?: boolean;
 }
@@ -69,7 +65,6 @@ export interface MarkdownProps extends MarkdownEditorProps {
 export const Markdown: FC<MarkdownProps> = props => {
   const {
     panelHorizontalPadding,
-    hideMarkdownActions,
     onClick,
     onChange,
     onSelect,
@@ -80,7 +75,6 @@ export const Markdown: FC<MarkdownProps> = props => {
     api,
     borderless,
     showShotKeys = true,
-    showEmojiPicker = false,
     hideActionsOptions,
     ...textareaProps
   } = props;
@@ -136,7 +130,7 @@ export const Markdown: FC<MarkdownProps> = props => {
   const content = (
     <Foco component="div" onClickOutside={resetStates}>
       <Wrapper {...getRootProps()}>
-        {!hideMarkdownActions && (
+        {!hideActionsOptions?.allActions && (
           <MarkdownActions
             showShortKeys={showShotKeys}
             textAreaRef={textareaRef}
@@ -147,7 +141,6 @@ export const Markdown: FC<MarkdownProps> = props => {
             selectionStart={selectionStart}
             selectionEnd={selectionEnd}
             horizontalPaddings={horizontalPaddings}
-            showEmojiPicker={showEmojiPicker}
             hideOptions={hideActionsOptions}
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             onOpenFileDialog={open}
