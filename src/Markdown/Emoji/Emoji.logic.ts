@@ -14,11 +14,12 @@ export interface EmojiData {
   unified: string;
 }
 
-export const useEmojiLogic = (textarea?: Nullable<Textarea>) => {
+export const useEmojiLogic = (textarea: Nullable<Textarea>) => {
   const onSelectEmoji = (emoji: EmojiData) => {
-    const textareaNode = (textarea as any).node as HTMLTextAreaElement;
-
-    return setMarkdownPastedHtml(emoji.native, textareaNode);
+    if (textarea) {
+      const textareaNode = (textarea as any).node as HTMLTextAreaElement;
+      setMarkdownPastedHtml(emoji.native, textareaNode);
+    }
   };
 
   return {

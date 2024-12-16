@@ -1,3 +1,4 @@
+import data from '@emoji-mart/data';
 import EmojiPicker from '@emoji-mart/react';
 import { DropdownMenu } from '@skbkontur/react-ui';
 import React, { useRef } from 'react';
@@ -37,6 +38,7 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
           >
             <EmojiPickerWrapper>
               <EmojiPicker
+                data={data}
                 locale="ru"
                 theme={currentTheme.themeMode}
                 skinTonePosition="none"
