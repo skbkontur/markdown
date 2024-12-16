@@ -35,6 +35,7 @@ export const EmojiDropdown: React.FC<IProps> = ({ isPreviewMode, onSelect }) => 
             <EmojiPicker
               i18n={emojiLocale}
               theme={theme.themeMode}
+              skinTonePosition="none"
               previewPosition="none"
               onEmojiSelect={handleSelectEmoji}
             />

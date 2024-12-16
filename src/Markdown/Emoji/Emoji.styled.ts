@@ -7,7 +7,9 @@ import styled from '../../styles/styled-components';
 
 export const EmojiPickerWrapper = styled.div`
   em-emoji-picker {
-    --font-family: 'Lab Grotesque', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans';
-    --shadow: 'unset';
+    --font-family: inherit;
+    --shadow: unset;
+    --rgb-accent: ${p => p.theme.colors.brand};
+    --color-border: rgba(0, 0, 0, 0);
   }
 `;
