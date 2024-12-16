@@ -2,7 +2,7 @@ import { Dropdown, Textarea } from '@skbkontur/react-ui';
 import React, { FC, RefObject, SyntheticEvent } from 'react';
 
 import { COMMONMARK_HELP_URL } from './constants';
-import { IEmojiData } from './Emoji/Emoji.logic';
+import { EmojiData } from './Emoji/Emoji.logic';
 import { EmojiDropdown } from './Emoji/EmojiDropdown';
 import {
   ActionsWrapper,
@@ -30,7 +30,7 @@ interface Props {
   onChangeViewMode: (viewMode: ViewMode) => void;
   onClickFullscreen: () => void;
   onOpenFileDialog: () => void;
-  onSelectEmoji: (emoji: IEmojiData) => void;
+  onSelectEmoji: (emoji: EmojiData) => void;
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
