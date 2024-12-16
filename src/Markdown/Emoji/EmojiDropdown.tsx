@@ -11,9 +11,10 @@ import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
 interface Props {
   isPreviewMode: boolean;
   onSelect: (emoji: EmojiData) => void;
+  showShortKey: boolean;
 }
 
-export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, onSelect }) => {
+export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, onSelect }) => {
   const dropdownMenuRef = useRef<DropdownMenu>(null);
 
   return (
@@ -26,10 +27,11 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, onSelect }) => {
             ref={dropdownMenuRef}
             caption={
               <MarkdownFormatButton
-                hintText="Добавить emoji"
+                showShortKey={showShortKey}
+                hintText="Emoji"
                 disabled={isPreviewMode}
                 icon={<EmojiFace />}
-                text="Добавить emoji"
+                text="Emoji"
               />
             }
           >

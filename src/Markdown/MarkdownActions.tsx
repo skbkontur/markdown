@@ -131,6 +131,7 @@ export const MarkdownActions: FC<Props> = ({
           {hasFilesApi && !hideOptions?.file && (
             <MarkdownFormatButton
               hintText="Прикрепить файл"
+              showShortKey={showShortKeys}
               disabled={isPreviewMode}
               isLoading={loadingFile}
               icon={<AttachPaperclip />}
@@ -138,7 +139,9 @@ export const MarkdownActions: FC<Props> = ({
               onClick={onOpenFileDialog}
             />
           )}
-          {!hideOptions?.emoji && <EmojiDropdown isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />}
+          {!hideOptions?.emoji && (
+            <EmojiDropdown showShortKey={showShortKeys} isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />
+          )}
           <MarkdownFormatButton
             hintText="Документация Markdown"
             icon={<DocIcon />}
