@@ -164,16 +164,6 @@ export const WithEmojiEditable = () => {
   return <Markdown value={value} onValueChange={setValue} />;
 };
 
-export const WithEmojiDarkMode = () => {
-  const [value, setValue] = useState<string>('');
-
-  return (
-    <MarkdownThemeProvider value={{ ...DEFAULT_MARKDOWN_THEME, themeMode: 'dark' }}>
-      <Markdown value={value} onValueChange={setValue} />
-    </MarkdownThemeProvider>
-  );
-};
-
 export const HiddenOptions = () => {
   const wrapStyles: CSSProperties = {
     display: 'flex',
