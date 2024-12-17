@@ -14,6 +14,7 @@ import React, {
 import Foco from 'react-foco/lib';
 
 import { MENTION_WRAPPER_ID_POSTFIX } from './constants';
+import { useEmojiLogic } from './Emoji/Emoji.logic';
 import { useFileLogic } from './Files/Files.logic';
 import {
   DroppablePlaceholder,
@@ -33,7 +34,7 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { HorizontalPaddings, ViewMode, Token, MarkdownApi } from './types';
+import { HorizontalPaddings, ViewMode, Token, MarkdownApi, HideActionsOptions } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
@@ -47,10 +48,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   borderless?: boolean;
   /** Url апи для файлов  */
   fileApiUrl?: string;
-  /** Скрыть селект выбора размера текста */
-  hideHeadersSelect?: boolean;
-  /** Скрыть панель действий (кнопки помощи форматирования текста) */
-  hideMarkdownActions?: boolean;
+  /** Скрывать выборочно опции */
+  hideActionsOptions?: HideActionsOptions;
   /** Превьювер мардауна, по умолчанию используется MarkdownViewer */
   markdownViewer?: (value: string) => ReactNode;
   /** Padding markdownActions (кнопки помощи форматирования текста), включает режим panel */
@@ -66,7 +65,6 @@ export interface MarkdownProps extends MarkdownEditorProps {
 export const Markdown: FC<MarkdownProps> = props => {
   const {
     panelHorizontalPadding,
-    hideMarkdownActions,
     onClick,
     onChange,
     onSelect,
@@ -75,9 +73,9 @@ export const Markdown: FC<MarkdownProps> = props => {
     fileApiUrl,
     profileUrl,
     api,
-    hideHeadersSelect,
     borderless,
     showShotKeys = true,
+    hideActionsOptions,
     ...textareaProps
   } = props;
 
@@ -101,6 +99,8 @@ export const Markdown: FC<MarkdownProps> = props => {
     selectionStart,
     !isEditMode,
   );
+
+  const { onSelectEmoji } = useEmojiLogic(textareaRef.current);
 
   usePasteFromClipboard(textareaRef.current, api?.fileUploadApi, api?.fileDownloadApi, fileApiUrl);
   useListenTextareaScroll(resetMention, textareaRef.current);
@@ -130,7 +130,7 @@ export const Markdown: FC<MarkdownProps> = props => {
   const content = (
     <Foco component="div" onClickOutside={resetStates}>
       <Wrapper {...getRootProps()}>
-        {!hideMarkdownActions && (
+        {!hideActionsOptions?.allActions && (
           <MarkdownActions
             showShortKeys={showShotKeys}
             textAreaRef={textareaRef}
@@ -138,14 +138,15 @@ export const Markdown: FC<MarkdownProps> = props => {
             viewMode={viewMode}
             loadingFile={requestStatus === RequestStatus.isFetching}
             fullscreen={fullscreen}
-            hideHeadersSelect={hideHeadersSelect}
             selectionStart={selectionStart}
             selectionEnd={selectionEnd}
             horizontalPaddings={horizontalPaddings}
+            hideOptions={hideActionsOptions}
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             onOpenFileDialog={open}
             onChangeViewMode={setViewMode}
             onClickFullscreen={handleClickFullscreen}
+            onSelectEmoji={onSelectEmoji}
           />
         )}
         {isEditMode && error && api?.getUsersApi && renderFilesValidation?.(horizontalPaddings, onResetError)}

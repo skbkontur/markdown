@@ -1,12 +1,13 @@
 import { Modal, SizeProp, THEME_2022 } from '@skbkontur/react-ui';
 import { text, ValidationContainer } from '@skbkontur/react-ui-validations';
 import { Meta, StoryFn } from '@storybook/react';
-import React, { useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 
 import { a11yRules } from '../../../a11y/rules';
 import { MarkdownViewer } from '../../MarkdownViewer';
 import { MarkdownThemeProvider } from '../../styles/theme';
-import { allVariantsMarkdownMock } from '../__mocks__/markdown.mock';
+import { DEFAULT_MARKDOWN_THEME } from '../../styles/theme';
+import { allVariantsMarkdownMock, emojiMarkdownMock } from '../__mocks__/markdown.mock';
 import { Markdown } from '../Markdown';
 import { MarkdownApi, RefItem, User } from '../types';
 
@@ -29,8 +30,6 @@ const apiMock: MarkdownApi = {
   getUsersApi: () => new Promise<User[]>(resolve => resolve([{ id: '1', name: 'Максим', login: 'login', teams: [] }])),
 };
 
-export const WithoutActions = () => <Markdown hideMarkdownActions value={allVariantsMarkdownMock} />;
-
 export const WithSizeControl: StoryFn<{ size: SizeProp }> = args => (
   <Markdown size={args.size} value={allVariantsMarkdownMock} />
 );
@@ -50,9 +49,6 @@ WithSizeControl.argTypes = {
 };
 
 export const WithPanel = () => <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
-export const WithoutHeadersSelect = () => (
-  <Markdown borderless hideHeadersSelect value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
-);
 
 export const Editable = () => {
   const [value, setValue] = useState<string>('');
@@ -156,4 +152,78 @@ export const Viewer: StoryFn = () => (
 
 Viewer.parameters = {
   creevey: { delay: 5000 },
+};
+
+export const WithEmoji = () => {
+  return <Markdown value={emojiMarkdownMock} />;
+};
+
+export const WithEmojiEditable = () => {
+  const [value, setValue] = useState<string>('');
+
+  return <Markdown value={value} onValueChange={setValue} />;
+};
+
+export const WithEmojiDarkMode = () => {
+  const [value, setValue] = useState<string>('');
+
+  return (
+    <MarkdownThemeProvider value={{ ...DEFAULT_MARKDOWN_THEME, themeMode: 'dark' }}>
+      <Markdown value={value} onValueChange={setValue} />
+    </MarkdownThemeProvider>
+  );
+};
+
+export const HiddenOptions = () => {
+  const wrapStyles: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+    width: 600,
+    fontSize: 12,
+  };
+
+  const itemStyles: CSSProperties = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderStyle: 'dashed',
+  };
+
+  return (
+    <div style={wrapStyles}>
+      <fieldset style={itemStyles}>
+        <legend>Без панели кнопок</legend>
+        <Markdown hideActionsOptions={{ allActions: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без заголовок</legend>
+        <Markdown hideActionsOptions={{ heading: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без формата текста</legend>
+        <Markdown hideActionsOptions={{ bold: true, italic: true, crossed: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без ссылки</legend>
+        <Markdown hideActionsOptions={{ ref: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без списков</legend>
+        <Markdown hideActionsOptions={{ list: true, checkedList: true, numberedList: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без блока кода</legend>
+        <Markdown hideActionsOptions={{ codeBlock: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без цитаты</legend>
+        <Markdown hideActionsOptions={{ quote: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без таблицы</legend>
+        <Markdown hideActionsOptions={{ table: true }} rows={1} />
+      </fieldset>
+    </div>
+  );
 };
