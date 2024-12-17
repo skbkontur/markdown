@@ -23,9 +23,6 @@ const preview: Preview = {
         icon: 'circlehollow',
         items: ['light', 'dark'],
       },
-      initialGlobals: {
-        theme: 'light',
-      },
     },
   },
   initialGlobals: {

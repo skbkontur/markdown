@@ -180,6 +180,8 @@ export const Markdown: FC<MarkdownProps> = props => {
           borderless,
         );
 
+        console.log(defaultTheme);
+
         return (
           <ThemeProvider theme={defaultTheme}>
             <ThemeContext.Provider value={reactUiTheme}>
