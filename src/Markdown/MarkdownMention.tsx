@@ -53,7 +53,7 @@ export const MarkdownMention: FC<Props> = ({ value, onUserSelect, x, y, getUsers
 
   return createPortal(
     <ZIndex priority="Toast" style={getMarkdownMentionStyle(x, y)}>
-      <Menu ref={menuRef} preventWindowScroll hasShadow maxHeight={300} width={300}>
+      <Menu ref={menuRef} preventWindowScroll hasShadow maxHeight={300} width={320}>
         {users?.map(user => (
           <MentionMenuItem key={user.id} onClick={() => onUserSelect(user?.login ?? '', user.name)}>
             <UserWrapper>
