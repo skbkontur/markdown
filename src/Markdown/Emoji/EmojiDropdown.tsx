@@ -1,4 +1,5 @@
 import data from '@emoji-mart/data';
+import emojiLocale from '@emoji-mart/data/i18n/ru.json';
 import EmojiPicker from '@emoji-mart/react';
 import { DropdownMenu } from '@skbkontur/react-ui';
 import React, { useRef } from 'react';
@@ -8,6 +9,8 @@ import { EmojiPickerWrapper } from './Emoji.styled';
 import { EmojiFace } from '../../MarkdownIcons/EmojiFace';
 import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../../styles/theme';
 import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
+
+emojiLocale.search = 'Поиск на английском';
 
 interface Props {
   isPreviewMode: boolean;
@@ -36,10 +39,12 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
                 onClick={toggleMenu}
               />
             )}
+            positions={['bottom left', 'bottom right', 'top left', 'top right']}
           >
             <EmojiPickerWrapper>
               <EmojiPicker
                 data={data}
+                i18n={emojiLocale}
                 locale="ru"
                 theme={currentTheme.themeMode}
                 skinTonePosition="none"
