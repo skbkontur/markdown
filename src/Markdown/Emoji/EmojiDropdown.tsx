@@ -39,6 +39,7 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
                 onClick={toggleMenu}
               />
             )}
+            menuWidth={300}
             positions={['bottom right', 'bottom left', 'top right', 'top right']}
           >
             <EmojiPickerWrapper>
