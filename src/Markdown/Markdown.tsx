@@ -52,6 +52,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   hideActionsOptions?: HideActionsOptions;
   /** Превьювер мардауна, по умолчанию используется MarkdownViewer */
   markdownViewer?: (value: string) => ReactNode;
+  /** Колбек, срабатывает на изменение режима редактирования или просмотра */
+  onChangeViewMode?: (mode: ViewMode) => void;
   /** Padding markdownActions (кнопки помощи форматирования текста), включает режим panel */
   panelHorizontalPadding?: number;
   /** Url для профиля сотрудника  */
@@ -76,6 +78,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     borderless,
     showShotKeys = true,
     hideActionsOptions,
+    onChangeViewMode,
     ...textareaProps
   } = props;
 
@@ -144,7 +147,7 @@ export const Markdown: FC<MarkdownProps> = props => {
             hideOptions={hideActionsOptions}
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             onOpenFileDialog={open}
-            onChangeViewMode={setViewMode}
+            onChangeViewMode={handleChangeViewMode}
             onClickFullscreen={handleClickFullscreen}
             onSelectEmoji={onSelectEmoji}
           />
@@ -179,8 +182,6 @@ export const Markdown: FC<MarkdownProps> = props => {
           fullscreenTextareaPadding,
           borderless,
         );
-
-        console.log(defaultTheme);
 
         return (
           <ThemeProvider theme={defaultTheme}>
@@ -238,6 +239,11 @@ export const Markdown: FC<MarkdownProps> = props => {
         />
       );
     }
+  }
+
+  function handleChangeViewMode(mode: ViewMode) {
+    setViewMode(mode);
+    onChangeViewMode?.(mode);
   }
 
   function handleSelectUser(login: string, name: string) {
