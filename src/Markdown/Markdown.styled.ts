@@ -230,7 +230,7 @@ export const getMarkdownReactUiTheme = (
       checkboxShadowActive: `0 0 0 1px ${colors.grayDefault}`,
       checkboxCheckedColor: colors.grayDefault,
       hintFontSize: elementsFontSize,
-      hintColor: themeMode === 'light' ? colors.white : colors.grayDefault,
+      hintColor: colors.textInverse,
       selectPaddingXSmall: '8px',
       selectLineHeightSmall: '24px',
       dropdownBorderWidth: '0',

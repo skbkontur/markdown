@@ -65,12 +65,15 @@ kind('Markdown', () => {
         .sendKeys('b')
         .perform();
       const boldFromKeyboard = await this.captureElement?.takeScreenshot();
+      await this.browser.actions().click(buttons[12]).perform();
+      const openedEmojiPicker = await this.captureElement?.takeScreenshot();
       await this.expect({
         openedDropdown,
         h1FromButton,
         h1FromKeyboard,
         boldFromButton,
         boldFromKeyboard,
+        openedEmojiPicker,
       }).to.matchImages();
     });
   });

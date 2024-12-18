@@ -1,12 +1,10 @@
-import { Modal, SizeProp, THEME_2022 } from '@skbkontur/react-ui';
+import { Modal, SizeProp } from '@skbkontur/react-ui';
 import { text, ValidationContainer } from '@skbkontur/react-ui-validations';
 import { Meta, StoryFn } from '@storybook/react';
 import React, { CSSProperties, useState } from 'react';
 
 import { a11yRules } from '../../../a11y/rules';
 import { MarkdownViewer } from '../../MarkdownViewer';
-import { MarkdownThemeProvider } from '../../styles/theme';
-import { DEFAULT_MARKDOWN_THEME } from '../../styles/theme';
 import { allVariantsMarkdownMock, emojiMarkdownMock } from '../__mocks__/markdown.mock';
 import { Markdown } from '../Markdown';
 import { MarkdownApi, RefItem, User } from '../types';
@@ -77,29 +75,12 @@ export const InModal: StoryFn = () => {
   const [value, setValue] = useState<string>('');
 
   return (
-    <MarkdownThemeProvider
-      value={{
-        reactUiTheme: THEME_2022,
-        themeMode: 'light',
-        colors: {
-          grayDefault: 'black',
-          link: 'black',
-          panelBg: 'black',
-          disabledButton: 'black',
-          white: 'white',
-          brand: 'black',
-        },
-        elementsFontSize: '14px',
-        elementsLineHeight: '20px',
-      }}
-    >
-      <Modal width={600}>
-        <Modal.Header>In Modal</Modal.Header>
-        <Modal.Body>
-          <Markdown api={apiMock} value={value} maxLength={50000} onValueChange={setValue} />
-        </Modal.Body>
-      </Modal>
-    </MarkdownThemeProvider>
+    <Modal width={600}>
+      <Modal.Header>In Modal</Modal.Header>
+      <Modal.Body>
+        <Markdown api={apiMock} value={value} maxLength={50000} onValueChange={setValue} />
+      </Modal.Body>
+    </Modal>
   );
 };
 

@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['stylelint-config-standard', 'stylelint-config-styled-components'],
+  extends: ['stylelint-config-standard'],
   customSyntax: 'postcss-styled-syntax',
   rules: {
     'property-no-vendor-prefix': null,
@@ -14,8 +14,11 @@ module.exports = {
     'alpha-value-notation': null,
     indentation: null,
     'no-descending-specificity': null,
+    'selector-class-pattern': null,
+    'media-feature-range-notation': 'prefix',
+    'declaration-block-no-redundant-longhand-properties': [true, { ignoreShorthands: ['gap', 'grid-gap'] }],
     'color-function-notation': 'legacy',
-    'selector-list-comma-newline-after': 'always-multi-line',
     'selector-pseudo-element-colon-notation': 'single',
+    'media-query-no-invalid': null,
   },
 };
