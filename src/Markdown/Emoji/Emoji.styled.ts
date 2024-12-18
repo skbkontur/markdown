@@ -18,5 +18,7 @@ export const EmojiPickerWrapper = styled.div`
     --rgb-color: ${({ theme }) => getColor(theme.colors.text)};
 
     max-height: 300px;
+    max-width: 300px;
+    min-width: 300px;
   }
 `;

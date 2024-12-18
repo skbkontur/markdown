@@ -39,10 +39,11 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
                 onClick={toggleMenu}
               />
             )}
-            positions={['bottom left', 'bottom right', 'top left', 'top right']}
+            positions={['bottom right', 'bottom left', 'top right', 'top right']}
           >
             <EmojiPickerWrapper>
               <EmojiPicker
+                dynamicWidth
                 data={data}
                 i18n={emojiLocale}
                 locale="ru"
