@@ -26,15 +26,16 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
         return (
           <DropdownMenu
             ref={dropdownMenuRef}
-            caption={
+            caption={({ toggleMenu }) => (
               <MarkdownFormatButton
                 showShortKey={showShortKey}
                 hintText="Emoji"
                 disabled={isPreviewMode}
                 icon={<EmojiFace />}
                 text="Emoji"
+                onClick={toggleMenu}
               />
-            }
+            )}
           >
             <EmojiPickerWrapper>
               <EmojiPicker
