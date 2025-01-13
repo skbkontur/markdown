@@ -195,6 +195,14 @@ export const HiddenOptions = () => {
         <legend>Без таблицы</legend>
         <Markdown hideActionsOptions={{ table: true }} rows={1} />
       </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без кнопки переключения режима просмотра</legend>
+        <Markdown hideActionsOptions={{ viewMode: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
+        <legend>Без кнопки разворачивания/сворачивания</legend>
+        <Markdown hideActionsOptions={{ screenMode: true }} rows={1} />
+      </fieldset>
     </div>
   );
 };

@@ -150,13 +150,15 @@ export const MarkdownActions: FC<Props> = ({
           />
         </ActionsWrapper>
         <ActionsWrapper>
-          {renderViewModeButton()}
-          <MarkdownFormatButton
-            hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
-            icon={fullscreen ? <Collapse /> : <Expand />}
-            text={fullscreen ? 'Свернуть' : 'Развернуть'}
-            onClick={onClickFullscreen}
-          />
+          {!hideOptions?.viewMode && renderViewModeButton()}
+          {!hideOptions?.screenMode && (
+            <MarkdownFormatButton
+              hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
+              icon={fullscreen ? <Collapse /> : <Expand />}
+              text={fullscreen ? 'Свернуть' : '  Развернуть'}
+              onClick={onClickFullscreen}
+            />
+          )}
         </ActionsWrapper>
       </ButtonsWrapper>
     </MarkdownActionsWrapper>
