@@ -142,21 +142,25 @@ export const MarkdownActions: FC<Props> = ({
           {!hideOptions?.emoji && (
             <EmojiDropdown showShortKey={showShortKeys} isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />
           )}
-          <MarkdownFormatButton
-            hintText="Документация Markdown"
-            icon={<DocIcon />}
-            text="Документация Markdown"
-            href={COMMONMARK_HELP_URL}
-          />
+          {!hideOptions?.help && (
+            <MarkdownFormatButton
+              hintText="Документация Markdown"
+              icon={<DocIcon />}
+              text="Документация Markdown"
+              href={COMMONMARK_HELP_URL}
+            />
+          )}
         </ActionsWrapper>
         <ActionsWrapper>
-          {renderViewModeButton()}
-          <MarkdownFormatButton
-            hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
-            icon={fullscreen ? <Collapse /> : <Expand />}
-            text={fullscreen ? 'Свернуть' : 'Развернуть'}
-            onClick={onClickFullscreen}
-          />
+          {!hideOptions?.viewMode && renderViewModeButton()}
+          {!hideOptions?.screenMode && (
+            <MarkdownFormatButton
+              hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
+              icon={fullscreen ? <Collapse /> : <Expand />}
+              text={fullscreen ? 'Свернуть' : '  Развернуть'}
+              onClick={onClickFullscreen}
+            />
+          )}
         </ActionsWrapper>
       </ButtonsWrapper>
     </MarkdownActionsWrapper>

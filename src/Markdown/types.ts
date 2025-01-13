@@ -49,4 +49,6 @@ export interface TestCase<V, E> {
 
 export type ReactUIThemeType = Partial<typeof THEME_2022>;
 
-export type HideActionsOptions = Partial<Record<MarkdownFormat | 'heading' | 'emoji' | 'allActions', boolean>>;
+export type HideActionsOptions = Partial<
+  Record<MarkdownFormat | 'heading' | 'emoji' | 'viewMode' | 'screenMode' | 'help' | 'allActions', boolean>
+>;
