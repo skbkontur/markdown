@@ -196,6 +196,10 @@ export const HiddenOptions = () => {
         <Markdown hideActionsOptions={{ table: true }} rows={1} />
       </fieldset>
       <fieldset style={itemStyles}>
+        <legend>Без ссылки на доку по markdown</legend>
+        <Markdown hideActionsOptions={{ help: true }} rows={1} />
+      </fieldset>
+      <fieldset style={itemStyles}>
         <legend>Без кнопки переключения режима просмотра</legend>
         <Markdown hideActionsOptions={{ viewMode: true }} rows={1} />
       </fieldset>
