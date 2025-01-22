@@ -14,6 +14,8 @@ const baseVisuallyHiddenStyle = css`
   border: 0;
 `;
 
+export const CheckBoxWrapper = styled(Checkbox)``;
+
 export const Wrapper = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -29,6 +31,14 @@ export const Wrapper = styled.div`
     &:last-child {
       margin-bottom: 0;
     }
+  }
+
+  ul > li > ${CheckBoxWrapper}, ul > li > p > ${CheckBoxWrapper} {
+    display: inline-flex;
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    padding: 0;
   }
 
   ul,
@@ -66,9 +76,6 @@ export const Wrapper = styled.div`
 
     li {
       margin-inline-start: 0;
-    }
-
-    li {
       margin-left: 20px;
     }
   }
@@ -123,14 +130,6 @@ export const TableWrapper = styled.div`
 export const Table = styled.table`
   width: 100%;
   min-width: 400px;
-`;
-
-export const CheckBoxWrapper = styled(Checkbox)`
-  display: inline-flex;
-  position: absolute;
-  inset-inline-start: 0;
-  inset-block-start: 0;
-  padding: 2px 0;
 `;
 
 export function getListStyle(depth: boolean): CSSProperties {

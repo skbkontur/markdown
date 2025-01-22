@@ -28,6 +28,7 @@ export const allVariantsMarkdownMock = `# Заголовок 1
     * level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3
     1. level 3
     * [x] level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3
+    1. [x] level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3
   1. level 2
 
 \`const { bar } = foo\`

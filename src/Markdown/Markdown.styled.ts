@@ -70,7 +70,6 @@ export const MarkdownActionsWrapper = styled.div<WrapperBaseProps>`
   padding: ${p => (p.fullscreenPadding ? '16px' : 0)} ${p => p.fullscreenPadding ?? 0}px 0;
   margin-bottom: 4px;
   box-sizing: border-box;
-  position: ${p => (p.fullscreenPadding ? 'sticky' : 'relative')};
   ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
   ${({ theme, panelPadding, fullscreenPadding }) => {
     if (panelPadding && !fullscreenPadding) return panelStyle({ theme, panelPadding });
