@@ -29,6 +29,21 @@ export const Wrapper = styled.div`
   }
 `;
 
+export const SplitViewContainer = styled.div`
+  display: flex;
+  gap: 64px;
+`;
+
+export const SplitViewEditContainer = styled.div`
+  flex: 1 0 0;
+`;
+
+export const SplitViewPreviewContainer = styled.div`
+  height: 85vh;
+  overflow-y: scroll;
+  flex: 1 0 0;
+`;
+
 export const Avatar = styled.img.attrs({ alt: '' })`
   flex-shrink: 0;
   box-sizing: border-box;
@@ -189,8 +204,8 @@ export const getMarkdownReactUiTheme = (
   theme: MarkdownTheme,
   reactUiTheme?: typeof THEME_2022,
   panelHorizontalPadding?: number,
-  fullScreenTextareaPadding?: number,
   borderless?: boolean,
+  isFullscreen?: boolean,
 ) => {
   const { elementsFontSize, elementsLineHeight, themeMode, colors } = theme;
 
@@ -237,20 +252,18 @@ export const getMarkdownReactUiTheme = (
         (extendThemeConfigWithSized({
           textareaPaddingX: `${panelHorizontalPadding}px`,
         }) as ReactUIThemeType)),
-      ...(borderless && borderlessTextareaVariables),
-      ...(fullScreenTextareaPadding &&
+      ...(borderless && isFullscreen && borderlessTextareaVariables),
+      ...(isFullscreen &&
         ({
-          sidePagePaddingLeft: '0',
-          sidePagePaddingRight: '0',
+          sidePagePaddingLeft: '24px',
+          sidePagePaddingRight: '24px',
           textareaBorderColorError: 'transparent',
           textareaBorderColorWarning: 'transparent',
           textareaShadow: 'none',
           ...extendThemeConfigWithSized({
             textareaMinHeight: '85vh',
-            textareaPaddingX: `${fullScreenTextareaPadding}px`,
             textareaPaddingY: '0',
           }),
-          ...borderlessTextareaVariables,
         } as ReactUIThemeType)),
     },
     reactUiTheme,
