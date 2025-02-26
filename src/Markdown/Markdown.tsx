@@ -1,16 +1,6 @@
-import { Textarea, SidePage, ThemeContext } from '@skbkontur/react-ui';
+import { Textarea, SidePage, ThemeContext, useResponsiveLayout } from '@skbkontur/react-ui';
 import { HideBodyVerticalScroll } from '@skbkontur/react-ui/internal/HideBodyVerticalScroll';
-import React, {
-  ChangeEvent,
-  FC,
-  MouseEvent,
-  ReactNode,
-  SyntheticEvent,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEvent, FC, MouseEvent, ReactNode, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import Foco from 'react-foco/lib';
 
 import { MENTION_WRAPPER_ID_POSTFIX } from './constants';
@@ -22,17 +12,16 @@ import {
   MarkdownEditorBlock,
   MarkdownPreview,
   MentionWrapper,
+  SplitViewContainer,
+  SplitViewEditContainer,
+  SplitViewPreviewContainer,
   Wrapper,
 } from './Markdown.styled';
 import { MarkdownActions } from './MarkdownActions';
 import { MarkdownEditor, MarkdownEditorProps } from './MarkdownEditor';
 import { usePasteFromClipboard } from './MarkdownHelpers/markdownHelpers';
 import { getMentionValue, mentionActions } from './MarkdownHelpers/markdownMentionHelpers';
-import {
-  getCursorCoordinates,
-  useFullscreenHorizontalPadding,
-  useListenTextareaScroll,
-} from './MarkdownHelpers/markdownTextareaHelpers';
+import { getCursorCoordinates, useListenTextareaScroll } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
 import { HorizontalPaddings, ViewMode, Token, MarkdownApi, HideActionsOptions } from './types';
 import { Guid } from './utils/guid';
@@ -86,13 +75,13 @@ export const Markdown: FC<MarkdownProps> = props => {
   const [mention, setMention] = useState<Token>();
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Edit);
   const [fullscreen, setFullScreen] = useState<boolean>(false);
-  const [initialWidth, setInitialWidth] = useState<number>(0);
   const [selectionStart, setSelectionStart] = useState<number>();
   const [selectionEnd, setSelectionEnd] = useState<number>();
 
   const guid = useRef(new Guid().generate()).current;
-  const isEditMode = viewMode === ViewMode.Edit;
+  const isEditMode = viewMode !== ViewMode.Preview;
   const width = fullscreen ? `100%` : textareaProps?.width;
+  const { isTablet } = useResponsiveLayout({ customMediaQueries: { isTablet: '(max-width: 720px)' } });
 
   const { getRootProps, isDragActive, requestStatus, open, error, onResetError } = useFileLogic(
     api?.fileUploadApi,
@@ -108,10 +97,9 @@ export const Markdown: FC<MarkdownProps> = props => {
   usePasteFromClipboard(textareaRef.current, api?.fileUploadApi, api?.fileDownloadApi, fileApiUrl);
   useListenTextareaScroll(resetMention, textareaRef.current);
 
-  useLayoutEffect(() => {
-    const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
-    setInitialWidth(textareaNode.clientWidth);
-  }, []);
+  useEffect(() => {
+    setViewMode(fullscreen && !isTablet ? ViewMode.Split : ViewMode.Edit);
+  }, [fullscreen, isTablet]);
 
   useEffect(() => {
     if (fullscreen && isEditMode) {
@@ -123,11 +111,8 @@ export const Markdown: FC<MarkdownProps> = props => {
     }
   }, [fullscreen, isEditMode, selectionEnd, selectionStart]);
 
-  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, initialWidth);
-
   const horizontalPaddings: HorizontalPaddings = {
     panelPadding: panelHorizontalPadding,
-    fullscreenPadding: fullscreenTextareaPadding,
   };
 
   const content = (
@@ -153,21 +138,16 @@ export const Markdown: FC<MarkdownProps> = props => {
           />
         )}
         {isEditMode && error && api?.getUsersApi && renderFilesValidation?.(horizontalPaddings, onResetError)}
-        {isEditMode && renderEditContainer()}
+        {viewMode === ViewMode.Split && (
+          <SplitViewContainer>
+            <SplitViewEditContainer>{renderEditContainer()}</SplitViewEditContainer>
+            <SplitViewPreviewContainer>{renderPreview()}</SplitViewPreviewContainer>
+          </SplitViewContainer>
+        )}
+        {viewMode === ViewMode.Edit && renderEditContainer()}
+        {viewMode === ViewMode.Preview && renderPreview()}
         {isDragActive && isEditMode && <DroppablePlaceholder {...horizontalPaddings} />}
       </Wrapper>
-      {!isEditMode && (
-        <MarkdownPreview {...horizontalPaddings} width={width}>
-          {markdownViewer?.(props.value as string) || (
-            <MarkdownViewer
-              source={(props.value as string) ?? ''}
-              downloadFileApi={api?.fileDownloadApi}
-              fileApiUrl={fileApiUrl}
-              profileUrl={profileUrl}
-            />
-          )}
-        </MarkdownPreview>
-      )}
     </Foco>
   );
 
@@ -179,8 +159,8 @@ export const Markdown: FC<MarkdownProps> = props => {
           defaultTheme,
           theme?.reactUiTheme,
           panelHorizontalPadding,
-          fullscreenTextareaPadding,
           borderless,
+          fullscreen,
         );
 
         return (
@@ -221,6 +201,21 @@ export const Markdown: FC<MarkdownProps> = props => {
           onClick={listenClick}
         />
       </MarkdownEditorBlock>
+    );
+  }
+
+  function renderPreview() {
+    return (
+      <MarkdownPreview {...horizontalPaddings} width={width}>
+        {markdownViewer?.(props.value as string) || (
+          <MarkdownViewer
+            source={(props.value as string) ?? ''}
+            downloadFileApi={api?.fileDownloadApi}
+            fileApiUrl={fileApiUrl}
+            profileUrl={profileUrl}
+          />
+        )}
+      </MarkdownPreview>
     );
   }
 

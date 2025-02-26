@@ -41,8 +41,8 @@ WithSizeControl.argTypes = {
   size: {
     control: {
       type: 'select',
-      options: sizeOptions,
     },
+    options: sizeOptions,
   },
 };
 

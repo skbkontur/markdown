@@ -152,7 +152,7 @@ export const MarkdownActions: FC<Props> = ({
           )}
         </ActionsWrapper>
         <ActionsWrapper>
-          {!hideOptions?.viewMode && renderViewModeButton()}
+          {!hideOptions?.viewMode && viewMode !== ViewMode.Split && renderViewModeButton()}
           {!hideOptions?.screenMode && (
             <MarkdownFormatButton
               hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
