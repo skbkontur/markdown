@@ -206,6 +206,8 @@ export const getMarkdownReactUiTheme = (
         menuItemFontSize: elementsFontSize,
         menuItemPaddingY: '4px',
         menuItemPaddingX: '28px',
+        textareaFontSize: elementsFontSize,
+        textareaLineHeight: elementsLineHeight,
       }),
       tabColorHover: 'transparent',
       tabColorFocus: 'transparent',
