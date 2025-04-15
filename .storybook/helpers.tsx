@@ -14,9 +14,13 @@ const style: CSSProperties = { padding: 4, boxSizing: 'border-box' };
 const GlobalStyles = createGlobalStyle`
   body {
     font-family: "Lab Grotesque", -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans",
-      "Droid Sans", "Helvetica Neue", sans-serif;
-  
-  background: ${p => (p.theme.themeMode === 'light' ? '#fff' : '#2f2f2f')};
+    "Droid Sans", "Helvetica Neue", sans-serif;
+
+    background: ${p => (p.theme.themeMode === 'light' ? '#fff' : '#2f2f2f')};
+  }
+
+  h1 {
+    margin: 30px 0;
   }
 `;
 
