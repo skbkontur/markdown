@@ -140,7 +140,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
   function renderInput(props: MarkdownInputProps) {
     return (
       <>
-        <CheckBoxWrapper checked={props.checked}></CheckBoxWrapper>
+        <CheckBoxWrapper checked={props.checked} />
         {props.children}
       </>
     );

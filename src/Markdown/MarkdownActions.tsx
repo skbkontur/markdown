@@ -1,4 +1,4 @@
-import { Dropdown, Textarea } from '@skbkontur/react-ui';
+import { Dropdown, Hint, Textarea } from '@skbkontur/react-ui';
 import React, { FC, RefObject, SyntheticEvent } from 'react';
 
 import { COMMONMARK_HELP_URL } from './constants';
@@ -68,16 +68,18 @@ export const MarkdownActions: FC<Props> = ({
         <ActionsWrapper>
           {!hideOptions?.heading && (
             <MarkdownDropdown>
-              <Dropdown disablePortal disabled={isPreviewMode} menuWidth={300} caption="Заголовок">
-                {markdownHelpHeaders.map((helper, idx) => (
-                  <MarkdownMenuItem
-                    key={idx}
-                    onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
-                  >
-                    <MarkdownCombination showShortKey={showShortKeys} format={helper.format} text={helper.node} />
-                  </MarkdownMenuItem>
-                ))}
-              </Dropdown>
+              <Hint text="Заголовок" pos="top left">
+                <Dropdown disablePortal disabled={isPreviewMode} menuWidth={300} caption="H">
+                  {markdownHelpHeaders.map((helper, idx) => (
+                    <MarkdownMenuItem
+                      key={idx}
+                      onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
+                    >
+                      <MarkdownCombination showShortKey={showShortKeys} format={helper.format} text={helper.node} />
+                    </MarkdownMenuItem>
+                  ))}
+                </Dropdown>
+              </Hint>
             </MarkdownDropdown>
           )}
           {markdownHelpText.map((helper, idx) => {

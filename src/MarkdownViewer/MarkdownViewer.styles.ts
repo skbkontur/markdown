@@ -27,10 +27,6 @@ export const Wrapper = styled.div`
   blockquote,
   .math {
     margin-bottom: 16px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
 
   ul > li > ${CheckBoxWrapper}, ul > li > p > ${CheckBoxWrapper} {
@@ -84,6 +80,15 @@ export const Wrapper = styled.div`
     [aria-hidden='true'] {
       ${baseVisuallyHiddenStyle};
     }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  & > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 `;
 
