@@ -9,10 +9,12 @@ import { allVariantsMarkdownMock, emojiMarkdownMock } from '../__mocks__/markdow
 import { Markdown } from '../Markdown';
 import { MarkdownApi, RefItem, User } from '../types';
 
+const sizeOptions: SizeProp[] = ['small', 'medium', 'large'];
+
 export default {
   title: 'Markdown',
   component: Markdown,
-  decorators: [story => <div style={{ width: 486, minHeight: 388 }}>{story()}</div>],
+  decorators: [story => <div style={{ maxWidth: 486, minHeight: 388 }}>{story()}</div>],
   parameters: {
     a11y: {
       config: {
@@ -20,7 +22,17 @@ export default {
       },
     },
   },
+  args: {
+    size: 'small',
+  },
+  argTypes: {
+    size: {
+      control: 'select',
+      options: sizeOptions,
+    },
+  },
 } as Meta;
+type Story = StoryFn<typeof Markdown>;
 
 const apiMock: MarkdownApi = {
   fileDownloadApi: () => new Promise<File>(resolve => resolve(new File(['a'], 'test.txt'))),
@@ -28,22 +40,9 @@ const apiMock: MarkdownApi = {
   getUsersApi: () => new Promise<User[]>(resolve => resolve([{ id: '1', name: 'Максим', login: 'login', teams: [] }])),
 };
 
-export const WithSizeControl: StoryFn<{ size: SizeProp }> = args => (
-  <Markdown size={args.size} value={allVariantsMarkdownMock} />
-);
-
+export const WithSizeControl: Story = args => <Markdown {...args} value={allVariantsMarkdownMock} />;
 WithSizeControl.args = {
   size: 'medium',
-};
-
-const sizeOptions: SizeProp[] = ['small', 'medium', 'large'];
-WithSizeControl.argTypes = {
-  size: {
-    control: {
-      type: 'select',
-      options: sizeOptions,
-    },
-  },
 };
 
 export const WithPanel = () => <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
@@ -56,12 +55,13 @@ export const Editable = () => {
   );
 };
 
-export const WithValidation = () => {
+export const WithValidation = args => {
   const [value, setValue] = useState<string>(allVariantsMarkdownMock);
 
   return (
     <ValidationContainer>
       <Markdown
+        {...args}
         withValidationWrapper
         value={value}
         validationInfo={{ type: 'immediate', level: 'error', message: 'error' }}
@@ -71,14 +71,14 @@ export const WithValidation = () => {
   );
 };
 
-export const InModal: StoryFn = () => {
+export const InModal: Story = args => {
   const [value, setValue] = useState<string>('');
 
   return (
     <Modal width={600}>
       <Modal.Header>In Modal</Modal.Header>
       <Modal.Body>
-        <Markdown api={apiMock} value={value} maxLength={50000} onValueChange={setValue} />
+        <Markdown {...args} api={apiMock} value={value} maxLength={50000} onValueChange={setValue} />
       </Modal.Body>
     </Modal>
   );
@@ -86,20 +86,29 @@ export const InModal: StoryFn = () => {
 
 InModal.parameters = { creevey: { captureElement: 'body > div.react-ui > div' } };
 
-export const CustomWidth: StoryFn = () => {
+export const CustomWidth: Story = args => {
   const [value, setValue] = useState<string>(allVariantsMarkdownMock);
 
-  return <Markdown width="550px" fileApiUrl="/api/file" value={value} onValueChange={setValue} />;
+  return <Markdown {...args} fileApiUrl="/api/file" value={value} onValueChange={setValue} />;
 };
 
 CustomWidth.decorators = [];
+CustomWidth.args = {
+  width: '550px',
+};
+CustomWidth.argTypes = {
+  width: {
+    control: 'text',
+  },
+};
 
-export const CustomValidation: StoryFn = () => {
+export const CustomValidation: Story = args => {
   const [value, setValue] = useState<string>(allVariantsMarkdownMock);
 
   return (
     <ValidationContainer>
       <Markdown
+        {...args}
         withValidationWrapper
         width={444}
         value={value}
@@ -111,10 +120,11 @@ export const CustomValidation: StoryFn = () => {
   );
 };
 
-export const WithoutHints: StoryFn = () => {
+export const WithoutHints: Story = args => {
   return (
     <ValidationContainer>
       <Markdown
+        {...args}
         withValidationWrapper
         showShotKeys={false}
         value={allVariantsMarkdownMock}
@@ -125,9 +135,9 @@ export const WithoutHints: StoryFn = () => {
   );
 };
 
-export const Viewer: StoryFn = () => (
+export const Viewer: Story = args => (
   <div style={{ width: 320 }}>
-    <MarkdownViewer fileApiUrl="/api/file/download" source={allVariantsMarkdownMock} />
+    <MarkdownViewer {...args} fileApiUrl="/api/file/download" source={allVariantsMarkdownMock} />
   </div>
 );
 
@@ -135,17 +145,17 @@ Viewer.parameters = {
   creevey: { delay: 5000 },
 };
 
-export const WithEmoji = () => {
-  return <Markdown value={emojiMarkdownMock} />;
+export const WithEmoji = args => {
+  return <Markdown {...args} value={emojiMarkdownMock} />;
 };
 
-export const WithEmojiEditable = () => {
+export const WithEmojiEditable = args => {
   const [value, setValue] = useState<string>('');
 
-  return <Markdown value={value} onValueChange={setValue} />;
+  return <Markdown {...args} value={value} onValueChange={setValue} />;
 };
 
-export const HiddenOptions = () => {
+export const HiddenOptions = args => {
   const wrapStyles: CSSProperties = {
     display: 'flex',
     flexDirection: 'column',

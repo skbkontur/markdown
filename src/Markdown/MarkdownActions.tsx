@@ -14,7 +14,6 @@ import {
 import { MarkdownFormat } from './MarkdownFormat';
 import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
-import { MarkdownButtonProps } from './MarkdownHelpers/types';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
 import { HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from './types';
 import { MarkdownCombination } from '../MarkdownCombination/MarkdownCombination';
@@ -23,6 +22,7 @@ import { Collapse } from '../MarkdownIcons/Collapse';
 import { DocIcon } from '../MarkdownIcons/DocIcon';
 import { Expand } from '../MarkdownIcons/Expand';
 import { EyeOpen } from '../MarkdownIcons/EyeOpen';
+import { SplitView } from '../MarkdownIcons/SplitView';
 import { ToolPencil } from '../MarkdownIcons/ToolPencil';
 
 interface Props {
@@ -34,9 +34,11 @@ interface Props {
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
+  disableFullscreen?: boolean;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
   hideOptions?: HideActionsOptions;
+  isSplitViewAvailable?: boolean;
   loadingFile?: boolean;
   selectionEnd?: Nullable<number>;
   selectionStart?: Nullable<number>;
@@ -59,6 +61,8 @@ export const MarkdownActions: FC<Props> = ({
   showShortKeys,
   hideOptions,
   onSelectEmoji,
+  isSplitViewAvailable,
+  disableFullscreen,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
@@ -155,7 +159,7 @@ export const MarkdownActions: FC<Props> = ({
         </ActionsWrapper>
         <ActionsWrapper>
           {!hideOptions?.viewMode && renderViewModeButton()}
-          {!hideOptions?.screenMode && (
+          {!hideOptions?.screenMode && !disableFullscreen && (
             <MarkdownFormatButton
               hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
               icon={fullscreen ? <Collapse /> : <Expand />}
@@ -169,15 +173,37 @@ export const MarkdownActions: FC<Props> = ({
   );
 
   function renderViewModeButton() {
-    const buttonProps: MarkdownButtonProps = {
-      hintText: isPreviewMode ? 'Вернуться в редактор' : 'Превью',
-      icon: isPreviewMode ? <ToolPencil /> : <EyeOpen />,
-      onClick: () => onChangeViewMode(isPreviewMode ? ViewMode.Edit : ViewMode.Preview),
-      text: isPreviewMode ? 'Вернуться в редактор' : 'Превью',
-      showShortKey: showShortKeys,
-    };
-
-    return <MarkdownFormatButton {...buttonProps} />;
+    return (
+      <div>
+        {viewMode !== ViewMode.Split && fullscreen && isSplitViewAvailable && (
+          <MarkdownFormatButton
+            icon={<SplitView />}
+            hintText="Сплит"
+            text="Сплит"
+            showShortKey={showShortKeys}
+            onClick={() => onChangeViewMode(ViewMode.Split)}
+          />
+        )}
+        {viewMode !== ViewMode.Edit && (
+          <MarkdownFormatButton
+            icon={<ToolPencil />}
+            hintText="Редактор"
+            text="Редактор"
+            showShortKey={showShortKeys}
+            onClick={() => onChangeViewMode(ViewMode.Edit)}
+          />
+        )}
+        {viewMode !== ViewMode.Preview && (
+          <MarkdownFormatButton
+            icon={<EyeOpen />}
+            hintText="Превью"
+            text="Превью"
+            showShortKey={showShortKeys}
+            onClick={() => onChangeViewMode(ViewMode.Preview)}
+          />
+        )}
+      </div>
+    );
   }
 
   function handleMarkdownItemClick(event: SyntheticEvent, format: MarkdownFormat) {

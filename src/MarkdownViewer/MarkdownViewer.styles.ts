@@ -19,6 +19,7 @@ export const CheckBoxWrapper = styled(Checkbox)``;
 export const Wrapper = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
+  position: relative;
 
   word-break: break-word;
 
