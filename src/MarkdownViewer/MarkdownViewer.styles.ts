@@ -45,12 +45,24 @@ export const Wrapper = styled.div`
     }
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    margin-bottom: 8px;
+  h1 {
+    margin-top: 28px;
+    margin-bottom: 28px;
+  }
+
+  h2 {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  h4 {
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 
   img {
