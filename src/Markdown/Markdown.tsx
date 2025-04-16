@@ -144,8 +144,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     }
   }, [fullscreen, isEditMode, selectionEnd, selectionStart]);
 
-  const widthForPaddings = textareaProps.width ? initialWidth : 800;
-  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, widthForPaddings);
+  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
 
   const horizontalPaddings: HorizontalPaddings = {
     panelPadding: panelHorizontalPadding,
