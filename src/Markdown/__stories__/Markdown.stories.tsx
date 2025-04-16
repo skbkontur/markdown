@@ -40,9 +40,14 @@ const apiMock: MarkdownApi = {
   getUsersApi: () => new Promise<User[]>(resolve => resolve([{ id: '1', name: 'Максим', login: 'login', teams: [] }])),
 };
 
-export const WithSizeControl: Story = args => <Markdown {...args} value={allVariantsMarkdownMock} />;
-WithSizeControl.args = {
+export const MediumSize: Story = args => <Markdown {...args} value={allVariantsMarkdownMock} />;
+MediumSize.args = {
   size: 'medium',
+};
+
+export const LargeSize: Story = args => <Markdown {...args} value={allVariantsMarkdownMock} />;
+LargeSize.args = {
+  size: 'large',
 };
 
 export const WithPanel = () => <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
