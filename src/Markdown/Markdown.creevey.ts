@@ -14,6 +14,16 @@ kind('Markdown', () => {
       const preview = await this.captureElement?.takeScreenshot();
       await this.expect({ idle, preview }).to.matchImages();
     });
+
+    test('withFullscreen', async function () {
+      const buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+      await this.browser
+        .actions()
+        .click(buttons[buttons.length - 1])
+        .perform();
+      const fullscreen = await this.captureElement?.takeScreenshot();
+      await this.expect(fullscreen).to.matchImage();
+    });
   });
 
   story('Editable', ({ setStoryParameters }) => {
