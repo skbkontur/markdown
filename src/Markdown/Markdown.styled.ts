@@ -32,7 +32,7 @@ export const Wrapper = styled.div`
 
 const scrollbarStyle = css`
   height: ${FULLSCREEN_HEIGHT};
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export const FlexCenter = styled.div`
