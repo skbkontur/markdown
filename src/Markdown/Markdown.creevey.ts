@@ -1,7 +1,7 @@
 import { story, kind, test } from 'creevey';
 
 kind('Markdown', () => {
-  story('WithActions', ({ setStoryParameters }) => {
+  story('MediumSize', ({ setStoryParameters }) => {
     setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
 
     test('withPreview', async function () {
