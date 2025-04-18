@@ -50,17 +50,26 @@ LargeSize.args = {
   size: 'large',
 };
 
-export const WithPanel = () => <Markdown borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />;
+export const WithPanel: Story = args => (
+  <Markdown {...args} borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
+);
 
-export const Editable = () => {
+export const Editable: Story = args => {
   const [value, setValue] = useState<string>('');
 
   return (
-    <Markdown api={apiMock} fileApiUrl="/api/file/download" value={value} maxLength={50000} onValueChange={setValue} />
+    <Markdown
+      {...args}
+      api={apiMock}
+      fileApiUrl="/api/file/download"
+      value={value}
+      maxLength={50000}
+      onValueChange={setValue}
+    />
   );
 };
 
-export const WithValidation = args => {
+export const WithValidation: Story = args => {
   const [value, setValue] = useState<string>(allVariantsMarkdownMock);
 
   return (
