@@ -31,6 +31,7 @@ import {
 } from './Markdown.styled';
 import { MarkdownActions } from './MarkdownActions';
 import { MarkdownEditor, MarkdownEditorProps } from './MarkdownEditor';
+import { EmptyPreview } from './MarkdownHelpers/EmptyPreview';
 import { usePasteFromClipboard } from './MarkdownHelpers/markdownHelpers';
 import { getMentionValue, mentionActions } from './MarkdownHelpers/markdownMentionHelpers';
 import {
@@ -254,6 +255,8 @@ export const Markdown: FC<MarkdownProps> = props => {
   }
 
   function renderPreview() {
+    if (!props.value && viewMode === ViewMode.Split) return <EmptyPreview />;
+
     return (
       <MarkdownPreview {...horizontalPaddings} width={width}>
         {markdownViewer?.(props.value as string) || (
