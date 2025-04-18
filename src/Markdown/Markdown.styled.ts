@@ -202,6 +202,24 @@ export const VisuallyHidden = styled.span`
   border: 0;
 `;
 
+export const EmptyPreviewContainer = styled.div`
+  display: flex;
+  width: 407px;
+  flex-direction: column;
+`;
+
+export const EmptyPreviewText = styled.span`
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  color: #d6d6d6;
+`;
+
+export const EmptyPreviewIconWrapper = styled.div`
+  margin-top: 16px;
+  margin-bottom: 32px;
+`;
+
 const extendThemeConfigWithSized = (config: MutableTheme): ReactUIThemeType => {
   const finalConfig: MutableTheme = {};
   const configKeys = Object.keys(config) as KeyOfReactUITheme[];
