@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { setMarkdownPastedHtml } from './markdownHelpers';
 import { MENTION_WRAPPER_ID_POSTFIX } from '../constants';
-import { Token } from '../types';
+import { Token, ViewMode } from '../types';
 import { turndownService } from '../utils/htmlToMd';
 
 export const textareaTokensRegExp = /(\[[\w\s\dА-Яа-яЁёЙй]+]\(@[\w\d]+\)|[@А-Яа-яЁёЙйA-Za-z]+)/g;
@@ -93,29 +93,31 @@ export const useListenTextareaScroll = (setMention: (value: undefined) => void, 
   }, [resetMention]);
 };
 
-export const useFullscreenHorizontalPadding = (fullscreen: boolean, textareaWidth?: number) => {
+export const useFullscreenHorizontalPadding = (fullscreen: boolean, viewMode: ViewMode, textareaWidth?: number) => {
   const [padding, setPadding] = useState<number>();
 
   useEffect(() => {
-    if (fullscreen && textareaWidth) {
-      const observable = document.body;
-      const handleChangeWidth = (width: number) => {
-        const newPadding = (width - textareaWidth) / 2;
-
-        setPadding(newPadding ? newPadding : undefined);
-      };
-
-      handleChangeWidth(observable.clientWidth);
-
-      const observer = new ResizeObserver(entries => entries.forEach(e => handleChangeWidth(e.target.clientWidth)));
-
-      observer.observe(observable);
-
-      return () => observer.disconnect();
-    } else {
+    if (!fullscreen || !textareaWidth || viewMode === ViewMode.Split) {
       setPadding(undefined);
+
+      return;
     }
-  }, [fullscreen, textareaWidth]);
+
+    const observable = document.body;
+    const handleChangeWidth = (width: number) => {
+      const newPadding = (width - textareaWidth) / 2;
+
+      setPadding(newPadding ? newPadding : undefined);
+    };
+
+    handleChangeWidth(observable.clientWidth);
+
+    const observer = new ResizeObserver(entries => entries.forEach(e => handleChangeWidth(e.target.clientWidth)));
+
+    observer.observe(observable);
+
+    return () => observer.disconnect();
+  }, [fullscreen, textareaWidth, viewMode]);
 
   return padding;
 };

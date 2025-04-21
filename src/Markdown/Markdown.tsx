@@ -1,4 +1,4 @@
-import { Textarea, SidePage, ThemeContext } from '@skbkontur/react-ui';
+import { Textarea, SidePage, ThemeContext, useResponsiveLayout } from '@skbkontur/react-ui';
 import { HideBodyVerticalScroll } from '@skbkontur/react-ui/internal/HideBodyVerticalScroll';
 import React, {
   ChangeEvent,
@@ -13,19 +13,25 @@ import React, {
 } from 'react';
 import Foco from 'react-foco/lib';
 
-import { MENTION_WRAPPER_ID_POSTFIX } from './constants';
+import { MENTION_WRAPPER_ID_POSTFIX, SPLIT_VIEW_THRESHOLD } from './constants';
 import { useEmojiLogic } from './Emoji/Emoji.logic';
 import { useFileLogic } from './Files/Files.logic';
 import {
   DroppablePlaceholder,
+  FlexCenter,
   getMarkdownReactUiTheme,
   MarkdownEditorBlock,
   MarkdownPreview,
   MentionWrapper,
+  SplitViewContainer,
+  SplitViewEditContainer,
+  SplitViewMaxWidth,
+  SplitViewPreviewContainer,
   Wrapper,
 } from './Markdown.styled';
 import { MarkdownActions } from './MarkdownActions';
 import { MarkdownEditor, MarkdownEditorProps } from './MarkdownEditor';
+import { EmptyPreview } from './MarkdownHelpers/EmptyPreview';
 import { usePasteFromClipboard } from './MarkdownHelpers/markdownHelpers';
 import { getMentionValue, mentionActions } from './MarkdownHelpers/markdownMentionHelpers';
 import {
@@ -91,8 +97,15 @@ export const Markdown: FC<MarkdownProps> = props => {
   const [selectionEnd, setSelectionEnd] = useState<number>();
 
   const guid = useRef(new Guid().generate()).current;
-  const isEditMode = viewMode === ViewMode.Edit;
-  const width = fullscreen ? `100%` : textareaProps?.width;
+  const isEditMode = viewMode !== ViewMode.Preview;
+
+  const width = fullscreen || !textareaProps.width ? '100%' : textareaProps.width;
+
+  const { isSplitViewAvailable, isMobile } = useResponsiveLayout({
+    customMediaQueries: {
+      isSplitViewAvailable: `(width >= ${SPLIT_VIEW_THRESHOLD})`,
+    },
+  });
 
   const { getRootProps, isDragActive, requestStatus, open, error, onResetError } = useFileLogic(
     api?.fileUploadApi,
@@ -114,6 +127,15 @@ export const Markdown: FC<MarkdownProps> = props => {
   }, []);
 
   useEffect(() => {
+    if (fullscreen && isSplitViewAvailable) setViewMode(ViewMode.Split);
+    else setViewMode(prevMode => (prevMode === ViewMode.Split ? ViewMode.Edit : prevMode));
+  }, [fullscreen, isSplitViewAvailable]);
+
+  useEffect(() => {
+    if (isMobile) setFullScreen(false);
+  }, [isMobile]);
+
+  useEffect(() => {
     if (fullscreen && isEditMode) {
       const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
 
@@ -123,7 +145,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     }
   }, [fullscreen, isEditMode, selectionEnd, selectionStart]);
 
-  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, initialWidth);
+  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
 
   const horizontalPaddings: HorizontalPaddings = {
     panelPadding: panelHorizontalPadding,
@@ -146,6 +168,8 @@ export const Markdown: FC<MarkdownProps> = props => {
             horizontalPaddings={horizontalPaddings}
             hideOptions={hideActionsOptions}
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
+            isSplitViewAvailable={isSplitViewAvailable}
+            disableFullscreen={isMobile}
             onOpenFileDialog={open}
             onChangeViewMode={handleChangeViewMode}
             onClickFullscreen={handleClickFullscreen}
@@ -153,21 +177,17 @@ export const Markdown: FC<MarkdownProps> = props => {
           />
         )}
         {isEditMode && error && api?.getUsersApi && renderFilesValidation?.(horizontalPaddings, onResetError)}
-        {isEditMode && renderEditContainer()}
+        {fullscreen && viewMode === ViewMode.Split && (
+          <SplitViewContainer>
+            <SplitViewEditContainer>{renderEditContainer()}</SplitViewEditContainer>
+            <SplitViewPreviewContainer textareaWidth={textareaProps.width}>{renderPreview()}</SplitViewPreviewContainer>
+          </SplitViewContainer>
+        )}
+        {viewMode === ViewMode.Edit && renderEditContainer()}
+        {viewMode === ViewMode.Preview && renderPreview()}
+
         {isDragActive && isEditMode && <DroppablePlaceholder {...horizontalPaddings} />}
       </Wrapper>
-      {!isEditMode && (
-        <MarkdownPreview {...horizontalPaddings} width={width}>
-          {markdownViewer?.(props.value as string) || (
-            <MarkdownViewer
-              source={(props.value as string) ?? ''}
-              downloadFileApi={api?.fileDownloadApi}
-              fileApiUrl={fileApiUrl}
-              profileUrl={profileUrl}
-            />
-          )}
-        </MarkdownPreview>
-      )}
     </Foco>
   );
 
@@ -177,10 +197,12 @@ export const Markdown: FC<MarkdownProps> = props => {
         const defaultTheme = theme ?? DEFAULT_MARKDOWN_THEME;
         const reactUiTheme = getMarkdownReactUiTheme(
           defaultTheme,
+          viewMode,
           theme?.reactUiTheme,
           panelHorizontalPadding,
           fullscreenTextareaPadding,
           borderless,
+          fullscreen,
         );
 
         return (
@@ -199,7 +221,15 @@ export const Markdown: FC<MarkdownProps> = props => {
       <SidePage disableAnimations width="100vw" onClose={() => setFullScreen(false)}>
         <HideBodyVerticalScroll />
         <SidePage.Body>
-          <SidePage.Container>{content}</SidePage.Container>
+          <SidePage.Container>
+            {viewMode === ViewMode.Split ? (
+              <FlexCenter>
+                <SplitViewMaxWidth>{content}</SplitViewMaxWidth>
+              </FlexCenter>
+            ) : (
+              content
+            )}
+          </SidePage.Container>
         </SidePage.Body>
       </SidePage>
     );
@@ -221,6 +251,23 @@ export const Markdown: FC<MarkdownProps> = props => {
           onClick={listenClick}
         />
       </MarkdownEditorBlock>
+    );
+  }
+
+  function renderPreview() {
+    if (!props.value && viewMode === ViewMode.Split) return <EmptyPreview />;
+
+    return (
+      <MarkdownPreview {...horizontalPaddings} width={width}>
+        {markdownViewer?.(props.value as string) || (
+          <MarkdownViewer
+            source={(props.value as string) ?? ''}
+            downloadFileApi={api?.fileDownloadApi}
+            fileApiUrl={fileApiUrl}
+            profileUrl={profileUrl}
+          />
+        )}
+      </MarkdownPreview>
     );
   }
 

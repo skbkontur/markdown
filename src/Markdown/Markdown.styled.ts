@@ -1,7 +1,8 @@
 import { Button, MenuItem, ThemeFactory, THEME_2022 } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
 
-import { HorizontalPaddings, Nullable, ReactUIThemeType } from './types';
+import { FULLSCREEN_HEIGHT } from './constants';
+import { HorizontalPaddings, Nullable, ReactUIThemeType, ViewMode } from './types';
 import styled, { css } from '../styles/styled-components';
 import { MarkdownTheme } from '../styles/theme';
 
@@ -27,6 +28,45 @@ export const Wrapper = styled.div`
   &:focus-visible {
     outline: 1px solid ${p => p.theme.colors.brand};
   }
+`;
+
+const scrollbarStyle = css`
+  height: ${FULLSCREEN_HEIGHT};
+  overflow-y: auto;
+`;
+
+export const FlexCenter = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const SplitViewMaxWidth = styled.div`
+  max-width: 1580px;
+  width: 100%;
+`;
+
+export const SplitViewContainer = styled.div`
+  display: flex;
+  gap: 32px;
+
+  @media (width >= 1980px) {
+    gap: '48px';
+  }
+`;
+
+export const SplitViewPreviewContainer = styled.div<{
+  textareaWidth?: React.CSSProperties['width'];
+}>`
+  ${scrollbarStyle}
+
+  width: ${p => p.textareaWidth ?? undefined};
+  ${p => !p.textareaWidth && 'flex: 1 0 0'};
+`;
+
+export const SplitViewEditContainer = styled.div`
+  width: 100%;
+  min-width: 420px;
+  flex: 1 0 0;
 `;
 
 export const Avatar = styled.img.attrs({ alt: '' })`
@@ -162,6 +202,24 @@ export const VisuallyHidden = styled.span`
   border: 0;
 `;
 
+export const EmptyPreviewContainer = styled.div`
+  display: flex;
+  width: 407px;
+  flex-direction: column;
+`;
+
+export const EmptyPreviewText = styled.span`
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  color: #d6d6d6;
+`;
+
+export const EmptyPreviewIconWrapper = styled.div`
+  margin-top: 16px;
+  margin-bottom: 32px;
+`;
+
 const extendThemeConfigWithSized = (config: MutableTheme): ReactUIThemeType => {
   const finalConfig: MutableTheme = {};
   const configKeys = Object.keys(config) as KeyOfReactUITheme[];
@@ -187,12 +245,16 @@ const borderlessTextareaVariables: Partial<typeof THEME_2022> = {
 
 export const getMarkdownReactUiTheme = (
   theme: MarkdownTheme,
+  viewMode: ViewMode,
   reactUiTheme?: typeof THEME_2022,
   panelHorizontalPadding?: number,
   fullScreenTextareaPadding?: number,
   borderless?: boolean,
+  isFullscreen?: boolean,
 ) => {
   const { elementsFontSize, elementsLineHeight, themeMode, colors } = theme;
+  const sidePagePaddingX = viewMode === ViewMode.Split ? '56px' : '0';
+  const isFullscreenNotSplitMode = isFullscreen && viewMode !== ViewMode.Split;
 
   return ThemeFactory.create(
     {
@@ -237,20 +299,19 @@ export const getMarkdownReactUiTheme = (
         (extendThemeConfigWithSized({
           textareaPaddingX: `${panelHorizontalPadding}px`,
         }) as ReactUIThemeType)),
-      ...(borderless && borderlessTextareaVariables),
-      ...(fullScreenTextareaPadding &&
+      ...((borderless || isFullscreenNotSplitMode) && borderlessTextareaVariables),
+      ...(isFullscreen &&
         ({
-          sidePagePaddingLeft: '0',
-          sidePagePaddingRight: '0',
+          sidePagePaddingLeft: sidePagePaddingX,
+          sidePagePaddingRight: sidePagePaddingX,
           textareaBorderColorError: 'transparent',
           textareaBorderColorWarning: 'transparent',
           textareaShadow: 'none',
           ...extendThemeConfigWithSized({
-            textareaMinHeight: '85vh',
+            textareaMinHeight: FULLSCREEN_HEIGHT,
             textareaPaddingX: `${fullScreenTextareaPadding}px`,
             textareaPaddingY: '0',
           }),
-          ...borderlessTextareaVariables,
         } as ReactUIThemeType)),
     },
     reactUiTheme,

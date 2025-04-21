@@ -5,6 +5,7 @@ import { MarkdownFormat } from './MarkdownFormat';
 export enum ViewMode {
   Preview = 'Preview',
   Edit = 'Edit',
+  Split = 'Split',
 }
 
 export interface Token {

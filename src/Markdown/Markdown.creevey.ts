@@ -1,7 +1,7 @@
 import { story, kind, test } from 'creevey';
 
 kind('Markdown', () => {
-  story('WithActions', ({ setStoryParameters }) => {
+  story('MediumSize', ({ setStoryParameters }) => {
     setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
 
     test('withPreview', async function () {
@@ -13,6 +13,31 @@ kind('Markdown', () => {
         .perform();
       const preview = await this.captureElement?.takeScreenshot();
       await this.expect({ idle, preview }).to.matchImages();
+    });
+
+    test('withFullscreen', async function () {
+      let buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+      await this.browser
+        .actions()
+        .click(buttons[buttons.length - 1])
+        .perform();
+      const fullscreenSplit = await this.captureElement?.takeScreenshot();
+
+      buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+      await this.browser
+        .actions()
+        .click(buttons[buttons.length - 2])
+        .perform();
+      const fullscreenPreview = await this.captureElement?.takeScreenshot();
+
+      buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+      await this.browser
+        .actions()
+        .click(buttons[buttons.length - 2])
+        .perform();
+      const fullscreenEdit = await this.captureElement?.takeScreenshot();
+
+      await this.expect({ fullscreenSplit, fullscreenPreview, fullscreenEdit }).to.matchImages();
     });
   });
 
@@ -75,6 +100,31 @@ kind('Markdown', () => {
         boldFromKeyboard,
         openedEmojiPicker,
       }).to.matchImages();
+    });
+
+    test('withFullscreen', async function () {
+      let buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+      await this.browser
+        .actions()
+        .click(buttons[buttons.length - 1])
+        .perform();
+      const fullscreenSplit = await this.captureElement?.takeScreenshot();
+
+      buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+      await this.browser
+        .actions()
+        .click(buttons[buttons.length - 2])
+        .perform();
+      const fullscreenPreview = await this.captureElement?.takeScreenshot();
+
+      buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+      await this.browser
+        .actions()
+        .click(buttons[buttons.length - 2])
+        .perform();
+      const fullscreenEdit = await this.captureElement?.takeScreenshot();
+
+      await this.expect({ fullscreenSplit, fullscreenPreview, fullscreenEdit }).to.matchImages();
     });
   });
 });
