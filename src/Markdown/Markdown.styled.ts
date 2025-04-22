@@ -22,6 +22,10 @@ const panelStyle = ({ panelPadding, theme }: PanelProps) => css`
   margin-bottom: 12px;
 `;
 
+function getSplitPreviewWidth(width: CSSProperties['width']) {
+  return typeof width === 'number' ? width + 'px' : width;
+}
+
 export const Wrapper = styled.div`
   position: relative;
 
@@ -59,7 +63,7 @@ export const SplitViewPreviewContainer = styled.div<{
 }>`
   ${scrollbarStyle}
 
-  width: ${p => p.textareaWidth ?? undefined};
+  width: ${p => (p.textareaWidth ? getSplitPreviewWidth(p.textareaWidth) : undefined)};
   ${p => !p.textareaWidth && 'flex: 1 0 0'};
 `;
 
