@@ -73,7 +73,7 @@ export const MarkdownActions: FC<Props> = ({
 
   return (
     <MarkdownActionsWrapper {...baseWrapperProps} width={width} fullscreen={fullscreen}>
-      <ButtonsWrapper {...baseWrapperProps} fullscreen={fullscreen}>
+      <ButtonsWrapper fullscreen={fullscreen}>
         <ActionsWrapper>
           {!hideOptions?.heading && (
             <MarkdownDropdown>

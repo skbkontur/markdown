@@ -120,8 +120,8 @@ export const MarkdownActionsWrapper = styled.div<WrapperBaseProps & { viewMode: 
   margin-bottom: ${p => (p.fullscreen ? 12 : 4)}px;
   box-sizing: border-box;
   ${p => p.width && `width: ${getAllowedCssValue(p.width)};`}
-  ${({ theme, panelPadding, fullscreenPadding }) => {
-    if (panelPadding && !fullscreenPadding) return panelStyle({ theme, panelPadding });
+  ${({ theme, panelPadding, fullscreen }) => {
+    if (panelPadding && !fullscreen) return panelStyle({ theme, panelPadding });
   }}
   
   a {
