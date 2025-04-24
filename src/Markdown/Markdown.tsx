@@ -120,6 +120,7 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   usePasteFromClipboard(textareaRef.current, api?.fileUploadApi, api?.fileDownloadApi, fileApiUrl);
   useListenTextareaScroll(resetMention, textareaRef.current);
+  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
 
   useLayoutEffect(() => {
     const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
@@ -146,8 +147,6 @@ export const Markdown: FC<MarkdownProps> = props => {
       }
     }
   }, [fullscreen, isEditMode, selectionEnd, selectionStart, textareaRef]);
-
-  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
 
   const horizontalPaddings: HorizontalPaddings = {
     panelPadding: panelHorizontalPadding,

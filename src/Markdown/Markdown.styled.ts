@@ -26,8 +26,8 @@ function getAllowedCssValue(value: CSSProperties['width'] | CSSProperties['paddi
   return typeof value === 'number' ? value + 'px' : value;
 }
 
-function getMarkdownActionsPadding(viewMode: ViewMode, isPadding: boolean, padding?: string | number) {
-  return isPadding && viewMode !== ViewMode.Split ? getAllowedCssValue(padding) : 0;
+function getMarkdownActionsPadding(isPadding: boolean, padding?: string | number) {
+  return isPadding ? getAllowedCssValue(padding) : 0;
 }
 
 export const Wrapper = styled.div`
@@ -114,9 +114,9 @@ export const MarkdownPreview = styled.div<WrapperBaseProps>`
   box-sizing: border-box;
 `;
 
-export const MarkdownActionsWrapper = styled.div<WrapperBaseProps & { viewMode: ViewMode; fullscreen?: boolean }>`
-  padding: ${p => getMarkdownActionsPadding(p.viewMode, !!p.fullscreenPadding, '16px')}
-    ${p => getMarkdownActionsPadding(p.viewMode, !!p.fullscreenPadding, p.fullscreenPadding)} 0;
+export const MarkdownActionsWrapper = styled.div<WrapperBaseProps & { fullscreen?: boolean }>`
+  padding: ${p => getMarkdownActionsPadding(!!p.fullscreenPadding, '16px')}
+    ${p => getMarkdownActionsPadding(!!p.fullscreenPadding, p.fullscreenPadding)} 0;
   margin-bottom: ${p => (p.fullscreen ? 12 : 4)}px;
   box-sizing: border-box;
   ${p => p.width && `width: ${getAllowedCssValue(p.width)};`}

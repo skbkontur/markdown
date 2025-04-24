@@ -66,13 +66,8 @@ export const MarkdownActions: FC<Props> = ({
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
-  const baseWrapperProps = {
-    ...horizontalPaddings,
-    viewMode,
-  };
-
   return (
-    <MarkdownActionsWrapper {...baseWrapperProps} width={width} fullscreen={fullscreen}>
+    <MarkdownActionsWrapper {...horizontalPaddings} width={width} fullscreen={fullscreen}>
       <ButtonsWrapper fullscreen={fullscreen}>
         <ActionsWrapper>
           {!hideOptions?.heading && (

@@ -1,5 +1,5 @@
 import { Textarea } from '@skbkontur/react-ui';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import { setMarkdownPastedHtml } from './markdownHelpers';
 import { MENTION_WRAPPER_ID_POSTFIX } from '../constants';
@@ -96,7 +96,7 @@ export const useListenTextareaScroll = (setMention: (value: undefined) => void, 
 export const useFullscreenHorizontalPadding = (fullscreen: boolean, viewMode: ViewMode, textareaWidth?: number) => {
   const [padding, setPadding] = useState<number>();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!fullscreen || !textareaWidth || viewMode === ViewMode.Split) {
       setPadding(undefined);
 
