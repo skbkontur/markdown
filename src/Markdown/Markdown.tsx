@@ -181,7 +181,11 @@ export const Markdown: FC<MarkdownProps> = props => {
         {fullscreen && viewMode === ViewMode.Split && !fullscreenTextareaPadding && (
           <SplitViewContainer>
             <SplitViewEditContainer>{renderEditContainer()}</SplitViewEditContainer>
-            <SplitViewPreviewContainer textareaWidth={textareaProps.width}>{renderPreview()}</SplitViewPreviewContainer>
+            <SplitViewPreviewContainer
+              textareaWidth={textareaProps.width?.toString().includes('%') ? initialWidth : textareaProps.width}
+            >
+              {renderPreview()}
+            </SplitViewPreviewContainer>
           </SplitViewContainer>
         )}
         {viewMode === ViewMode.Edit && renderEditContainer()}
@@ -244,6 +248,7 @@ export const Markdown: FC<MarkdownProps> = props => {
         {showMention && renderMentions()}
         <MarkdownEditor
           {...textareaProps}
+          maxRows={fullscreen ? undefined : textareaProps.maxRows}
           width={width}
           textareaRef={textareaRef}
           onChange={listenChange}
@@ -258,7 +263,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     if (!props.value && viewMode === ViewMode.Split) return <EmptyPreview />;
 
     return (
-      <MarkdownPreview {...horizontalPaddings} width={width}>
+      <MarkdownPreview {...horizontalPaddings} viewMode={viewMode} width={width}>
         {markdownViewer?.(props.value as string) || (
           <MarkdownViewer
             source={(props.value as string) ?? ''}

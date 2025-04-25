@@ -40,7 +40,7 @@ const apiMock: MarkdownApi = {
   getUsersApi: () => new Promise<User[]>(resolve => resolve([{ id: '1', name: 'Максим', login: 'login', teams: [] }])),
 };
 
-export const MediumSize: Story = args => <Markdown {...args} value={allVariantsMarkdownMock} />;
+export const MediumSize: Story = args => <Markdown {...args} width="100%" value={allVariantsMarkdownMock} />;
 MediumSize.args = {
   size: 'medium',
 };
@@ -159,17 +159,17 @@ Viewer.parameters = {
   creevey: { delay: 5000 },
 };
 
-export const WithEmoji = args => {
+export const WithEmoji = (args: any) => {
   return <Markdown {...args} value={emojiMarkdownMock} />;
 };
 
-export const WithEmojiEditable = args => {
+export const WithEmojiEditable = (args: any) => {
   const [value, setValue] = useState<string>('');
 
   return <Markdown {...args} value={value} onValueChange={setValue} />;
 };
 
-export const HiddenOptions = args => {
+export const HiddenOptions = () => {
   const wrapStyles: CSSProperties = {
     display: 'flex',
     flexDirection: 'column',

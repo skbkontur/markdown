@@ -108,8 +108,13 @@ export const DroppablePlaceholder = styled.div<HorizontalPaddings>`
 
 export const MentionWrapper = styled.div``;
 
-export const MarkdownPreview = styled.div<WrapperBaseProps>`
-  padding: 6px ${({ panelPadding, fullscreenPadding }) => fullscreenPadding ?? panelPadding ?? 8}px;
+export const MarkdownPreview = styled.div<WrapperBaseProps & { viewMode: ViewMode }>`
+  padding: 6px
+    ${({ panelPadding, fullscreenPadding, viewMode }) => {
+      if (viewMode === ViewMode.Split) return 0;
+
+      return fullscreenPadding ?? panelPadding ?? 8;
+    }}px;
   ${p => p.width && `width: ${getAllowedCssValue(p.width)};`}
   box-sizing: border-box;
 `;
@@ -306,10 +311,11 @@ export const getMarkdownReactUiTheme = (
       selectLineHeightSmall: '24px',
       dropdownBorderWidth: '0',
       ...(panelHorizontalPadding &&
+        !isSplitMode &&
         (extendThemeConfigWithSized({
           textareaPaddingX: `${panelHorizontalPadding}px`,
         }) as ReactUIThemeType)),
-      ...((borderless || isFullscreenNotSplitMode) && borderlessTextareaVariables),
+      ...((borderless || (isFullscreen && viewMode === ViewMode.Edit)) && borderlessTextareaVariables),
       ...(isFullscreen &&
         ({
           sidePagePaddingLeft: sidePagePaddingX,
