@@ -58,14 +58,14 @@ export const SplitViewContainer = styled.div`
   gap: 32px;
 
   @media (width >= 1980px) {
-    gap: '48px';
+    gap: 48px;
   }
 `;
 
 export const SplitViewPreviewContainer = styled.div<{
   textareaWidth?: React.CSSProperties['width'];
 }>`
-  ${scrollbarStyle}
+  ${scrollbarStyle};
 
   width: ${p => (p.textareaWidth ? getAllowedCssValue(p.textareaWidth) : undefined)};
   ${p => !p.textareaWidth && 'flex: 1 0 0'};
