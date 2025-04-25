@@ -7,9 +7,9 @@ import { EmojiDropdown } from './Emoji/EmojiDropdown';
 import {
   ActionsWrapper,
   ButtonsWrapper,
+  MarkdownActionsWrapper,
   MarkdownDropdown,
   MarkdownMenuItem,
-  MarkdownActionsWrapper,
 } from './Markdown.styled';
 import { MarkdownFormat } from './MarkdownFormat';
 import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
@@ -67,8 +67,8 @@ export const MarkdownActions: FC<Props> = ({
   const isPreviewMode = viewMode === ViewMode.Preview;
 
   return (
-    <MarkdownActionsWrapper {...horizontalPaddings} width={width}>
-      <ButtonsWrapper {...horizontalPaddings}>
+    <MarkdownActionsWrapper {...horizontalPaddings} width={width} fullscreen={fullscreen}>
+      <ButtonsWrapper fullscreen={fullscreen}>
         <ActionsWrapper>
           {!hideOptions?.heading && (
             <MarkdownDropdown>

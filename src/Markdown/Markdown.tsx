@@ -1,4 +1,4 @@
-import { Textarea, SidePage, ThemeContext, useResponsiveLayout } from '@skbkontur/react-ui';
+import { SidePage, Textarea, ThemeContext, useResponsiveLayout } from '@skbkontur/react-ui';
 import { HideBodyVerticalScroll } from '@skbkontur/react-ui/internal/HideBodyVerticalScroll';
 import React, {
   ChangeEvent,
@@ -40,7 +40,7 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { HorizontalPaddings, ViewMode, Token, MarkdownApi, HideActionsOptions } from './types';
+import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Token, ViewMode } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
@@ -120,6 +120,7 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   usePasteFromClipboard(textareaRef.current, api?.fileUploadApi, api?.fileDownloadApi, fileApiUrl);
   useListenTextareaScroll(resetMention, textareaRef.current);
+  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
 
   useLayoutEffect(() => {
     const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
@@ -136,16 +137,16 @@ export const Markdown: FC<MarkdownProps> = props => {
   }, [isMobile]);
 
   useEffect(() => {
-    if (fullscreen && isEditMode) {
+    if (fullscreen && isEditMode && textareaRef) {
       const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
 
-      textareaNode.focus();
-      textareaNode.selectionStart = selectionStart ?? 0;
-      textareaNode.selectionEnd = selectionEnd ?? 0;
+      if (textareaNode) {
+        textareaNode.focus();
+        textareaNode.selectionStart = selectionStart ?? 0;
+        textareaNode.selectionEnd = selectionEnd ?? 0;
+      }
     }
-  }, [fullscreen, isEditMode, selectionEnd, selectionStart]);
-
-  const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
+  }, [fullscreen, isEditMode, selectionEnd, selectionStart, textareaRef]);
 
   const horizontalPaddings: HorizontalPaddings = {
     panelPadding: panelHorizontalPadding,
@@ -177,7 +178,7 @@ export const Markdown: FC<MarkdownProps> = props => {
           />
         )}
         {isEditMode && error && api?.getUsersApi && renderFilesValidation?.(horizontalPaddings, onResetError)}
-        {fullscreen && viewMode === ViewMode.Split && (
+        {fullscreen && viewMode === ViewMode.Split && !fullscreenTextareaPadding && (
           <SplitViewContainer>
             <SplitViewEditContainer>{renderEditContainer()}</SplitViewEditContainer>
             <SplitViewPreviewContainer textareaWidth={textareaProps.width}>{renderPreview()}</SplitViewPreviewContainer>
@@ -185,7 +186,6 @@ export const Markdown: FC<MarkdownProps> = props => {
         )}
         {viewMode === ViewMode.Edit && renderEditContainer()}
         {viewMode === ViewMode.Preview && renderPreview()}
-
         {isDragActive && isEditMode && <DroppablePlaceholder {...horizontalPaddings} />}
       </Wrapper>
     </Foco>
@@ -346,6 +346,7 @@ export const Markdown: FC<MarkdownProps> = props => {
   }
 
   function handleClickFullscreen() {
+    setViewMode(prevState => (prevState !== ViewMode.Split && isSplitViewAvailable ? ViewMode.Split : ViewMode.Edit));
     setFullScreen(!fullscreen);
   }
 };

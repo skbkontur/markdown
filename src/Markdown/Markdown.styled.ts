@@ -1,4 +1,4 @@
-import { Button, MenuItem, ThemeFactory, THEME_2022 } from '@skbkontur/react-ui';
+import { Button, MenuItem, THEME_2022, ThemeFactory } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
 
 import { FULLSCREEN_HEIGHT } from './constants';
@@ -22,8 +22,12 @@ const panelStyle = ({ panelPadding, theme }: PanelProps) => css`
   margin-bottom: 12px;
 `;
 
-function getSplitPreviewWidth(width: CSSProperties['width']) {
-  return typeof width === 'number' ? width + 'px' : width;
+function getAllowedCssValue(value: CSSProperties['width'] | CSSProperties['padding']) {
+  return typeof value === 'number' ? value + 'px' : value;
+}
+
+function getMarkdownActionsPadding(isPadding: boolean, padding?: string | number) {
+  return isPadding ? getAllowedCssValue(padding) : 0;
 }
 
 export const Wrapper = styled.div`
@@ -54,16 +58,16 @@ export const SplitViewContainer = styled.div`
   gap: 32px;
 
   @media (width >= 1980px) {
-    gap: '48px';
+    gap: 48px;
   }
 `;
 
 export const SplitViewPreviewContainer = styled.div<{
   textareaWidth?: React.CSSProperties['width'];
 }>`
-  ${scrollbarStyle}
+  ${scrollbarStyle};
 
-  width: ${p => (p.textareaWidth ? getSplitPreviewWidth(p.textareaWidth) : undefined)};
+  width: ${p => (p.textareaWidth ? getAllowedCssValue(p.textareaWidth) : undefined)};
   ${p => !p.textareaWidth && 'flex: 1 0 0'};
 `;
 
@@ -106,17 +110,18 @@ export const MentionWrapper = styled.div``;
 
 export const MarkdownPreview = styled.div<WrapperBaseProps>`
   padding: 6px ${({ panelPadding, fullscreenPadding }) => fullscreenPadding ?? panelPadding ?? 8}px;
-  ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
+  ${p => p.width && `width: ${getAllowedCssValue(p.width)};`}
   box-sizing: border-box;
 `;
 
-export const MarkdownActionsWrapper = styled.div<WrapperBaseProps>`
-  padding: ${p => (p.fullscreenPadding ? '16px' : 0)} ${p => p.fullscreenPadding ?? 0}px 0;
-  margin-bottom: 4px;
+export const MarkdownActionsWrapper = styled.div<WrapperBaseProps & { fullscreen?: boolean }>`
+  padding: ${p => getMarkdownActionsPadding(!!p.fullscreenPadding, '16px')}
+    ${p => getMarkdownActionsPadding(!!p.fullscreenPadding, p.fullscreenPadding)} 0;
+  margin-bottom: ${p => (p.fullscreen ? 12 : 4)}px;
   box-sizing: border-box;
-  ${p => p.width && `width: ${typeof p.width === 'string' ? p.width : `${p.width}px`};`}
-  ${({ theme, panelPadding, fullscreenPadding }) => {
-    if (panelPadding && !fullscreenPadding) return panelStyle({ theme, panelPadding });
+  ${p => p.width && `width: ${getAllowedCssValue(p.width)};`}
+  ${({ theme, panelPadding, fullscreen }) => {
+    if (panelPadding && !fullscreen) return panelStyle({ theme, panelPadding });
   }}
   
   a {
@@ -125,13 +130,13 @@ export const MarkdownActionsWrapper = styled.div<WrapperBaseProps>`
   }
 `;
 
-export const ButtonsWrapper = styled.div<WrapperBaseProps>`
+export const ButtonsWrapper = styled.div<{ fullscreen?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 0 -7px;
-  border-bottom: ${p => (p.fullscreenPadding ? `1px solid ${p.theme.colors.grayDefault}` : 'none')};
+  border-bottom: ${p => (p.fullscreen ? `1px solid ${p.theme.colors.grayDefault}` : 'none')};
 `;
 
 export const ActionsWrapper = styled.div`
