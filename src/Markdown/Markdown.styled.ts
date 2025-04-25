@@ -262,8 +262,9 @@ export const getMarkdownReactUiTheme = (
   isFullscreen?: boolean,
 ) => {
   const { elementsFontSize, elementsLineHeight, themeMode, colors } = theme;
-  const sidePagePaddingX = viewMode === ViewMode.Split ? '56px' : '0';
-  const isFullscreenNotSplitMode = isFullscreen && viewMode !== ViewMode.Split;
+  const isSplitMode = viewMode === ViewMode.Split;
+  const sidePagePaddingX = isSplitMode ? '56px' : '0';
+  const isFullscreenNotSplitMode = isFullscreen && !isSplitMode;
 
   return ThemeFactory.create(
     {
@@ -318,8 +319,10 @@ export const getMarkdownReactUiTheme = (
           textareaShadow: 'none',
           ...extendThemeConfigWithSized({
             textareaMinHeight: FULLSCREEN_HEIGHT,
-            textareaPaddingX: `${fullScreenTextareaPadding}px`,
-            textareaPaddingY: '0',
+            ...(isFullscreenNotSplitMode && {
+              textareaPaddingX: `${fullScreenTextareaPadding}px`,
+              textareaPaddingY: '0',
+            }),
           }),
         } as ReactUIThemeType)),
     },
