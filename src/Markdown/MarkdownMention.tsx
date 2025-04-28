@@ -19,7 +19,6 @@ interface Props {
 
 export const MarkdownMention: FC<Props> = ({ value, onSelectUser, x, y, getUsersApi }) => {
   const [users, setUsers] = useState<User[]>();
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
 
   const menuRef = useRef<Menu>(null);
   const markdownMentionsRef = useRef(document.getElementById(MARKDOWN_RENDER_CONTAINER));
@@ -49,11 +48,7 @@ export const MarkdownMention: FC<Props> = ({ value, onSelectUser, x, y, getUsers
     }
   }, [getUsersApi, value]);
 
-  useEffect(() => {
-    setHighlightedIndex(0);
-  }, [users]);
-
-  useMenuKeyListener(handleChangeHighlightedIndex, () => handleSelectUser(highlightedIndex), menuRef);
+  useMenuKeyListener(handleSelectUser, menuRef);
 
   if (!usersLength) return null;
 
@@ -61,7 +56,7 @@ export const MarkdownMention: FC<Props> = ({ value, onSelectUser, x, y, getUsers
     <ZIndex priority="Toast" style={getMarkdownMentionStyle(x, y)}>
       <Menu ref={menuRef} preventWindowScroll hasShadow initialSelectedItemIndex={0} maxHeight={300} width={320}>
         {users?.map((user, idx) => (
-          <MentionMenuItem key={user.id} onClick={() => handleSelectUser(idx)}>
+          <MentionMenuItem key={user.id} id={`${idx}`} onClick={() => handleSelectUser(idx)}>
             <UserWrapper>
               <Avatar height={48} width={48} src={getAvatarUrl(user.sid)} />
               <div>
@@ -75,14 +70,6 @@ export const MarkdownMention: FC<Props> = ({ value, onSelectUser, x, y, getUsers
     </ZIndex>,
     markdownMentionsRef.current as HTMLElement,
   );
-
-  function handleChangeHighlightedIndex(step: number) {
-    const usersLengthIndex = usersLength - 1;
-
-    if (step === -1 && !highlightedIndex) setHighlightedIndex(usersLengthIndex);
-    else if (step === 1 && highlightedIndex === usersLengthIndex) setHighlightedIndex(0);
-    else setHighlightedIndex(highlightedIndex + step);
-  }
 
   function handleSelectUser(idx: number) {
     if (users) {

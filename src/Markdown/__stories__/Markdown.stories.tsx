@@ -44,6 +44,11 @@ const apiMock: MarkdownApi = {
         { id: '2', name: 'Максим2', login: 'login2', teams: [] },
         { id: '3', name: 'Максим3', login: 'login3', teams: [] },
         { id: '4', name: 'Максим4', login: 'login4', teams: [] },
+        { id: '5', name: 'Максим5', login: 'login5', teams: [] },
+        { id: '6', name: 'Максим6', login: 'login6', teams: [] },
+        { id: '7', name: 'Максим7', login: 'login7', teams: [] },
+        { id: '8', name: 'Максим8', login: 'login8', teams: [] },
+        { id: '9', name: 'Максим9', login: 'login9', teams: [] },
       ]),
     ),
 };
