@@ -287,7 +287,7 @@ export const Markdown: FC<MarkdownProps> = props => {
           getUsersApi={api.getUsersApi}
           y={position.y}
           x={position.x}
-          onUserSelect={handleSelectUser}
+          onSelectUser={handleSelectUser}
         />
       );
     }

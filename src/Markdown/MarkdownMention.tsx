@@ -11,18 +11,20 @@ import { User } from './types';
 
 interface Props {
   getUsersApi: (value: string) => Promise<User[]>;
-  onUserSelect: (login: string, name: string) => void;
+  onSelectUser: (login: string, name: string) => void;
   value: string;
   x: number;
   y: number;
 }
 
-export const MarkdownMention: FC<Props> = ({ value, onUserSelect, x, y, getUsersApi }) => {
+export const MarkdownMention: FC<Props> = ({ value, onSelectUser, x, y, getUsersApi }) => {
   const [users, setUsers] = useState<User[]>();
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
 
   const menuRef = useRef<Menu>(null);
   const markdownMentionsRef = useRef(document.getElementById(MARKDOWN_RENDER_CONTAINER));
   const timerRef = useRef<number>(INPUT_DEBOUNCE_TIME);
+  const usersLength = users?.length ?? 0;
 
   if (!markdownMentionsRef.current) {
     const container = document.createElement('div');
@@ -47,15 +49,19 @@ export const MarkdownMention: FC<Props> = ({ value, onUserSelect, x, y, getUsers
     }
   }, [getUsersApi, value]);
 
-  useMenuKeyListener(onUserSelect, users, menuRef);
+  useEffect(() => {
+    setHighlightedIndex(0);
+  }, [users]);
 
-  if (!users?.length) return null;
+  useMenuKeyListener(handleChangeHighlightedIndex, () => handleSelectUser(highlightedIndex), menuRef);
+
+  if (!usersLength) return null;
 
   return createPortal(
     <ZIndex priority="Toast" style={getMarkdownMentionStyle(x, y)}>
-      <Menu ref={menuRef} preventWindowScroll hasShadow maxHeight={300} width={320}>
-        {users?.map(user => (
-          <MentionMenuItem key={user.id} onClick={() => onUserSelect(user?.login ?? '', user.name)}>
+      <Menu ref={menuRef} preventWindowScroll hasShadow initialSelectedItemIndex={0} maxHeight={300} width={320}>
+        {users?.map((user, idx) => (
+          <MentionMenuItem key={user.id} onClick={() => handleSelectUser(idx)}>
             <UserWrapper>
               <Avatar height={48} width={48} src={getAvatarUrl(user.sid)} />
               <div>
@@ -69,4 +75,23 @@ export const MarkdownMention: FC<Props> = ({ value, onUserSelect, x, y, getUsers
     </ZIndex>,
     markdownMentionsRef.current as HTMLElement,
   );
+
+  function handleChangeHighlightedIndex(step: number) {
+    const usersLengthIndex = usersLength - 1;
+
+    if (step === -1 && !highlightedIndex) setHighlightedIndex(usersLengthIndex);
+    else if (step === 1 && highlightedIndex === usersLengthIndex) setHighlightedIndex(0);
+    else setHighlightedIndex(highlightedIndex + step);
+  }
+
+  function handleSelectUser(idx: number) {
+    if (users) {
+      const selectedUser = users[idx];
+
+      if (selectedUser) {
+        const { login, name } = selectedUser;
+        onSelectUser(login, name);
+      }
+    }
+  }
 };

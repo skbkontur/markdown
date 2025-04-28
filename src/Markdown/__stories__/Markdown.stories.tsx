@@ -37,7 +37,15 @@ type Story = StoryFn<typeof Markdown>;
 const apiMock: MarkdownApi = {
   fileDownloadApi: () => new Promise<File>(resolve => resolve(new File(['a'], 'test.txt'))),
   fileUploadApi: () => new Promise<RefItem>(resolve => resolve({ id: 'i', caption: 'test.txt' })),
-  getUsersApi: () => new Promise<User[]>(resolve => resolve([{ id: '1', name: 'Максим', login: 'login', teams: [] }])),
+  getUsersApi: () =>
+    new Promise<User[]>(resolve =>
+      resolve([
+        { id: '1', name: 'Максим', login: 'login', teams: [] },
+        { id: '2', name: 'Максим2', login: 'login2', teams: [] },
+        { id: '3', name: 'Максим3', login: 'login3', teams: [] },
+        { id: '4', name: 'Максим4', login: 'login4', teams: [] },
+      ]),
+    ),
 };
 
 export const MediumSize: Story = args => <Markdown {...args} width="100%" value={allVariantsMarkdownMock} />;

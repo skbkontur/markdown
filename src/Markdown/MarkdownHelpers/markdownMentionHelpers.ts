@@ -2,7 +2,7 @@ import { Menu } from '@skbkontur/react-ui/internal/Menu';
 import { ChangeEvent, MouseEvent, RefObject, SyntheticEvent, useEffect } from 'react';
 
 import { getTextareaTokens } from './markdownTextareaHelpers';
-import { Token, User } from '../types';
+import { Token } from '../types';
 
 const ArrowsVertical: string[] = ['ArrowUp', 'ArrowDown'];
 
@@ -29,8 +29,8 @@ export function mentionActions(
 }
 
 export const useMenuKeyListener = (
-  onUserSelect: (login: string, name: string) => void,
-  users?: User[],
+  onChangeHighlightedIndex: (step: number) => void,
+  onSelectUser: () => void,
   menuRef?: RefObject<Menu>,
 ) => {
   useEffect(() => {
@@ -38,14 +38,19 @@ export const useMenuKeyListener = (
       if (menuRef?.current) {
         if (ArrowsVertical.includes(event.key)) {
           event.preventDefault();
-          if (event.key === 'ArrowUp') menuRef.current.up();
-          if (event.key === 'ArrowDown') menuRef.current.down();
+          if (event.key === 'ArrowUp') {
+            menuRef.current.up();
+            onChangeHighlightedIndex(-1);
+          }
+          if (event.key === 'ArrowDown') {
+            menuRef.current.down();
+            onChangeHighlightedIndex(1);
+          }
         }
 
-        if (event.key === 'Enter' && users?.length) {
+        if (event.key === 'Enter') {
           event.preventDefault();
-          const selected = users[menuRef.current.state.highlightedIndex];
-          onUserSelect(selected.login ?? '', selected.name);
+          onSelectUser();
         }
       }
     };
@@ -53,7 +58,7 @@ export const useMenuKeyListener = (
     window.addEventListener('keydown', keyListener);
 
     return () => window.removeEventListener('keydown', keyListener);
-  }, [menuRef, onUserSelect, users]);
+  }, [menuRef, onSelectUser, onChangeHighlightedIndex]);
 };
 
 export const getMentionValue = (mention?: Token | null) => mention?.value?.replace('@', '') ?? '';
