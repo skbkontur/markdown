@@ -8,6 +8,8 @@ export const allVariantsMarkdownMock = `# Заголовок 1
 ~~Зачеркнутый~~
 [Максим из отдела test test test test test test test test test test test](@tsypilov_m)
 
+---
+
 1. Список
 2. Список
 
@@ -31,10 +33,19 @@ export const allVariantsMarkdownMock = `# Заголовок 1
     1. [x] level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3 level 3
   1. level 2
 
-\`const { bar } = foo\`
+
+![img](https://s.kontur.ru/common-v2/logos/logo-matrix-32.svg)
+подпись картинки
+
+
+\`const { bar } = foo\` подпись кода
 > Цитата
 линия
 линия
+
+
+\`\`\`const { bar } = foo\`\`\`
+подпись блока кода
 
 [text.txt test test test test test test test test test test test](/api/file/download/)
 
