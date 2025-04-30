@@ -24,9 +24,9 @@ export const Wrapper = styled.div`
   word-break: break-word;
 
   p,
+  hr,
   table,
-  blockquote,
-  .math {
+  blockquote {
     margin-bottom: 16px;
   }
 
@@ -47,22 +47,22 @@ export const Wrapper = styled.div`
   }
 
   h1 {
-    margin-top: 28px;
+    margin-top: 36px;
     margin-bottom: 28px;
   }
 
   h2 {
-    margin-top: 24px;
+    margin-top: 32px;
     margin-bottom: 24px;
   }
 
   h3 {
-    margin-top: 20px;
+    margin-top: 28px;
     margin-bottom: 20px;
   }
 
   h4 {
-    margin-top: 16px;
+    margin-top: 24px;
     margin-bottom: 16px;
   }
 
@@ -79,13 +79,30 @@ export const Wrapper = styled.div`
     background: transparent;
   }
 
+  blockquote {
+    margin: 24px 0;
+    padding-left: 16px;
+  }
+
+  hr {
+    margin-top: 0;
+  }
+
+  code {
+    display: inline-block;
+    white-space: pre-wrap;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid ${p => p.theme?.colors?.grayDefault};
+  }
+
   ul,
   ol {
     padding-inline-start: 0;
 
     li {
       margin-inline-start: 0;
-      margin-left: 20px;
+      margin: 8px 0 8px 20px;
     }
   }
 
