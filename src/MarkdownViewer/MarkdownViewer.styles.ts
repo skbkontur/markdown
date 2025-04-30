@@ -25,10 +25,8 @@ export const Wrapper = styled.div`
 
   p,
   hr,
-  code,
   table,
-  blockquote,
-  .math {
+  blockquote {
     margin-bottom: 16px;
   }
 
