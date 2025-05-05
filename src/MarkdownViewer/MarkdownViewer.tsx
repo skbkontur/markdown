@@ -18,10 +18,11 @@ import {
   FileButtonWrapper,
   FileName,
   getListStyle,
-  ListItem,
+  CheckListItem,
   Paragraph,
   VisuallyHidden,
   Wrapper,
+  ListItem,
 } from './MarkdownViewer.styles';
 import { CustomComponentsProps, MarkdownInputProps, MarkdownLinkProps, MarkdownLiProps } from './types';
 import { useFileLogic } from '../Markdown/Files/Files.logic';
@@ -103,9 +104,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
   function renderListItem(props: MarkdownLiProps) {
     const children = props.children;
 
-    if (props.ordered) return <li>{children}</li>;
-
-    return checkIfChecklistItem(props) ? getCheckListItem(children) : <li>{children}</li>;
+    return checkIfChecklistItem(props) ? <CheckListItem>{children}</CheckListItem> : <ListItem>{children}</ListItem>;
   }
 
   function renderLink(props: MarkdownLinkProps) {
@@ -133,10 +132,6 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
 
   function checkIfChecklistItem(props: MarkdownLiProps) {
     return props.checked !== null || props.className === 'task-list-item';
-  }
-
-  function getCheckListItem(children: ReactNode) {
-    return <ListItem>{children}</ListItem>;
   }
 
   function renderInput(props: MarkdownInputProps) {

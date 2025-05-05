@@ -126,11 +126,15 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const ListItem = styled.li`
+export const CheckListItem = styled.li`
   list-style: none;
   margin-left: 0 !important;
-  padding-inline-start: 20px;
+  padding-inline-start: 22px;
   position: relative;
+`;
+
+export const ListItem = styled.li`
+  padding-inline-start: 2px;
 `;
 
 export const Paragraph = styled.p`
