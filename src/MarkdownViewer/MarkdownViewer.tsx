@@ -26,6 +26,8 @@ import {
 import { CustomComponentsProps, MarkdownInputProps, MarkdownLinkProps, MarkdownLiProps } from './types';
 import { useFileLogic } from '../Markdown/Files/Files.logic';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
+import { CheckboxCheckedIcon } from '../MarkdownIcons/CheckboxCheckedIcon';
+import { CheckboxUncheckedIcon } from '../MarkdownIcons/CheckboxUncheckedIcon';
 import { ThemeProvider } from '../styles/styled-components';
 import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
 
@@ -138,12 +140,7 @@ export const MarkdownViewer: FC<MarkdownViewerProps> = ({
   }
 
   function renderInput(props: MarkdownInputProps) {
-    return (
-      <>
-        <CheckBoxWrapper checked={props.checked} />
-        {props.children}
-      </>
-    );
+    return <CheckBoxWrapper>{props.checked ? <CheckboxCheckedIcon /> : <CheckboxUncheckedIcon />}</CheckBoxWrapper>;
   }
 
   function renderList(props: UnorderedListProps) {

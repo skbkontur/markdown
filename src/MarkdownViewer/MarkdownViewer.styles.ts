@@ -1,4 +1,3 @@
-import { Checkbox } from '@skbkontur/react-ui';
 import { CSSProperties } from 'react';
 
 import styled, { css } from '../styles/styled-components';
@@ -14,7 +13,11 @@ const baseVisuallyHiddenStyle = css`
   border: 0;
 `;
 
-export const CheckBoxWrapper = styled(Checkbox)``;
+export const CheckBoxWrapper = styled.span`
+  display: inline-flex;
+  align-items: baseline;
+  transform: translateX(-10%);
+`;
 
 export const Wrapper = styled.div`
   overflow-wrap: break-word;
