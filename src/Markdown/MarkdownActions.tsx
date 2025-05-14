@@ -5,7 +5,8 @@ import { COMMONMARK_HELP_URL } from './constants';
 import { EmojiData } from './Emoji/Emoji.logic';
 import { EmojiDropdown } from './Emoji/EmojiDropdown';
 import {
-  ActionsWrapper,
+  ActionsLeftWrapper,
+  ActionsRightWrapper,
   ButtonsWrapper,
   MarkdownActionsWrapper,
   MarkdownDropdown,
@@ -69,7 +70,7 @@ export const MarkdownActions: FC<Props> = ({
   return (
     <MarkdownActionsWrapper {...horizontalPaddings} width={width} fullscreen={fullscreen}>
       <ButtonsWrapper fullscreen={fullscreen}>
-        <ActionsWrapper>
+        <ActionsLeftWrapper>
           {!hideOptions?.heading && (
             <MarkdownDropdown>
               <Hint text="Заголовок" pos="top left">
@@ -156,8 +157,8 @@ export const MarkdownActions: FC<Props> = ({
               href={COMMONMARK_HELP_URL}
             />
           )}
-        </ActionsWrapper>
-        <ActionsWrapper>
+        </ActionsLeftWrapper>
+        <ActionsRightWrapper>
           {!hideOptions?.viewMode && renderViewModeButton()}
           {!hideOptions?.screenMode && !disableFullscreen && (
             <MarkdownFormatButton
@@ -167,7 +168,7 @@ export const MarkdownActions: FC<Props> = ({
               onClick={onClickFullscreen}
             />
           )}
-        </ActionsWrapper>
+        </ActionsRightWrapper>
       </ButtonsWrapper>
     </MarkdownActionsWrapper>
   );

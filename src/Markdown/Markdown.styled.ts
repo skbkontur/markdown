@@ -137,16 +137,15 @@ export const MarkdownActionsWrapper = styled.div<WrapperBaseProps & { fullscreen
 
 export const ButtonsWrapper = styled.div<{ fullscreen?: boolean }>`
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  margin: 0 -7px;
   border-bottom: ${p => (p.fullscreen ? `1px solid ${p.theme.colors.grayDefault}` : 'none')};
 `;
 
-export const ActionsWrapper = styled.div`
+export const ActionsRightWrapper = styled.div`
   display: flex;
-  align-items: center;
+`;
+
+export const ActionsLeftWrapper = styled(ActionsRightWrapper)`
   flex-wrap: wrap;
 `;
 
@@ -167,6 +166,10 @@ export const MarkdownButtonIcon = styled.div`
 `;
 
 export const MarkdownDropdown = styled.div`
+  display: flex;
+  align-items: end;
+  padding-bottom: 1px;
+
   button {
     font-size: ${p => p.theme.elementsFontSize};
   }
@@ -284,6 +287,8 @@ export const getMarkdownReactUiTheme = (
         menuItemPaddingY: '4px',
         menuItemPaddingX: '28px',
       }),
+      dropdownPaddingXSmall: '4px',
+      dropdownPaddingYSmall: '4px',
       tabColorHover: 'transparent',
       tabColorFocus: 'transparent',
       tabBorderWidth: '0',
