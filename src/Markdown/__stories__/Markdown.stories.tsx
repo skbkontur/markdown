@@ -153,9 +153,54 @@ export const WithoutHints: Story = args => {
       <Markdown
         {...args}
         withValidationWrapper
-        showShotKeys={false}
+        showActionHints={false}
+        showShortKeys={false}
         value={allVariantsMarkdownMock}
-        validationInfo={{ type: 'immediate', level: 'error', message: 'Сообщение валидации об ошибке в текстарии' }}
+        renderMessage={text('bottom')}
+      />
+    </ValidationContainer>
+  );
+};
+
+export const WithActionHint: Story = args => {
+  return (
+    <ValidationContainer>
+      <Markdown
+        {...args}
+        withValidationWrapper
+        showActionHints
+        showShortKeys={false}
+        value={allVariantsMarkdownMock}
+        renderMessage={text('bottom')}
+      />
+    </ValidationContainer>
+  );
+};
+
+export const WithShortKeyHint: Story = args => {
+  return (
+    <ValidationContainer>
+      <Markdown
+        {...args}
+        withValidationWrapper
+        showShortKeys
+        showActionHints={false}
+        value={allVariantsMarkdownMock}
+        renderMessage={text('bottom')}
+      />
+    </ValidationContainer>
+  );
+};
+
+export const WithActionAndShortKeyHints: Story = args => {
+  return (
+    <ValidationContainer>
+      <Markdown
+        {...args}
+        withValidationWrapper
+        showActionHints
+        showShortKeys
+        value={allVariantsMarkdownMock}
         renderMessage={text('bottom')}
       />
     </ValidationContainer>
