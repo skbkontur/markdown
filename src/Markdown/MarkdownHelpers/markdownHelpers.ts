@@ -119,7 +119,7 @@ export function createMarkdownHelpKeyDownHandler(
 
     const textareaNode = (ref.current as any).node as HTMLTextAreaElement;
 
-    const format = eventKeyCodeToMarkdownFormat[event.keyCode];
+    const format = eventKeyCodeToMarkdownFormat[event.code];
     const isLong = markdownFormatToShortKeyLong[format];
 
     if ((event.metaKey || event.ctrlKey) && (isLong ? event.shiftKey : true) && format) {
