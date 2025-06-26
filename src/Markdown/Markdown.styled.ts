@@ -177,6 +177,7 @@ export const MarkdownDropdown = styled.div`
 
 export const MarkdownSymbolWrapper = styled.span`
   color: ${p => p.theme.colors.brand};
+  font-weight: 700;
 `;
 
 export const MarkdownMenuItem = styled(MenuItem)`
