@@ -1,3 +1,4 @@
+import { KonturColors } from '@skbkontur/colors';
 import { THEME_2022 } from '@skbkontur/react-ui';
 import { createContext } from 'react';
 
@@ -14,14 +15,14 @@ export interface MarkdownTheme {
 
 export const DEFAULT_MARKDOWN_THEME: MarkdownTheme = {
   colors: {
-    text: '#222',
+    text: KonturColors.grayscaleText,
     brand: '#e76f57',
-    grayDefault: '#858585',
-    disabledButton: '#adadad',
-    panelBg: '#d6d6d6',
-    link: '#51adff',
+    grayDefault: KonturColors.grayscaleSecondaryText,
+    disabledButton: KonturColors.grayscaleDisabledText,
+    panelBg: KonturColors.grayscaleDarkBackground,
+    link: KonturColors.mainLinkTextBlue90,
     textInverse: '#fff',
-    emojiPickerBackgroundRGBColor: 'rgb(255,255,255, 0)',
+    emojiPickerBackgroundRGBColor: 'rgb(255, 255, 255, 0)',
   },
   elementsFontSize: '16px',
   elementsLineHeight: '24px',
@@ -32,12 +33,12 @@ export const DEFAULT_MARKDOWN_DARK_THEME: MarkdownTheme = {
   colors: {
     text: '#fff',
     brand: '#e76f57',
-    grayDefault: '#858585',
-    disabledButton: '#adadad',
-    panelBg: '#d6d6d6',
-    link: '#51adff',
-    textInverse: '#222',
-    emojiPickerBackgroundRGBColor: 'rgb(0,0,0,0)',
+    grayDefault: KonturColors.grayscaleSecondaryText,
+    disabledButton: KonturColors.grayscaleDisabledText,
+    panelBg: KonturColors.grayscaleDarkBackground,
+    link: KonturColors.mainLinkTextBlue90,
+    textInverse: KonturColors.grayscaleText,
+    emojiPickerBackgroundRGBColor: 'rgb(0, 0, 0, 0)',
   },
   elementsFontSize: '16px',
   elementsLineHeight: '24px',
