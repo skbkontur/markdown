@@ -1,5 +1,5 @@
 import { Button } from '@skbkontur/react-ui';
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react';
 import rehypeKatex from 'rehype-katex';
