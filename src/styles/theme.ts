@@ -16,7 +16,7 @@ export interface MarkdownTheme {
 export const DEFAULT_MARKDOWN_THEME: MarkdownTheme = {
   colors: {
     text: KonturColors.grayscaleText,
-    brand: '#e76f57',
+    brand: KonturColors.mainLinkShapeBlue60,
     grayDefault: KonturColors.grayscaleSecondaryText,
     disabledButton: KonturColors.grayscaleDisabledText,
     panelBg: KonturColors.grayscaleDarkBackground,
@@ -32,7 +32,7 @@ export const DEFAULT_MARKDOWN_THEME: MarkdownTheme = {
 export const DEFAULT_MARKDOWN_DARK_THEME: MarkdownTheme = {
   colors: {
     text: '#fff',
-    brand: '#e76f57',
+    brand: KonturColors.mainLinkShapeBlue60,
     grayDefault: KonturColors.grayscaleSecondaryText,
     disabledButton: KonturColors.grayscaleDisabledText,
     panelBg: KonturColors.grayscaleDarkBackground,
