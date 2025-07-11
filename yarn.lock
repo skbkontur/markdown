@@ -3317,11 +3317,6 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@skbkontur/colors@^1.0.0":
-  version "1.1.1"
-  resolved "https://nexus.kontur.host/repository/kontur-npm-group/@skbkontur/colors/-/colors-1.1.1.tgz#db3704c7282c71a39fef05101249098d46dd2f90"
-  integrity sha512-EZHBuS0m7pxOLWYaQ7pAMHGqkYEEOUqNFwL3+0EAqY8jev9DFKzP1R9/xuL8kv/KICIHgVdLlaaPFlcoCTfwwA==
-
 "@skbkontur/global-object@^0.4.2":
   version "0.4.4"
   resolved "https://nexus.kontur.host/repository/kontur-npm-group/@skbkontur/global-object/-/global-object-0.4.4.tgz#216f2b8370547ccc2bf1af63f68b80207714a777"

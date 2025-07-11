@@ -52,12 +52,10 @@
   "peerDependencies": {
     "@skbkontur/react-ui": ">=4.5.0",
     "@skbkontur/react-ui-validations": ">=1.12.0",
-    "@skbkontur/colors": ">=1.0.0",
     "react": ">=18",
     "react-dom": ">=18"
   },
   "devDependencies": {
-    "@skbkontur/colors": "^1.0.0",
     "@skbkontur/react-ui": "^4.14.0",
     "@skbkontur/react-ui-validations": "^1.12.0",
     "@storybook/addon-a11y": "8.2.8",
