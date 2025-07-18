@@ -19,7 +19,7 @@
 #### Props
 
 | prop                    | type                                                                      | default   | description                                                                         |
-| ----------------------- | ------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------- |
+|-------------------------|---------------------------------------------------------------------------|-----------|-------------------------------------------------------------------------------------|
 | api?                    | MarkdownApi                                                               | undefined | Методы апи для загрузки/скачивания файлов и меншена                                 |
 | fileApiUrl?             | string                                                                    | undefined | Url апи для файлов                                                                  |
 | profileUrl?             | string                                                                    | undefined | Url для профиля сотрудника                                                          |
@@ -27,11 +27,13 @@
 | panelHorizontalPadding? | number                                                                    | undefined | Padding markdownActions (кнопки помощи форматирования текста), включает режим panel |
 | renderFilesValidation?  | (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode | undefined | Render валидации файла, если она нужна, максимальный размер файла = 10mb            |
 | hideActionsOptions      | object (HideActionsOptions)                                               | undefined | Скрыть отдельные кнопки на панели действий                                          |
+| showActionHints         | boolean                                                                   | true      | Показывать подсказки к действиям                                                    |
+| showShortKeys           | boolean                                                                   | true      | Показывать сочетания клавиш для действия в хинте                                    |
 
 #### MarkdownApi
 
 | prop             | type                               | default   | description                              |
-| ---------------- | ---------------------------------- | --------- | ---------------------------------------- |
+|------------------|------------------------------------|-----------|------------------------------------------|
 | fileDownloadApi? | (id: string) => Promise<File>      | undefined | Метод для загрузки файла                 |
 | fileUploadApi?   | (file: File) => Promise<RefItem>   | undefined | Метод для скачивания файла               |
 | getUsersApi?     | (query: string) => Promise<User[]> | undefined | Метод для получения списка пользователей |
@@ -39,14 +41,14 @@
 #### HorizontalPaddings
 
 | prop               | type   | default   |
-| ------------------ | ------ | --------- |
+|--------------------|--------|-----------|
 | fullscreenPadding? | number | undefined |
 | panelPadding?      | nmber  | undefined |
 
 #### MarkdownTheme
 
 | prop                        | type        | description                                                                                                        |
-| --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
+|-----------------------------|-------------|--------------------------------------------------------------------------------------------------------------------|
 | colors                      | ColorScheme | Цветовая схема                                                                                                     |
 | elementsFontSize            | string      | font-size переменных темы react-ui: tabFontSize, btnFontSizeSmall, hintFontSize, checkboxBoxSize, menuItemFontSize |
 | elementsLineHeight          | string      | line-height переменных темы react-ui: tabLineHeight                                                                |
@@ -57,7 +59,7 @@
 #### ColorScheme
 
 | prop           | type   | description                                                            |
-| -------------- | ------ | ---------------------------------------------------------------------- |
+|----------------|--------|------------------------------------------------------------------------|
 | brand          | string | Цвет сервиса                                                           |
 | disabledButton | string | Цвет текста кнопки для переменной btnDisabledTextColor                 |
 | grayDefault    | string | Основной серый цвет, используется в кнопках, чекбоксах, иконках и т.д. |

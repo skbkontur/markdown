@@ -19,6 +19,7 @@ export const MarkdownFormatButton: FC<Props> = ({
   disabled,
   text,
   href,
+  showActionHint,
   showShortKey,
 }) => {
   const button = (
@@ -35,15 +36,18 @@ export const MarkdownFormatButton: FC<Props> = ({
     button
   );
 
-  if (!showShortKey) return content;
+  if (!showActionHint && !showShortKey) return content;
+
+  const actualHintText = showActionHint && hintText;
+
+  const hintComponent = format ? (
+    <MarkdownCombination format={format} text={actualHintText} showShortKey={showShortKey} />
+  ) : (
+    actualHintText
+  );
 
   return (
-    <Hint
-      manual={disabled}
-      text={format ? <MarkdownCombination format={format} text={hintText} /> : hintText}
-      pos="top center"
-      maxWidth={360}
-    >
+    <Hint manual={disabled} text={hintComponent} pos="top center" maxWidth={360}>
       {content}
     </Hint>
   );

@@ -15,20 +15,19 @@ const newLinesRegexp = /([\n\r]+)/g;
 const spacesMatchRegexp = /\s/gm;
 const spacesSplitRegexp = /(\s+)/;
 
-export const eventKeyCodeToMarkdownFormat: { [key: number]: MarkdownFormat } = {
-  50: MarkdownFormat.h2,
-  51: MarkdownFormat.h3,
-  52: MarkdownFormat.h4,
-  66: MarkdownFormat.bold,
-  73: MarkdownFormat.italic,
-  83: MarkdownFormat.crossed,
-  75: MarkdownFormat.ref,
-  76: MarkdownFormat.list,
-  68: MarkdownFormat.checkedList,
-  78: MarkdownFormat.numberedList,
-  67: MarkdownFormat.codeBlock,
-  81: MarkdownFormat.quote,
-  80: MarkdownFormat.image,
+export const eventKeyCodeToMarkdownFormat: { [key: string]: MarkdownFormat } = {
+  Digit2: MarkdownFormat.h2,
+  Digit3: MarkdownFormat.h3,
+  Digit4: MarkdownFormat.h4,
+  KeyB: MarkdownFormat.bold,
+  KeyI: MarkdownFormat.italic,
+  KeyS: MarkdownFormat.crossed,
+  KeyK: MarkdownFormat.ref,
+  KeyP: MarkdownFormat.list,
+  KeyD: MarkdownFormat.checkedList,
+  KeyO: MarkdownFormat.numberedList,
+  KeyC: MarkdownFormat.codeBlock,
+  KeyQ: MarkdownFormat.quote,
 };
 
 export const markdownFormatToShortKeyLong: Partial<{ [key in MarkdownFormat]: string }> = {
@@ -36,12 +35,11 @@ export const markdownFormatToShortKeyLong: Partial<{ [key in MarkdownFormat]: st
   [MarkdownFormat.h3]: '3',
   [MarkdownFormat.h4]: '4',
   [MarkdownFormat.crossed]: 'S',
-  [MarkdownFormat.list]: 'L',
+  [MarkdownFormat.list]: 'P',
   [MarkdownFormat.checkedList]: 'D',
-  [MarkdownFormat.numberedList]: 'N',
+  [MarkdownFormat.numberedList]: 'O',
   [MarkdownFormat.codeBlock]: 'C',
   [MarkdownFormat.quote]: 'Q',
-  [MarkdownFormat.image]: 'P',
 };
 
 export const markdownFormatToShortKeyShort: Partial<{ [key in MarkdownFormat]: string }> = {

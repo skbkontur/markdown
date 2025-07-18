@@ -66,7 +66,14 @@ export interface MarkdownProps extends MarkdownEditorProps {
   profileUrl?: string;
   /** Render валидации файла, если она нужна, максимальный размер файла = 10mb */
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
-  /** Показывать шорткеи (убирает хинты действий и подсказки) */
+  /** Показывать подсказки к действиям */
+  showActionHints?: boolean;
+  /** Показывать сочетания клавиш для действия в хинте */
+  showShortKeys?: boolean;
+
+  /** Показывать шорткеи (убирает хинты действий и подсказки)
+   * @deprecated используй {@link showActionHints} и {@link showShortKeys}
+   * */
   showShotKeys?: boolean;
 }
 
@@ -82,6 +89,8 @@ export const Markdown: FC<MarkdownProps> = props => {
     profileUrl,
     api,
     borderless,
+    showActionHints,
+    showShortKeys,
     showShotKeys = true,
     hideActionsOptions,
     onChangeViewMode,
@@ -158,7 +167,8 @@ export const Markdown: FC<MarkdownProps> = props => {
       <Wrapper {...getRootProps()}>
         {!hideActionsOptions?.allActions && (
           <MarkdownActions
-            showShortKeys={showShotKeys}
+            showActionHints={showActionHints !== undefined ? showActionHints : showShotKeys}
+            showShortKeys={showShortKeys !== undefined ? showShortKeys : showShotKeys}
             textAreaRef={textareaRef}
             width={width}
             viewMode={viewMode}

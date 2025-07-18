@@ -41,6 +41,32 @@ kind('Markdown', () => {
     });
   });
 
+  for (const storyName of ['WithoutHints', 'WithActionHint', 'WithShortKeyHint', 'WithActionAndShortKeyHints']) {
+    story(storyName, ({ setStoryParameters }) => {
+      setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
+
+      test('hint', async function () {
+        const buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+        const boldButton = buttons[1];
+        const boldButtonLocation = await boldButton.getRect();
+
+        await this.browser
+          .actions()
+          .move({
+            x: Math.ceil(boldButtonLocation.x + boldButtonLocation.width / 2),
+            y: Math.ceil(boldButtonLocation.y + boldButtonLocation.height / 2),
+          })
+          .perform();
+
+        await this.browser.sleep(500);
+
+        const hint = await this.captureElement?.takeScreenshot();
+
+        await this.expect({ hint }).to.matchImages();
+      });
+    });
+  }
+
   story('Editable', ({ setStoryParameters }) => {
     setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
 

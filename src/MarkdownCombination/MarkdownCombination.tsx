@@ -23,7 +23,7 @@ export const MarkdownCombination: FC<Props> = ({ format, text, showShortKey }) =
       {theme => (
         <ThemeProvider theme={theme ?? DEFAULT_MARKDOWN_THEME}>
           <HintContentWrapper>
-            <span>{text}</span>
+            {text && <span>{text}</span>}
             {showShortKey && !!shortKey && renderHint()}
           </HintContentWrapper>
         </ThemeProvider>

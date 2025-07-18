@@ -9,12 +9,11 @@ import {
 import { createGlobalStyle, ThemeProvider } from '../src/styles/styled-components';
 import { THEME_2022, THEME_2022_DARK } from '@skbkontur/react-ui';
 
-const style: CSSProperties = { padding: 4, boxSizing: 'border-box' };
+const style: CSSProperties = { padding: 32, boxSizing: 'border-box' };
 
 const GlobalStyles = createGlobalStyle`
   body {
-    font-family: "Lab Grotesque", -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: "Lab Grotesque K", "Lab Grotesque", system-ui, sans-serif;
 
     background: ${p => (p.theme.themeMode === 'light' ? '#fff' : '#2f2f2f')};
   }

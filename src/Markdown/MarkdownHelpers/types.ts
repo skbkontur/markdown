@@ -7,5 +7,6 @@ export interface MarkdownButtonProps {
   disabled?: boolean;
   isLoading?: boolean;
   onClick?: (event: SyntheticEvent) => void;
+  showActionHint?: boolean;
   showShortKey?: boolean;
 }

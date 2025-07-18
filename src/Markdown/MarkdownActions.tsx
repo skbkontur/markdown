@@ -32,6 +32,7 @@ interface Props {
   onClickFullscreen: () => void;
   onOpenFileDialog: () => void;
   onSelectEmoji: (emoji: EmojiData) => void;
+  showActionHints: boolean;
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
@@ -59,6 +60,7 @@ export const MarkdownActions: FC<Props> = ({
   horizontalPaddings,
   hasFilesApi,
   width,
+  showActionHints,
   showShortKeys,
   hideOptions,
   onSelectEmoji,
@@ -93,6 +95,7 @@ export const MarkdownActions: FC<Props> = ({
             return (
               <MarkdownFormatButton
                 key={idx}
+                showActionHint={showActionHints}
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
@@ -109,6 +112,7 @@ export const MarkdownActions: FC<Props> = ({
             return (
               <MarkdownFormatButton
                 key={idx}
+                showActionHint={showActionHints}
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
@@ -125,6 +129,7 @@ export const MarkdownActions: FC<Props> = ({
             return (
               <MarkdownFormatButton
                 key={idx}
+                showActionHint={showActionHints}
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
@@ -138,6 +143,7 @@ export const MarkdownActions: FC<Props> = ({
           {hasFilesApi && !hideOptions?.file && (
             <MarkdownFormatButton
               hintText="Прикрепить файл"
+              showActionHint={showActionHints}
               showShortKey={showShortKeys}
               disabled={isPreviewMode}
               isLoading={loadingFile}
@@ -181,6 +187,7 @@ export const MarkdownActions: FC<Props> = ({
             icon={<SplitView />}
             hintText="Сплит"
             text="Сплит"
+            showActionHint={showActionHints}
             showShortKey={showShortKeys}
             onClick={() => onChangeViewMode(ViewMode.Split)}
           />
@@ -190,6 +197,7 @@ export const MarkdownActions: FC<Props> = ({
             icon={<ToolPencil />}
             hintText="Редактор"
             text="Редактор"
+            showActionHint={showActionHints}
             showShortKey={showShortKeys}
             onClick={() => onChangeViewMode(ViewMode.Edit)}
           />
@@ -199,6 +207,7 @@ export const MarkdownActions: FC<Props> = ({
             icon={<EyeOpen />}
             hintText="Превью"
             text="Превью"
+            showActionHint={showActionHints}
             showShortKey={showShortKeys}
             onClick={() => onChangeViewMode(ViewMode.Preview)}
           />
