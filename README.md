@@ -29,6 +29,7 @@
 | hideActionsOptions      | object (HideActionsOptions)                                               | undefined | Скрыть отдельные кнопки на панели действий                                          |
 | showActionHints         | boolean                                                                   | true      | Показывать подсказки к действиям                                                    |
 | showShortKeys           | boolean                                                                   | true      | Показывать сочетания клавиш для действия в хинте                                    |
+| onChangeViewMode?       | (mode: ViewMode) => void                                                  | true      | Callback изменения режима редактирования или просмотра                              |
 
 #### MarkdownApi
 
@@ -58,11 +59,14 @@
 
 #### ColorScheme
 
-| prop           | type   | description                                                            |
-|----------------|--------|------------------------------------------------------------------------|
-| brand          | string | Цвет сервиса                                                           |
-| disabledButton | string | Цвет текста кнопки для переменной btnDisabledTextColor                 |
-| grayDefault    | string | Основной серый цвет, используется в кнопках, чекбоксах, иконках и т.д. |
-| link           | string | Цвет ссылок                                                            |
-| panelBg        | string | Цвет панели, в режиме panel                                            |
-| white          | string | Белый цвет                                                             |
+| prop                          | type   | description                                                            |
+|-------------------------------|--------|------------------------------------------------------------------------|
+| brand                         | string | Цвет сервиса                                                           |
+| disabledButton                | string | Цвет текста кнопки для переменной btnDisabledTextColor                 |
+| grayDefault                   | string | Основной серый цвет, используется в кнопках, чекбоксах, иконках и т.д. |
+| link                          | string | Цвет ссылок                                                            |
+| panelBg                       | string | Цвет панели, в режиме panel                                            |
+| text                          | string | Цвет текста                                                            |
+| textInverse                   | string | Инвертированный цвет текста (text: black --> inverseText: white)       |
+| emojiPickerBackgroundRGBColor | string | Цвет фона emoji-picker (RGB)                                           |
+| emojiPickerBackgroundRGBColor | string | Цвет фона emoji-picker (RGB)                                           |
