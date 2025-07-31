@@ -44,7 +44,7 @@
 | prop               | type   | default   |
 |--------------------|--------|-----------|
 | fullscreenPadding? | number | undefined |
-| panelPadding?      | nmber  | undefined |
+| panelPadding?      | number | undefined |
 
 #### MarkdownTheme
 
@@ -68,5 +68,4 @@
 | panelBg                       | string | Цвет панели, в режиме panel                                            |
 | text                          | string | Цвет текста                                                            |
 | textInverse                   | string | Инвертированный цвет текста (text: black --> inverseText: white)       |
-| emojiPickerBackgroundRGBColor | string | Цвет фона emoji-picker (RGB)                                           |
 | emojiPickerBackgroundRGBColor | string | Цвет фона emoji-picker (RGB)                                           |
