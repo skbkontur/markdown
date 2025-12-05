@@ -100,7 +100,7 @@ export const AIActionsDropdown: FC<Props> = ({
   }
 
   function handleSetText() {
-    if (!isNaN(Number(selectionStart)) || !isNaN(Number(selectionEnd))) return null;
+    if (isNaN(Number(selectionStart)) || isNaN(Number(selectionEnd))) return null;
 
     if (textAreaRef?.current) {
       textAreaRef.current.focus();
