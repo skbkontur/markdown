@@ -47,22 +47,6 @@ export function setMarkdown(
   }
 }
 
-export function setMarkdown2(
-  textareaNode: HTMLTextAreaElement,
-  text: string,
-  format: MarkdownFormat,
-  selectionStart: number,
-  selectionEnd?: number | null,
-) {
-  const prevCommentPart = text.substring(selectionStart, selectionEnd ?? undefined);
-  const { value, spaces } = checkSpaceSymbol(prevCommentPart, 1);
-  const nextCommentPart = value + spaces;
-
-  document.execCommand('insertText', false, nextCommentPart);
-
-  setTextareaCursor(format, prevCommentPart.length, nextCommentPart.length, textareaNode, selectionEnd);
-}
-
 export function setMarkdownFiles(
   file: RefItem,
   textarea: Textarea,
