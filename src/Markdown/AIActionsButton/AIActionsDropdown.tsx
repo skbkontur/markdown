@@ -69,7 +69,7 @@ export const AIActionsDropdown: FC<Props> = ({
     if (requestStatus === RequestStatus.isFetching) return <Spinner caption="Обрабатываем" type="mini" />;
 
     return (
-      <div>
+      <div style={{ maxWidth: 300, display: 'flex', gap: 16, flexDirection: 'column' }}>
         <div>{processedText}</div>
         <Button onClick={handleSetText}>Заменить текст</Button>
       </div>
@@ -92,7 +92,7 @@ export const AIActionsDropdown: FC<Props> = ({
 
       if (response && taskId === taskIdRef.current.generated) {
         setRequestStatus(RequestStatus.isLoaded);
-        setProcessedText('Привет');
+        setProcessedText(response);
       }
     } catch (e) {
       Toast.push('Ошибка обработки текста');
