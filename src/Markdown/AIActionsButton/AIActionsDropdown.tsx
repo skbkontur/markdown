@@ -15,8 +15,6 @@ interface Props {
   selectionStart?: Nullable<number>;
 }
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 export const AIActionsDropdown: FC<Props> = ({
   selectionStart,
   selectionEnd,
@@ -85,8 +83,6 @@ export const AIActionsDropdown: FC<Props> = ({
       setRequestStatus(RequestStatus.isFetching);
 
       const value = htmlTextArea.value.substring(Number(selectionStart), selectionEnd ?? undefined);
-
-      await delay(3000);
 
       const response = await AIApi(value, method);
 
