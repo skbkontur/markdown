@@ -34,6 +34,8 @@ export interface User {
 }
 
 export interface MarkdownApi {
+  /** Метод для обработки текста с помощью ИИ */
+  AIApi?: (query: string, method: string) => Promise<string>;
   /** Метод для загрузки файла */
   fileDownloadApi?: (id: string) => Promise<File>;
   /** Метод для скачивания файла */

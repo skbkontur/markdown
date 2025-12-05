@@ -1,6 +1,7 @@
 import { Dropdown, Hint, Textarea } from '@skbkontur/react-ui';
 import React, { FC, RefObject, SyntheticEvent } from 'react';
 
+import { AIActionsDropdown } from './AIActionsButton/AIActionsDropdown';
 import { COMMONMARK_HELP_URL } from './constants';
 import { EmojiData } from './Emoji/Emoji.logic';
 import { EmojiDropdown } from './Emoji/EmojiDropdown';
@@ -36,6 +37,8 @@ interface Props {
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
+  AIApi?: (query: string, method: string) => Promise<string>;
+  availableAIMethods?: string[];
   disableFullscreen?: boolean;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
@@ -66,6 +69,8 @@ export const MarkdownActions: FC<Props> = ({
   onSelectEmoji,
   isSplitViewAvailable,
   disableFullscreen,
+  availableAIMethods,
+  AIApi,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
@@ -161,6 +166,16 @@ export const MarkdownActions: FC<Props> = ({
               icon={<DocIcon />}
               text="Документация Markdown"
               href={COMMONMARK_HELP_URL}
+            />
+          )}
+          {!hideOptions?.heading && !!availableAIMethods?.length && !!AIApi && (
+            <AIActionsDropdown
+              textAreaRef={textAreaRef}
+              isPreviewMode={isPreviewMode}
+              selectionStart={selectionStart}
+              selectionEnd={selectionEnd}
+              availableAIMethods={availableAIMethods}
+              AIApi={AIApi}
             />
           )}
         </ActionsLeftWrapper>

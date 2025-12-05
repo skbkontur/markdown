@@ -48,8 +48,10 @@ import { ThemeProvider } from '../styles/styled-components';
 import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
 
 export interface MarkdownProps extends MarkdownEditorProps {
-  /** Методы апи для загрузки/скачивания файлов и меншена */
+  /** Методы апи для загрузки/скачивания файлов, меншена, ИИ */
   api?: MarkdownApi;
+  /** Доступные методы ИИ апи */
+  availableAIMethods?: string[];
   /** Режим прозрачной рамки у Textarea */
   borderless?: boolean;
   /** Url апи для файлов  */
@@ -68,6 +70,7 @@ export interface MarkdownProps extends MarkdownEditorProps {
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
   /** Показывать подсказки к действиям */
   showActionHints?: boolean;
+
   /** Показывать сочетания клавиш для действия в хинте */
   showShortKeys?: boolean;
 
@@ -79,6 +82,7 @@ export interface MarkdownProps extends MarkdownEditorProps {
 
 export const Markdown: FC<MarkdownProps> = props => {
   const {
+    availableAIMethods,
     panelHorizontalPadding,
     onClick,
     onChange,
@@ -181,6 +185,8 @@ export const Markdown: FC<MarkdownProps> = props => {
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             isSplitViewAvailable={isSplitViewAvailable}
             disableFullscreen={isMobile}
+            availableAIMethods={availableAIMethods}
+            AIApi={api?.AIApi}
             onOpenFileDialog={open}
             onChangeViewMode={handleChangeViewMode}
             onClickFullscreen={handleClickFullscreen}
@@ -322,6 +328,8 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   function listenSelection(event: SyntheticEvent<HTMLTextAreaElement, Event>) {
     const { selectionStart: textSelectionStart, selectionEnd: textSelectionEnd } = event.currentTarget;
+
+    console.log('textSelectionStart', textSelectionStart);
 
     setSelectionStart(textSelectionStart);
     setSelectionEnd(textSelectionEnd);

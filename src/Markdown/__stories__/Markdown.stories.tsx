@@ -1,7 +1,7 @@
 import { Modal, SizeProp } from '@skbkontur/react-ui';
 import { text, ValidationContainer } from '@skbkontur/react-ui-validations';
 import { Meta, StoryFn } from '@storybook/react';
-import React, { CSSProperties, useState } from 'react';
+import { CSSProperties, useState } from 'react';
 
 import { a11yRules } from '../../../a11y/rules';
 import { MarkdownViewer } from '../../MarkdownViewer';
@@ -37,6 +37,7 @@ type Story = StoryFn<typeof Markdown>;
 const apiMock: MarkdownApi = {
   fileDownloadApi: () => new Promise<File>(resolve => resolve(new File(['a'], 'test.txt'))),
   fileUploadApi: () => new Promise<RefItem>(resolve => resolve({ id: 'i', caption: 'test.txt' })),
+  AIApi: () => new Promise<string>(resolve => resolve('Привет, как дела?')),
   getUsersApi: () =>
     new Promise<User[]>(resolve =>
       resolve([
@@ -76,6 +77,7 @@ export const Editable: Story = args => {
       api={apiMock}
       fileApiUrl="/api/file/download"
       value={value}
+      availableAIMethods={['Исправить ошибки', 'Другими словами']}
       maxLength={50000}
       onValueChange={setValue}
     />
