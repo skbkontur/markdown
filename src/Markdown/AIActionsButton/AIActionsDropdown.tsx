@@ -2,13 +2,13 @@ import { Button, Dropdown, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbk
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import { MarkdownDropdown, MarkdownMenuItem } from '../Markdown.styled';
-import { Nullable } from '../types';
+import { AIMethod, Nullable } from '../types';
 import { Guid } from '../utils/guid';
 import { RequestStatus } from '../utils/requestStatus';
 
 interface Props {
   AIApi: (query: string, type: string) => Promise<string>;
-  availableAIMethods: string[];
+  availableAIMethods: AIMethod[];
   textAreaRef: RefObject<Textarea>;
   isPreviewMode?: boolean;
   selectionEnd?: Nullable<number>;
@@ -41,7 +41,7 @@ export const AIActionsDropdown: FC<Props> = ({
     <MarkdownDropdown onMouseDown={e => e.preventDefault()}>
       <Hint text="Заголовок" pos="top left">
         <Dropdown disablePortal disabled={isPreviewMode} menuWidth={180} caption="AI" onOpen={handleCloseTooltip}>
-          {availableAIMethods.map(method => (
+          {availableAIMethods.map(({ method, caption }) => (
             <MarkdownMenuItem
               key={method}
               onClick={() => {
@@ -49,7 +49,7 @@ export const AIActionsDropdown: FC<Props> = ({
                 handleProcessText(method);
               }}
             >
-              {method}
+              {caption}
             </MarkdownMenuItem>
           ))}
         </Dropdown>

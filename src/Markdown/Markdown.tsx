@@ -40,7 +40,7 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Token, ViewMode } from './types';
+import { AIMethod, HideActionsOptions, HorizontalPaddings, MarkdownApi, Token, ViewMode } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
@@ -51,7 +51,7 @@ export interface MarkdownProps extends MarkdownEditorProps {
   /** Методы апи для загрузки/скачивания файлов, меншена, ИИ */
   api?: MarkdownApi;
   /** Доступные методы ИИ апи */
-  availableAIMethods?: string[];
+  availableAIMethods?: AIMethod[];
   /** Режим прозрачной рамки у Textarea */
   borderless?: boolean;
   /** Url апи для файлов  */

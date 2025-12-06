@@ -17,7 +17,7 @@ import { MarkdownFormat } from './MarkdownFormat';
 import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
-import { HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from './types';
+import { AIMethod, HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from './types';
 import { MarkdownCombination } from '../MarkdownCombination/MarkdownCombination';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
 import { Collapse } from '../MarkdownIcons/Collapse';
@@ -38,7 +38,7 @@ interface Props {
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
   AIApi?: (query: string, method: string) => Promise<string>;
-  availableAIMethods?: string[];
+  availableAIMethods?: AIMethod[];
   disableFullscreen?: boolean;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
