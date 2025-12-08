@@ -165,16 +165,6 @@ export const MarkdownButtonIcon = styled.div`
   justify-content: center;
 `;
 
-export const MarkdownDropdown = styled.div`
-  display: flex;
-  align-items: end;
-  padding-bottom: 1px;
-
-  button {
-    font-size: ${p => p.theme.elementsFontSize};
-  }
-`;
-
 export const MarkdownSymbolWrapper = styled.span`
   color: ${p => p.theme.colors.brand};
   font-weight: 700;

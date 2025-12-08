@@ -29,7 +29,7 @@ import {
   SplitViewPreviewContainer,
   Wrapper,
 } from './Markdown.styled';
-import { MarkdownActions } from './MarkdownActions';
+import { MarkdownActions } from './MarkdownActions/MarkdownActions';
 import { MarkdownEditor, MarkdownEditorProps } from './MarkdownEditor';
 import { EmptyPreview } from './MarkdownHelpers/EmptyPreview';
 import { usePasteFromClipboard } from './MarkdownHelpers/markdownHelpers';

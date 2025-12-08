@@ -1,31 +1,31 @@
-import { Dropdown, Hint, Textarea } from '@skbkontur/react-ui';
+import { Textarea } from '@skbkontur/react-ui';
 import React, { FC, RefObject, SyntheticEvent } from 'react';
 
-import { AIActionsDropdown } from './AIActionsButton/AIActionsDropdown';
-import { COMMONMARK_HELP_URL } from './constants';
-import { EmojiData } from './Emoji/Emoji.logic';
-import { EmojiDropdown } from './Emoji/EmojiDropdown';
+import { AIActionsDropdown } from './AIActionsDropdown/AIActionsDropdown';
+import { MarkdownDropdown } from './MarkdownDropdown/MarkdownDropdown';
+import { MarkdownCombination } from '../../MarkdownCombination/MarkdownCombination';
+import { AttachPaperclip } from '../../MarkdownIcons/AttachPaperclip';
+import { Collapse } from '../../MarkdownIcons/Collapse';
+import { DocIcon } from '../../MarkdownIcons/DocIcon';
+import { Expand } from '../../MarkdownIcons/Expand';
+import { EyeOpen } from '../../MarkdownIcons/EyeOpen';
+import { SplitView } from '../../MarkdownIcons/SplitView';
+import { ToolPencil } from '../../MarkdownIcons/ToolPencil';
+import { COMMONMARK_HELP_URL } from '../constants';
+import { EmojiData } from '../Emoji/Emoji.logic';
+import { EmojiDropdown } from '../Emoji/EmojiDropdown';
 import {
   ActionsLeftWrapper,
   ActionsRightWrapper,
   ButtonsWrapper,
   MarkdownActionsWrapper,
-  MarkdownDropdown,
   MarkdownMenuItem,
-} from './Markdown.styled';
-import { MarkdownFormat } from './MarkdownFormat';
-import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
-import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
-import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
-import { AIMethod, HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from './types';
-import { MarkdownCombination } from '../MarkdownCombination/MarkdownCombination';
-import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
-import { Collapse } from '../MarkdownIcons/Collapse';
-import { DocIcon } from '../MarkdownIcons/DocIcon';
-import { Expand } from '../MarkdownIcons/Expand';
-import { EyeOpen } from '../MarkdownIcons/EyeOpen';
-import { SplitView } from '../MarkdownIcons/SplitView';
-import { ToolPencil } from '../MarkdownIcons/ToolPencil';
+} from '../Markdown.styled';
+import { MarkdownFormat } from '../MarkdownFormat';
+import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
+import { setMarkdown } from '../MarkdownHelpers/markdownHelpers';
+import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from '../MarkdownHelpItems';
+import { AIMethod, HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from '../types';
 
 interface Props {
   horizontalPaddings: HorizontalPaddings;
@@ -79,19 +79,15 @@ export const MarkdownActions: FC<Props> = ({
       <ButtonsWrapper fullscreen={fullscreen}>
         <ActionsLeftWrapper>
           {!hideOptions?.heading && (
-            <MarkdownDropdown>
-              <Hint text="Заголовок" pos="top left">
-                <Dropdown disablePortal disabled={isPreviewMode} menuWidth={300} caption="H">
-                  {markdownHelpHeaders.map((helper, idx) => (
-                    <MarkdownMenuItem
-                      key={idx}
-                      onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
-                    >
-                      <MarkdownCombination showShortKey={showShortKeys} format={helper.format} text={helper.node} />
-                    </MarkdownMenuItem>
-                  ))}
-                </Dropdown>
-              </Hint>
+            <MarkdownDropdown caption="H" hintText="Заголовок" isPreviewMode={isPreviewMode}>
+              {markdownHelpHeaders.map((helper, idx) => (
+                <MarkdownMenuItem
+                  key={idx}
+                  onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
+                >
+                  <MarkdownCombination showShortKey={showShortKeys} format={helper.format} text={helper.node} />
+                </MarkdownMenuItem>
+              ))}
             </MarkdownDropdown>
           )}
           {markdownHelpText.map((helper, idx) => {
@@ -168,14 +164,14 @@ export const MarkdownActions: FC<Props> = ({
               href={COMMONMARK_HELP_URL}
             />
           )}
-          {!hideOptions?.heading && !!availableAIMethods?.length && !!AIApi && (
+          {!hideOptions?.AI && !!availableAIMethods?.length && !!AIApi && (
             <AIActionsDropdown
-              textAreaRef={textAreaRef}
+              textareaRef={textAreaRef}
               isPreviewMode={isPreviewMode}
               selectionStart={selectionStart}
               selectionEnd={selectionEnd}
-              availableAIMethods={availableAIMethods}
-              AIApi={AIApi}
+              availableMethods={availableAIMethods}
+              api={AIApi}
             />
           )}
         </ActionsLeftWrapper>
