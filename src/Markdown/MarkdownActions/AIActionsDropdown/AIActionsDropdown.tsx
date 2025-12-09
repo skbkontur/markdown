@@ -2,6 +2,7 @@ import { Button, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import { TooltipWrapper } from './AIActionsDropdown.styled';
+import { ERROR_NOT_FOUND_TEXT } from './constants';
 import { MarkdownMenuItem } from '../../Markdown.styled';
 import { AIMethod, Nullable } from '../../types';
 import { Guid } from '../../utils/guid';
@@ -67,7 +68,7 @@ export const AIActionsDropdown: FC<Props> = ({
     return (
       <TooltipWrapper>
         <div>{processedText}</div>
-        <Button onClick={handleSetText}>Заменить текст</Button>
+        {processedText !== ERROR_NOT_FOUND_TEXT && <Button onClick={handleSetText}>Заменить текст</Button>}
       </TooltipWrapper>
     );
   }
@@ -86,7 +87,7 @@ export const AIActionsDropdown: FC<Props> = ({
 
       if (response && taskId === taskIdRef.current.generated) {
         setRequestStatus(RequestStatus.isLoaded);
-        setProcessedText(response);
+        setProcessedText(value === response ? ERROR_NOT_FOUND_TEXT : response);
       }
     } catch (e) {
       Toast.push('Ошибка обработки текста');
