@@ -1,8 +1,9 @@
-import { Button, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
+import { Button, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
-import { TooltipWrapper } from './AIActionsDropdown.styled';
-import { ERROR_NOT_FOUND_TEXT } from './constants';
+import { TooltipButtonsWrapper, TooltipWrapper } from './AIActionsDropdown.styled';
+import { COPY_BUTTON_TEXT, ERROR_NOT_FOUND_TEXT } from './constants';
+import { Copy } from '../../../MarkdownIcons/Copy';
 import { MarkdownMenuItem } from '../../Markdown.styled';
 import { AIMethod, Nullable } from '../../types';
 import { Guid } from '../../utils/guid';
@@ -68,7 +69,14 @@ export const AIActionsDropdown: FC<Props> = ({
     return (
       <TooltipWrapper>
         <div>{processedText}</div>
-        {processedText !== ERROR_NOT_FOUND_TEXT && <Button onClick={handleSetText}>Заменить текст</Button>}
+        {processedText !== ERROR_NOT_FOUND_TEXT && (
+          <TooltipButtonsWrapper>
+            <Button onClick={handleSetText}>Заменить текст</Button>
+            <Hint text={COPY_BUTTON_TEXT}>
+              <Button aria-label={COPY_BUTTON_TEXT} icon={<Copy />} onClick={handleCopyText} />
+            </Hint>
+          </TooltipButtonsWrapper>
+        )}
       </TooltipWrapper>
     );
   }
@@ -92,6 +100,12 @@ export const AIActionsDropdown: FC<Props> = ({
     } catch (e) {
       Toast.push('Ошибка обработки текста');
     }
+  }
+
+  async function handleCopyText() {
+    await navigator.clipboard.writeText(processedText || '');
+
+    handleCloseTooltip();
   }
 
   function handleSetText() {

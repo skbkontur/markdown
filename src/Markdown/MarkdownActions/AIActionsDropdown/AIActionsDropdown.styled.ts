@@ -6,3 +6,9 @@ export const TooltipWrapper = styled.div`
   gap: 16px;
   max-width: 300px;
 `;
+
+export const TooltipButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
