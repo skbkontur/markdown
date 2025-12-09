@@ -40,6 +40,7 @@ export const AIActionsDropdown: FC<Props> = ({
   if (!textareaRef?.current) return null;
 
   const htmlTextArea = (textareaRef.current as any).node as HTMLTextAreaElement;
+  const value = htmlTextArea.value.substring(Number(selectionStart), selectionEnd ?? undefined);
 
   const content = (
     <MarkdownDropdown
@@ -89,8 +90,6 @@ export const AIActionsDropdown: FC<Props> = ({
 
       setRequestStatus(RequestStatus.isFetching);
 
-      const value = htmlTextArea.value.substring(Number(selectionStart), selectionEnd ?? undefined);
-
       const response = await api(value, method);
 
       if (response && taskId === taskIdRef.current.generated) {
@@ -112,6 +111,12 @@ export const AIActionsDropdown: FC<Props> = ({
     if (!textareaRef?.current) return null;
 
     textareaRef.current.focus();
+
+    const valueLength = value.length;
+    const spaceInStartCount = valueLength - value.trimStart().length;
+    const spaceInEndCount = valueLength - value.trimEnd().length;
+
+    htmlTextArea.setSelectionRange((selectionStart ?? 0) + spaceInStartCount, (selectionEnd ?? 0) - spaceInEndCount);
 
     document.execCommand('insertText', false, processedText);
 
