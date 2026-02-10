@@ -101,7 +101,6 @@ export const Markdown: FC<MarkdownProps> = props => {
     ...textareaProps
   } = props;
 
-  const textareaRef = useRef<Textarea | null>(null);
   const [mention, setMention] = useState<Token>();
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Edit);
   const [fullscreen, setFullScreen] = useState<boolean>(false);
@@ -110,8 +109,10 @@ export const Markdown: FC<MarkdownProps> = props => {
   const [selectionEnd, setSelectionEnd] = useState<number>();
 
   const guid = useRef(new Guid().generate()).current;
-  const isEditMode = viewMode !== ViewMode.Preview;
+  const textareaRef = useRef<Textarea | null>(null);
+  const textareaNodeRef = useRef<HTMLTextAreaElement | null>((textareaRef.current as any)?.node);
 
+  const isEditMode = viewMode !== ViewMode.Preview;
   const width = fullscreen || !textareaProps.width ? '100%' : textareaProps.width;
 
   const { isSplitViewAvailable, isMobile } = useResponsiveLayout({
@@ -136,8 +137,9 @@ export const Markdown: FC<MarkdownProps> = props => {
   const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
 
   useLayoutEffect(() => {
-    const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
-    setInitialWidth(textareaNode.clientWidth);
+    textareaNodeRef.current = (textareaRef.current as any)?.node;
+
+    setInitialWidth(textareaNodeRef.current?.clientWidth ?? 0);
   }, []);
 
   useEffect(() => {
@@ -151,7 +153,7 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   useEffect(() => {
     if (fullscreen && isEditMode && textareaRef) {
-      const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
+      const textareaNode = textareaNodeRef.current;
 
       if (textareaNode) {
         textareaNode.focus();
@@ -160,6 +162,17 @@ export const Markdown: FC<MarkdownProps> = props => {
       }
     }
   }, [fullscreen, isEditMode, selectionEnd, selectionStart, textareaRef]);
+
+  useEffect(() => {
+    const handleSelectionChange = () => {
+      setSelectionStart(textareaNodeRef.current?.selectionStart);
+      setSelectionEnd(textareaNodeRef.current?.selectionEnd);
+    };
+
+    document.addEventListener('selectionchange', handleSelectionChange);
+
+    return () => document.removeEventListener('selectionchange', handleSelectionChange);
+  }, []);
 
   const horizontalPaddings: HorizontalPaddings = {
     panelPadding: panelHorizontalPadding,
@@ -268,7 +281,7 @@ export const Markdown: FC<MarkdownProps> = props => {
           width={width}
           textareaRef={textareaRef}
           onChange={listenChange}
-          onSelect={listenSelection}
+          onSelect={listenSelect}
           onClick={listenClick}
         />
       </MarkdownEditorBlock>
@@ -293,9 +306,8 @@ export const Markdown: FC<MarkdownProps> = props => {
   }
 
   function renderMentions() {
-    if (textareaRef.current && mention && api?.getUsersApi) {
-      const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
-      const position = getCursorCoordinates(textareaNode, guid);
+    if (textareaNodeRef.current && mention && api?.getUsersApi) {
+      const position = getCursorCoordinates(textareaNodeRef.current, guid);
 
       return (
         <MarkdownMention
@@ -315,10 +327,11 @@ export const Markdown: FC<MarkdownProps> = props => {
   }
 
   function handleSelectUser(login: string, name: string) {
-    if (textareaRef.current && mention) {
-      const htmlTextArea = (textareaRef.current as any) as HTMLTextAreaElement;
-
-      htmlTextArea.setSelectionRange(mention.positions[0] ? mention.positions[0] - 1 : 0, mention.positions[1]);
+    if (textareaNodeRef.current && mention) {
+      textareaNodeRef.current.setSelectionRange(
+        mention.positions[0] ? mention.positions[0] - 1 : 0,
+        mention.positions[1],
+      );
 
       document.execCommand('insertText', false, `[${name}](@${login})`);
 
@@ -326,14 +339,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     }
   }
 
-  function listenSelection(event: SyntheticEvent<HTMLTextAreaElement, Event>) {
-    const { selectionStart: textSelectionStart, selectionEnd: textSelectionEnd } = event.currentTarget;
-
-    console.log('textSelectionStart', textSelectionStart);
-
-    setSelectionStart(textSelectionStart);
-    setSelectionEnd(textSelectionEnd);
-
+  function listenSelect(event: SyntheticEvent<HTMLTextAreaElement, Event>) {
     onSelect && onSelect(event);
 
     checkMention(event);
@@ -362,6 +368,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     resetMention();
     setSelectionStart(undefined);
     setSelectionEnd(undefined);
+    textareaNodeRef.current?.setSelectionRange(0, 0);
   }
 
   function resetMention() {

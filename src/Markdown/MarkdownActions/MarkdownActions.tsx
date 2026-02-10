@@ -43,6 +43,7 @@ interface Props {
   fullscreen?: boolean;
   hasFilesApi?: boolean;
   hideOptions?: HideActionsOptions;
+  isFocused?: boolean;
   isSplitViewAvailable?: boolean;
   loadingFile?: boolean;
   selectionEnd?: Nullable<number>;
@@ -79,7 +80,7 @@ export const MarkdownActions: FC<Props> = ({
       <ButtonsWrapper fullscreen={fullscreen}>
         <ActionsLeftWrapper>
           {!hideOptions?.heading && (
-            <MarkdownDropdown caption="H" hintText="Заголовок" isPreviewMode={isPreviewMode}>
+            <MarkdownDropdown caption="H" hintText="Заголовок" disabled={isPreviewMode}>
               {markdownHelpHeaders.map((helper, idx) => (
                 <MarkdownMenuItem
                   key={idx}
@@ -156,6 +157,16 @@ export const MarkdownActions: FC<Props> = ({
           {!hideOptions?.emoji && (
             <EmojiDropdown showShortKey={showShortKeys} isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />
           )}
+          {!hideOptions?.AI && !!availableAIMethods?.length && !!AIApi && (
+            <AIActionsDropdown
+              textareaRef={textAreaRef}
+              isPreviewMode={isPreviewMode}
+              availableMethods={availableAIMethods}
+              api={AIApi}
+            />
+          )}
+        </ActionsLeftWrapper>
+        <ActionsRightWrapper>
           {!hideOptions?.help && (
             <MarkdownFormatButton
               hintText="Документация Markdown"
@@ -164,18 +175,6 @@ export const MarkdownActions: FC<Props> = ({
               href={COMMONMARK_HELP_URL}
             />
           )}
-          {!hideOptions?.AI && !!availableAIMethods?.length && !!AIApi && (
-            <AIActionsDropdown
-              textareaRef={textAreaRef}
-              isPreviewMode={isPreviewMode}
-              selectionStart={selectionStart}
-              selectionEnd={selectionEnd}
-              availableMethods={availableAIMethods}
-              api={AIApi}
-            />
-          )}
-        </ActionsLeftWrapper>
-        <ActionsRightWrapper>
           {!hideOptions?.viewMode && renderViewModeButton()}
           {!hideOptions?.screenMode && !disableFullscreen && (
             <MarkdownFormatButton

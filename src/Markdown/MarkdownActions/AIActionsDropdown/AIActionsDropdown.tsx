@@ -1,11 +1,12 @@
-import { Button, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
+import { Button, Hint, Spinner, Textarea, Tooltip } from '@skbkontur/react-ui';
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
-import { TooltipButtonsWrapper, TooltipWrapper } from './AIActionsDropdown.styled';
+import { DropdownCaptionWrapper, TooltipButtonsWrapper, TooltipWrapper } from './AIActionsDropdown.styled';
 import { COPY_BUTTON_TEXT, ERROR_NOT_FOUND_TEXT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
+import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
 import { MarkdownMenuItem } from '../../Markdown.styled';
-import { AIMethod, Nullable } from '../../types';
+import { AIMethod } from '../../types';
 import { Guid } from '../../utils/guid';
 import { RequestStatus } from '../../utils/requestStatus';
 import { MarkdownDropdown } from '../MarkdownDropdown/MarkdownDropdown';
@@ -15,23 +16,18 @@ interface Props {
   availableMethods: AIMethod[];
   textareaRef: RefObject<Textarea>;
   isPreviewMode?: boolean;
-  selectionEnd?: Nullable<number>;
-  selectionStart?: Nullable<number>;
 }
 
-export const AIActionsDropdown: FC<Props> = ({
-  selectionStart,
-  selectionEnd,
-  textareaRef,
-  isPreviewMode,
-  availableMethods,
-  api,
-}) => {
+export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, availableMethods, api }) => {
   const [processedText, setProcessedText] = useState<string>();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.Default);
 
   const tooltipRef = useRef<Tooltip>(null);
   const taskIdRef = useRef<Guid>(new Guid());
+
+  const htmlTextArea = (textareaRef.current as any)?.node as HTMLTextAreaElement;
+  const selectionStart = htmlTextArea?.selectionStart;
+  const selectionEnd = htmlTextArea?.selectionEnd;
 
   useEffect(() => {
     handleCloseTooltip();
@@ -39,15 +35,20 @@ export const AIActionsDropdown: FC<Props> = ({
 
   if (!textareaRef?.current) return null;
 
-  const htmlTextArea = (textareaRef.current as any).node as HTMLTextAreaElement;
   const value = htmlTextArea.value.substring(Number(selectionStart), selectionEnd ?? undefined);
+
+  const isEmptySelected = selectionEnd === selectionStart;
 
   const content = (
     <MarkdownDropdown
-      hintText="ИИ-помощник"
-      caption="AI"
+      hintText={isEmptySelected ? 'Выдели текст' : 'ИИ-помощник'}
+      caption={
+        <DropdownCaptionWrapper>
+          <NatureFxSparkleA2 /> ИИ
+        </DropdownCaptionWrapper>
+      }
       menuWidth={180}
-      isPreviewMode={isPreviewMode}
+      disabled={isPreviewMode || isEmptySelected}
       onOpen={handleCloseTooltip}
     >
       {availableMethods.map(({ method, caption }) => (
@@ -97,7 +98,7 @@ export const AIActionsDropdown: FC<Props> = ({
         setProcessedText(value === response ? ERROR_NOT_FOUND_TEXT : response);
       }
     } catch (e) {
-      Toast.push('Ошибка обработки текста');
+      return Promise.reject(e);
     }
   }
 
@@ -116,7 +117,7 @@ export const AIActionsDropdown: FC<Props> = ({
     const spaceInStartCount = valueLength - value.trimStart().length;
     const spaceInEndCount = valueLength - value.trimEnd().length;
 
-    htmlTextArea.setSelectionRange((selectionStart ?? 0) + spaceInStartCount, (selectionEnd ?? 0) - spaceInEndCount);
+    htmlTextArea.setSelectionRange(selectionStart + spaceInStartCount, selectionEnd - spaceInEndCount);
 
     document.execCommand('insertText', false, processedText);
 

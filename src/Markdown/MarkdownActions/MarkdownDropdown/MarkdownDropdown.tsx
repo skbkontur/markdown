@@ -1,18 +1,20 @@
 import { Dropdown, Hint } from '@skbkontur/react-ui';
-import React, { FC, PropsWithChildren, useState } from 'react';
+import React, { FC, PropsWithChildren, ReactElement, ReactNode, useState } from 'react';
 
 import { Wrapper } from './MarkdownDropdown.styled';
 
 interface Props {
-  caption: string;
+  caption: ReactNode;
+  disabled?: boolean;
   hintText?: string;
-  isPreviewMode?: boolean;
+  icon?: ReactElement;
   menuWidth?: number;
   onOpen?: () => void;
 }
 
 export const MarkdownDropdown: FC<PropsWithChildren<Props>> = ({
-  isPreviewMode,
+  icon,
+  disabled,
   children,
   caption,
   onOpen,
@@ -26,9 +28,10 @@ export const MarkdownDropdown: FC<PropsWithChildren<Props>> = ({
       <Hint text={hintText} pos="top left" manual={isOpened} opened={!isOpened}>
         <Dropdown
           disablePortal
-          disabled={isPreviewMode}
+          disabled={disabled}
           menuWidth={menuWidth ?? 300}
           caption={caption}
+          icon={icon}
           onOpen={handleOpen}
           onClose={() => setIsOpened(false)}
         >

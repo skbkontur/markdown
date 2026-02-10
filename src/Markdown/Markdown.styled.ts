@@ -173,7 +173,7 @@ export const MarkdownSymbolWrapper = styled.span`
 export const MarkdownMenuItem = styled(MenuItem)`
   padding-left: 8px;
   padding-right: 8px;
-  color: ${p => p.theme.colors.grayDefault};
+  color: ${p => p.theme.colors.text};
 `;
 
 export const MarkdownEditorBlock = styled.div`
