@@ -1,4 +1,4 @@
-import { Button, Hint, Spinner, Textarea, Tooltip } from '@skbkontur/react-ui';
+import { Button, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import { DropdownCaptionWrapper, TooltipButtonsWrapper, TooltipWrapper } from './AIActionsDropdown.styled';
@@ -6,13 +6,13 @@ import { COPY_BUTTON_TEXT, ERROR_NOT_FOUND_TEXT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
 import { MarkdownMenuItem } from '../../Markdown.styled';
-import { AIMethod } from '../../types';
+import { AIMethod, Nullable } from '../../types';
 import { Guid } from '../../utils/guid';
 import { RequestStatus } from '../../utils/requestStatus';
 import { MarkdownDropdown } from '../MarkdownDropdown/MarkdownDropdown';
 
 interface Props {
-  api: (query: string, type: string) => Promise<string>;
+  api: (query: string, method: string) => Promise<Nullable<string>>;
   availableMethods: AIMethod[];
   textareaRef: RefObject<Textarea>;
   isPreviewMode?: boolean;
@@ -98,7 +98,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, avail
         setProcessedText(value === response ? ERROR_NOT_FOUND_TEXT : response);
       }
     } catch (e) {
-      return Promise.reject(e);
+      Toast.push('Ошибка обработки текста');
     }
   }
 

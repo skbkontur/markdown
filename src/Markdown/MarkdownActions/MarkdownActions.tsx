@@ -37,7 +37,7 @@ interface Props {
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
-  AIApi?: (query: string, method: string) => Promise<string>;
+  AIApi?: (query: string, method: string) => Promise<Nullable<string>>;
   availableAIMethods?: AIMethod[];
   disableFullscreen?: boolean;
   fullscreen?: boolean;
