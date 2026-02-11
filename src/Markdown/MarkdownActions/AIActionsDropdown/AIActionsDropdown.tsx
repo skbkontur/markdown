@@ -60,7 +60,14 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, avail
   );
 
   return (
-    <Tooltip ref={tooltipRef} trigger="manual" render={renderTooltipContent} onClose={handleCloseTooltip}>
+    <Tooltip
+      ref={tooltipRef}
+      pos="top right"
+      allowedPositions={['top right', 'right middle', 'bottom right']}
+      trigger="manual"
+      render={renderTooltipContent}
+      onClose={handleCloseTooltip}
+    >
       {content}
     </Tooltip>
   );
