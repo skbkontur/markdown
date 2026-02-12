@@ -105,6 +105,8 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, avail
         setProcessedText(value === response ? ERROR_NOT_FOUND_TEXT : response);
       }
     } catch (e) {
+      handleCloseTooltip();
+
       Toast.push('Ошибка обработки текста');
     }
   }
