@@ -31,7 +31,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, avail
 
   useEffect(() => {
     handleCloseTooltip();
-  }, [selectionStart, selectionEnd, api]);
+  }, [selectionStart, selectionEnd]);
 
   if (!textareaRef?.current) return null;
 
