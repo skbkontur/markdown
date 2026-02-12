@@ -6,25 +6,25 @@ import { COPY_BUTTON_TEXT, ERROR_NOT_FOUND_TEXT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
 import { MarkdownMenuItem } from '../../Markdown.styled';
-import { AIMethod, Nullable } from '../../types';
+import { AIApi } from '../../types';
 import { Guid } from '../../utils/guid';
 import { RequestStatus } from '../../utils/requestStatus';
 import { MarkdownDropdown } from '../MarkdownDropdown/MarkdownDropdown';
 
 interface Props {
-  api: (query: string, method: string) => Promise<Nullable<string>>;
-  availableMethods: AIMethod[];
+  api: AIApi;
   textareaRef: RefObject<Textarea>;
   isPreviewMode?: boolean;
 }
 
-export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, availableMethods, api }) => {
+export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }) => {
   const [processedText, setProcessedText] = useState<string>();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.Default);
 
   const tooltipRef = useRef<Tooltip>(null);
   const taskIdRef = useRef<Guid>(new Guid());
 
+  const { availableMethods, onSendMessage } = api;
   const htmlTextArea = (textareaRef.current as any)?.node as HTMLTextAreaElement;
   const selectionStart = htmlTextArea?.selectionStart;
   const selectionEnd = htmlTextArea?.selectionEnd;
@@ -98,7 +98,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, avail
 
       setRequestStatus(RequestStatus.isFetching);
 
-      const response = await api(value, method);
+      const response = await onSendMessage(value, method);
 
       if (response && taskId === taskIdRef.current.generated) {
         setRequestStatus(RequestStatus.isLoaded);

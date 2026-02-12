@@ -16,6 +16,7 @@ export {
   ViewMode,
   HideActionsOptions,
   AIMethod,
+  AIApi,
 } from '././src/Markdown/types';
 export { ThemeMode, ColorScheme } from './src/styles/types';
 export { MarkdownTheme, MarkdownThemeProvider, MarkdownThemeConsumer, MarkdownThemeContext } from './src/styles/theme';

@@ -40,7 +40,7 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { AIMethod, HideActionsOptions, HorizontalPaddings, MarkdownApi, Token, ViewMode } from './types';
+import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Token, ViewMode } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
@@ -50,8 +50,6 @@ import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
 export interface MarkdownProps extends MarkdownEditorProps {
   /** Методы апи для загрузки/скачивания файлов, меншена, ИИ */
   api?: MarkdownApi;
-  /** Доступные методы ИИ апи */
-  availableAIMethods?: AIMethod[];
   /** Режим прозрачной рамки у Textarea */
   borderless?: boolean;
   /** Url апи для файлов  */
@@ -82,7 +80,6 @@ export interface MarkdownProps extends MarkdownEditorProps {
 
 export const Markdown: FC<MarkdownProps> = props => {
   const {
-    availableAIMethods,
     panelHorizontalPadding,
     onClick,
     onChange,
@@ -198,7 +195,6 @@ export const Markdown: FC<MarkdownProps> = props => {
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             isSplitViewAvailable={isSplitViewAvailable}
             disableFullscreen={isMobile}
-            availableAIMethods={availableAIMethods}
             AIApi={api?.AIApi}
             onOpenFileDialog={open}
             onChangeViewMode={handleChangeViewMode}

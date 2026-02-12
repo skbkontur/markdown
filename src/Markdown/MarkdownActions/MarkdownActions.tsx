@@ -25,7 +25,7 @@ import { MarkdownFormat } from '../MarkdownFormat';
 import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from '../MarkdownHelpers/markdownHelpers';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from '../MarkdownHelpItems';
-import { AIMethod, HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from '../types';
+import { AIApi, HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from '../types';
 
 interface Props {
   horizontalPaddings: HorizontalPaddings;
@@ -37,8 +37,7 @@ interface Props {
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
-  AIApi?: (query: string, method: string) => Promise<Nullable<string>>;
-  availableAIMethods?: AIMethod[];
+  AIApi?: AIApi;
   disableFullscreen?: boolean;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
@@ -70,7 +69,6 @@ export const MarkdownActions: FC<Props> = ({
   onSelectEmoji,
   isSplitViewAvailable,
   disableFullscreen,
-  availableAIMethods,
   AIApi,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
@@ -157,13 +155,8 @@ export const MarkdownActions: FC<Props> = ({
           {!hideOptions?.emoji && (
             <EmojiDropdown showShortKey={showShortKeys} isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />
           )}
-          {!hideOptions?.AI && !!availableAIMethods?.length && !!AIApi && (
-            <AIActionsDropdown
-              textareaRef={textAreaRef}
-              isPreviewMode={isPreviewMode}
-              availableMethods={availableAIMethods}
-              api={AIApi}
-            />
+          {!hideOptions?.AI && !!AIApi && (
+            <AIActionsDropdown textareaRef={textAreaRef} isPreviewMode={isPreviewMode} api={AIApi} />
           )}
         </ActionsLeftWrapper>
         <ActionsRightWrapper>
