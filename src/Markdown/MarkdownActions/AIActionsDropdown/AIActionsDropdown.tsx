@@ -39,26 +39,6 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
 
   const isEmptySelected = selectionEnd === selectionStart;
 
-  const content = (
-    <MarkdownDropdown
-      hintText={isEmptySelected ? 'Выдели текст' : 'ИИ-помощник'}
-      caption={
-        <DropdownCaptionWrapper>
-          <NatureFxSparkleA2 /> ИИ
-        </DropdownCaptionWrapper>
-      }
-      menuWidth={180}
-      disabled={isPreviewMode || isEmptySelected}
-      onOpen={handleCloseTooltip}
-    >
-      {availableMethods.map(({ method, caption }) => (
-        <MarkdownMenuItem key={method} onClick={() => handleProcessText(method)}>
-          {caption}
-        </MarkdownMenuItem>
-      ))}
-    </MarkdownDropdown>
-  );
-
   return (
     <Tooltip
       ref={tooltipRef}
@@ -68,7 +48,23 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
       render={renderTooltipContent}
       onClose={handleCloseTooltip}
     >
-      {content}
+      <MarkdownDropdown
+        hintText={isEmptySelected ? 'Выдели текст' : 'ИИ-помощник'}
+        caption={
+          <DropdownCaptionWrapper>
+            <NatureFxSparkleA2 /> ИИ
+          </DropdownCaptionWrapper>
+        }
+        menuWidth={180}
+        disabled={isPreviewMode || isEmptySelected}
+        onOpen={handleCloseTooltip}
+      >
+        {availableMethods.map(({ method, caption }) => (
+          <MarkdownMenuItem key={method} onClick={() => handleProcessText(method)}>
+            {caption}
+          </MarkdownMenuItem>
+        ))}
+      </MarkdownDropdown>
     </Tooltip>
   );
 
