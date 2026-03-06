@@ -2,7 +2,7 @@ import { Button, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/reac
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import { DropdownCaptionWrapper, TooltipButtonsWrapper, TooltipWrapper } from './AIActionsDropdown.styled';
-import { COPY_BUTTON_TEXT, ERROR_NOT_FOUND_TEXT } from './constants';
+import { COPY_BUTTON_TEXT, ERRORS_NOT_FOUND_TEXT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
 import { MarkdownMenuItem } from '../../Markdown.styled';
@@ -74,7 +74,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
     return (
       <TooltipWrapper>
         <div>{processedText}</div>
-        {processedText !== ERROR_NOT_FOUND_TEXT && (
+        {processedText !== ERRORS_NOT_FOUND_TEXT && (
           <TooltipButtonsWrapper>
             <Button onClick={handleSetText}>Заменить текст</Button>
             <Hint text={COPY_BUTTON_TEXT}>
@@ -98,7 +98,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
 
       if (response && taskId === taskIdRef.current.generated) {
         setRequestStatus(RequestStatus.isLoaded);
-        setProcessedText(value === response ? ERROR_NOT_FOUND_TEXT : response);
+        setProcessedText(value === response ? ERRORS_NOT_FOUND_TEXT : response);
       }
     } catch (e) {
       handleCloseTooltip();

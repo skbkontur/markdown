@@ -40,7 +40,7 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Token, ViewMode } from './types';
+import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Nullable, Token, ViewMode } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
@@ -107,7 +107,7 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   const guid = useRef(new Guid().generate()).current;
   const textareaRef = useRef<Textarea | null>(null);
-  const textareaNodeRef = useRef<HTMLTextAreaElement | null>((textareaRef.current as any)?.node);
+  const textareaNode = getTextareaNode();
 
   const isEditMode = viewMode !== ViewMode.Preview;
   const width = fullscreen || !textareaProps.width ? '100%' : textareaProps.width;
@@ -134,9 +134,9 @@ export const Markdown: FC<MarkdownProps> = props => {
   const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
 
   useLayoutEffect(() => {
-    textareaNodeRef.current = (textareaRef.current as any)?.node;
+    const textareaNode = getTextareaNode();
 
-    setInitialWidth(textareaNodeRef.current?.clientWidth ?? 0);
+    if (textareaNode) setInitialWidth(textareaNode.clientWidth);
   }, []);
 
   useEffect(() => {
@@ -150,7 +150,7 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   useEffect(() => {
     if (fullscreen && isEditMode && textareaRef) {
-      const textareaNode = textareaNodeRef.current;
+      const textareaNode = getTextareaNode();
 
       if (textareaNode) {
         textareaNode.focus();
@@ -162,8 +162,10 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   useEffect(() => {
     const handleSelectionChange = () => {
-      setSelectionStart(textareaNodeRef.current?.selectionStart);
-      setSelectionEnd(textareaNodeRef.current?.selectionEnd);
+      const textareaNode = getTextareaNode();
+
+      setSelectionStart(textareaNode?.selectionStart);
+      setSelectionEnd(textareaNode?.selectionEnd);
     };
 
     document.addEventListener('selectionchange', handleSelectionChange);
@@ -302,8 +304,8 @@ export const Markdown: FC<MarkdownProps> = props => {
   }
 
   function renderMentions() {
-    if (textareaNodeRef.current && mention && api?.getUsersApi) {
-      const position = getCursorCoordinates(textareaNodeRef.current, guid);
+    if (textareaNode && mention && api?.getUsersApi) {
+      const position = getCursorCoordinates(textareaNode, guid);
 
       return (
         <MarkdownMention
@@ -323,11 +325,8 @@ export const Markdown: FC<MarkdownProps> = props => {
   }
 
   function handleSelectUser(login: string, name: string) {
-    if (textareaNodeRef.current && mention) {
-      textareaNodeRef.current.setSelectionRange(
-        mention.positions[0] ? mention.positions[0] - 1 : 0,
-        mention.positions[1],
-      );
+    if (textareaNode && mention) {
+      textareaNode.setSelectionRange(mention.positions[0] ? mention.positions[0] - 1 : 0, mention.positions[1]);
 
       document.execCommand('insertText', false, `[${name}](@${login})`);
 
@@ -364,7 +363,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     resetMention();
     setSelectionStart(undefined);
     setSelectionEnd(undefined);
-    textareaNodeRef.current?.setSelectionRange(0, 0);
+    textareaNode?.setSelectionRange(0, 0);
   }
 
   function resetMention() {
@@ -374,5 +373,9 @@ export const Markdown: FC<MarkdownProps> = props => {
   function handleClickFullscreen() {
     setViewMode(prevState => (prevState !== ViewMode.Split && isSplitViewAvailable ? ViewMode.Split : ViewMode.Edit));
     setFullScreen(!fullscreen);
+  }
+
+  function getTextareaNode() {
+    return (textareaRef?.current as any)?.node as Nullable<HTMLTextAreaElement>;
   }
 };
