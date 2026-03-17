@@ -152,7 +152,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     if (fullscreen && isEditMode && textareaRef) {
       const textareaNode = getTextareaNode();
 
-      if (textareaNode) {
+      if (textareaNode && !textareaNode.selectionStart && !textareaNode.selectionEnd) {
         textareaNode.focus();
         textareaNode.selectionStart = selectionStart ?? 0;
         textareaNode.selectionEnd = selectionEnd ?? 0;
