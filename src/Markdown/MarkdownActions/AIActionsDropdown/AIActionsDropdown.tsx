@@ -1,5 +1,4 @@
 import { Button, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
-import { useTheme } from '@skbkontur/react-ui/lib/theming/useTheme';
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import {
@@ -8,7 +7,7 @@ import {
   TooltipContentWrapper,
   TooltipWrapper,
 } from './AIActionsDropdown.styled';
-import { COPY_BUTTON_TEXT, ERRORS_NOT_FOUND_TEXT, MAX_HEIGHT } from './constants';
+import { COPY_BUTTON_TEXT, ERRORS_NOT_FOUND_TEXT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
 import { MarkdownMenuItem } from '../../Markdown.styled';
@@ -24,8 +23,6 @@ interface Props {
 }
 
 export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }) => {
-  const { tooltipPaddingX } = useTheme();
-
   const [processedText, setProcessedText] = useState<string>();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.Default);
 
@@ -41,6 +38,10 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
     handleCloseTooltip();
   }, [selectionStart, selectionEnd]);
 
+  useEffect(() => {
+    if (processedText) tooltipRef.current?.show();
+  }, [processedText]);
+
   if (!textareaRef?.current) return null;
 
   const value = htmlTextArea.value.substring(Number(selectionStart), selectionEnd ?? undefined);
@@ -49,13 +50,12 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
 
   return (
     <Tooltip
+      key={processedText}
       ref={tooltipRef}
       pos="top right"
       allowedPositions={['top right', 'right middle', 'bottom right', 'bottom left']}
       trigger="manual"
       render={renderTooltipContent}
-      style={{ height: MAX_HEIGHT + parseInt(tooltipPaddingX) * 2 }}
-      onClose={handleCloseTooltip}
     >
       <MarkdownDropdown
         hintText={isEmptySelected ? 'Выдели текст' : 'ИИ-помощник'}
