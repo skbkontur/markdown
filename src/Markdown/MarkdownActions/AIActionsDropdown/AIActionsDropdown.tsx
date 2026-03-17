@@ -1,4 +1,5 @@
 import { Button, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
+import { useTheme } from '@skbkontur/react-ui/lib/theming/useTheme';
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 import {
@@ -7,7 +8,7 @@ import {
   TooltipContentWrapper,
   TooltipWrapper,
 } from './AIActionsDropdown.styled';
-import { COPY_BUTTON_TEXT, ERRORS_NOT_FOUND_TEXT } from './constants';
+import { COPY_BUTTON_TEXT, ERRORS_NOT_FOUND_TEXT, MAX_HEIGHT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
 import { MarkdownMenuItem } from '../../Markdown.styled';
@@ -23,6 +24,8 @@ interface Props {
 }
 
 export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }) => {
+  const { tooltipPaddingX } = useTheme();
+
   const [processedText, setProcessedText] = useState<string>();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.Default);
 
@@ -48,9 +51,10 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
     <Tooltip
       ref={tooltipRef}
       pos="top right"
-      allowedPositions={['top right', 'right middle', 'bottom right']}
+      allowedPositions={['top right', 'right middle', 'bottom right', 'bottom left']}
       trigger="manual"
       render={renderTooltipContent}
+      style={{ height: MAX_HEIGHT + parseInt(tooltipPaddingX) * 2 }}
       onClose={handleCloseTooltip}
     >
       <MarkdownDropdown
@@ -97,10 +101,10 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
   }
 
   async function handleProcessText(method: string) {
+    const taskId = taskIdRef.current.generate();
+
     try {
       tooltipRef?.current?.show();
-
-      const taskId = taskIdRef.current.generate();
 
       setRequestStatus(RequestStatus.isFetching);
 
@@ -111,9 +115,10 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
         setProcessedText(value === response ? ERRORS_NOT_FOUND_TEXT : response);
       }
     } catch (e) {
-      handleCloseTooltip();
-
-      Toast.push('Ошибка обработки текста');
+      if (taskId === taskIdRef.current.generated) {
+        handleCloseTooltip();
+        Toast.push('Ошибка обработки текста');
+      }
     }
   }
 

@@ -1,3 +1,4 @@
+import { MAX_HEIGHT } from './constants';
 import styled from '../../../styles/styled-components';
 
 export const TooltipWrapper = styled.div`
@@ -5,12 +6,10 @@ export const TooltipWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
   max-width: 300px;
-  max-height: 400px;
-  overflow-y: auto;
 `;
 
 export const TooltipContentWrapper = styled.div`
-  max-height: 400px;
+  max-height: ${MAX_HEIGHT}px;
   white-space: pre-wrap;
   overflow-y: auto;
 `;
