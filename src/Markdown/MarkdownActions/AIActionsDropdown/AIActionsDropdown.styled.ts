@@ -5,6 +5,14 @@ export const TooltipWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
   max-width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+`;
+
+export const TooltipContentWrapper = styled.div`
+  max-height: 400px;
+  white-space: pre-wrap;
+  overflow-y: auto;
 `;
 
 export const TooltipButtonsWrapper = styled.div`

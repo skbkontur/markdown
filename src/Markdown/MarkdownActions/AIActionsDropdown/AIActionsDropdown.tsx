@@ -1,7 +1,12 @@
 import { Button, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
-import { DropdownCaptionWrapper, TooltipButtonsWrapper, TooltipWrapper } from './AIActionsDropdown.styled';
+import {
+  DropdownCaptionWrapper,
+  TooltipButtonsWrapper,
+  TooltipContentWrapper,
+  TooltipWrapper,
+} from './AIActionsDropdown.styled';
 import { COPY_BUTTON_TEXT, ERRORS_NOT_FOUND_TEXT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
@@ -73,12 +78,17 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
 
     return (
       <TooltipWrapper>
-        <div>{processedText}</div>
+        <TooltipContentWrapper>{processedText}</TooltipContentWrapper>
         {processedText !== ERRORS_NOT_FOUND_TEXT && (
           <TooltipButtonsWrapper>
             <Button onClick={handleSetText}>Заменить текст</Button>
             <Hint text={COPY_BUTTON_TEXT}>
-              <Button aria-label={COPY_BUTTON_TEXT} icon={<Copy />} onClick={handleCopyText} />
+              <Button
+                aria-label={COPY_BUTTON_TEXT}
+                icon={<Copy />}
+                onMouseDown={e => e.preventDefault()}
+                onClick={handleCopyText}
+              />
             </Hint>
           </TooltipButtonsWrapper>
         )}
