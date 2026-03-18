@@ -18,11 +18,12 @@ import { MarkdownDropdown } from '../MarkdownDropdown/MarkdownDropdown';
 
 interface Props {
   api: AIApi;
+  showActionHint: boolean;
   textareaRef: RefObject<Textarea>;
   isPreviewMode?: boolean;
 }
 
-export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }) => {
+export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showActionHint, api }) => {
   const [processedText, setProcessedText] = useState<string>();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.Default);
 
@@ -58,6 +59,8 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, api }
       render={renderTooltipContent}
     >
       <MarkdownDropdown
+        pos="top center"
+        showActionHint={showActionHint}
         hintText={isEmptySelected ? 'Выдели текст' : 'ИИ-помощник'}
         caption={
           <DropdownCaptionWrapper>

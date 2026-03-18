@@ -5,7 +5,13 @@ import React, { CSSProperties, useState } from 'react';
 
 import { a11yRules } from '../../../a11y/rules';
 import { MarkdownViewer } from '../../MarkdownViewer';
-import { allVariantsMarkdownMock, apiMock, emojiMarkdownMock } from '../__mocks__/markdown.mock';
+import {
+  AIApiMock,
+  allVariantsMarkdownMock,
+  apiMock,
+  emojiMarkdownMock,
+  hiddenOptionsTestCases,
+} from '../__mocks__/markdown.mock';
 import { Markdown, MarkdownProps } from '../Markdown';
 
 const sizeOptions: SizeProp[] = ['small', 'medium', 'large'];
@@ -219,6 +225,14 @@ export const WithEmojiEditable = (args: any) => {
   return <Markdown {...baseProps} {...args} value={value} onValueChange={setValue} />;
 };
 
+export const WithAIApi = (args: any) => {
+  const [value, setValue] = useState<string>('');
+
+  return (
+    <Markdown width="550px" api={{ ...apiMock, AIApi: AIApiMock }} {...args} value={value} onValueChange={setValue} />
+  );
+};
+
 export const HiddenOptions = () => {
   const wrapStyles: CSSProperties = {
     display: 'flex',
@@ -237,50 +251,12 @@ export const HiddenOptions = () => {
 
   return (
     <div style={wrapStyles}>
-      <fieldset style={itemStyles}>
-        <legend>Без панели кнопок</legend>
-        <Markdown hideActionsOptions={{ allActions: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без заголовок</legend>
-        <Markdown hideActionsOptions={{ heading: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без формата текста</legend>
-        <Markdown hideActionsOptions={{ bold: true, italic: true, crossed: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без ссылки</legend>
-        <Markdown hideActionsOptions={{ ref: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без списков</legend>
-        <Markdown hideActionsOptions={{ list: true, checkedList: true, numberedList: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без блока кода</legend>
-        <Markdown hideActionsOptions={{ codeBlock: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без цитаты</legend>
-        <Markdown hideActionsOptions={{ quote: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без таблицы</legend>
-        <Markdown hideActionsOptions={{ table: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без ссылки на доку по markdown</legend>
-        <Markdown hideActionsOptions={{ help: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без кнопки переключения режима просмотра</legend>
-        <Markdown hideActionsOptions={{ viewMode: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без кнопки разворачивания/сворачивания</legend>
-        <Markdown hideActionsOptions={{ screenMode: true }} rows={1} />
-      </fieldset>
+      {hiddenOptionsTestCases.map(({ legend, hideActionsOptions }, index) => (
+        <fieldset key={index} style={itemStyles}>
+          <legend>{legend}</legend>
+          <Markdown api={{ AIApi: AIApiMock }} hideActionsOptions={hideActionsOptions} rows={1} />
+        </fieldset>
+      ))}
     </div>
   );
 };

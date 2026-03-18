@@ -1,4 +1,4 @@
-import { AIMethod, MarkdownApi, RefItem, User } from '../types';
+import { AIApi, AIMethod, MarkdownApi, RefItem, User } from '../types';
 
 export const allVariantsMarkdownMock = `# Заголовок 1
 ## Заголовок 2
@@ -68,13 +68,14 @@ const availableAIMethodsMock: AIMethod[] = [
   { method: 'rewriteText', caption: 'Другими словами' },
 ];
 
+export const AIApiMock: AIApi = {
+  onSendMessage: () => new Promise<string>(resolve => resolve('Привет, как дела?')),
+  availableMethods: availableAIMethodsMock,
+};
+
 export const apiMock: MarkdownApi = {
   fileDownloadApi: () => new Promise<File>(resolve => resolve(new File(['a'], 'test.txt'))),
   fileUploadApi: () => new Promise<RefItem>(resolve => resolve({ id: 'i', caption: 'test.txt' })),
-  AIApi: {
-    onSendMessage: () => new Promise<string>(resolve => resolve('Привет, как дела?')),
-    availableMethods: availableAIMethodsMock,
-  },
   getUsersApi: () =>
     new Promise<User[]>(resolve =>
       resolve([
@@ -90,3 +91,18 @@ export const apiMock: MarkdownApi = {
       ]),
     ),
 };
+
+export const hiddenOptionsTestCases = [
+  { legend: 'Без панели кнопок', hideActionsOptions: { allActions: true } },
+  { legend: 'Без заголовок', hideActionsOptions: { heading: true } },
+  { legend: 'Без формата текста', hideActionsOptions: { bold: true, italic: true, crossed: true } },
+  { legend: 'Без ссылки', hideActionsOptions: { ref: true } },
+  { legend: 'Без списков', hideActionsOptions: { list: true, checkedList: true, numberedList: true } },
+  { legend: 'Без блока кода', hideActionsOptions: { codeBlock: true } },
+  { legend: 'Без цитаты', hideActionsOptions: { quote: true } },
+  { legend: 'Без таблицы', hideActionsOptions: { table: true } },
+  { legend: 'Без ссылки на доку по markdown', hideActionsOptions: { help: true } },
+  { legend: 'Без кнопки переключения режима просмотра', hideActionsOptions: { viewMode: true } },
+  { legend: 'Без кнопки разворачивания/сворачивания', hideActionsOptions: { screenMode: true } },
+  { legend: 'Без ИИ-помощника', hideActionsOptions: { AI: true } },
+];

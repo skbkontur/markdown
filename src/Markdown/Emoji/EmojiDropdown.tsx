@@ -15,10 +15,11 @@ emojiLocale.search = 'Поиск на английском';
 interface Props {
   isPreviewMode: boolean;
   onSelect: (emoji: EmojiData) => void;
+  showActionHint: boolean;
   showShortKey: boolean;
 }
 
-export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, onSelect }) => {
+export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, onSelect, showActionHint }) => {
   const dropdownMenuRef = useRef<DropdownMenu>(null);
 
   return (
@@ -32,6 +33,7 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
             caption={({ toggleMenu }) => (
               <MarkdownFormatButton
                 showShortKey={showShortKey}
+                showActionHint={showActionHint}
                 hintText="Emoji"
                 disabled={isPreviewMode}
                 icon={<EmojiFace />}

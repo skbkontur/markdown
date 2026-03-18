@@ -78,7 +78,13 @@ export const MarkdownActions: FC<Props> = ({
       <ButtonsWrapper fullscreen={fullscreen}>
         <ActionsLeftWrapper>
           {!hideOptions?.heading && (
-            <MarkdownDropdown caption="H" hintText="Заголовок" disabled={isPreviewMode}>
+            <MarkdownDropdown
+              showActionHint={showActionHints}
+              pos="top left"
+              caption="H"
+              hintText="Заголовок"
+              disabled={isPreviewMode}
+            >
               {markdownHelpHeaders.map((helper, idx) => (
                 <MarkdownMenuItem
                   key={idx}
@@ -153,10 +159,20 @@ export const MarkdownActions: FC<Props> = ({
             />
           )}
           {!hideOptions?.emoji && (
-            <EmojiDropdown showShortKey={showShortKeys} isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />
+            <EmojiDropdown
+              showActionHint={showActionHints}
+              showShortKey={showShortKeys}
+              isPreviewMode={isPreviewMode}
+              onSelect={onSelectEmoji}
+            />
           )}
           {!hideOptions?.AI && !!AIApi && (
-            <AIActionsDropdown textareaRef={textAreaRef} isPreviewMode={isPreviewMode} api={AIApi} />
+            <AIActionsDropdown
+              showActionHint={showActionHints}
+              textareaRef={textAreaRef}
+              isPreviewMode={isPreviewMode}
+              api={AIApi}
+            />
           )}
         </ActionsLeftWrapper>
         <ActionsRightWrapper>
