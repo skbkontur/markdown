@@ -7,7 +7,7 @@ import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
 import { MarkdownMenuItem } from '../../Markdown.styled';
 import { MarkdownTids } from '../../MarkdownTids';
-import { AIApi } from '../../types';
+import { AIApi, Nullable } from '../../types';
 import { Guid } from '../../utils/guid';
 import { RequestStatus } from '../../utils/requestStatus';
 import { MarkdownDropdown } from '../MarkdownDropdown/MarkdownDropdown';
@@ -27,9 +27,9 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
   const taskIdRef = useRef<Guid>(new Guid());
 
   const { availableMethods, onSendMessage } = api;
-  const htmlTextArea = (textareaRef.current as any)?.node as HTMLTextAreaElement;
-  const selectionStart = htmlTextArea?.selectionStart;
-  const selectionEnd = htmlTextArea?.selectionEnd;
+  const htmlTextArea = (textareaRef?.current as any)?.node as Nullable<HTMLTextAreaElement>;
+  const selectionStart = htmlTextArea?.selectionStart ?? 0;
+  const selectionEnd = htmlTextArea?.selectionEnd ?? 0;
 
   useEffect(() => {
     handleCloseTooltip();
@@ -39,9 +39,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
     if (processedText) tooltipRef.current?.show();
   }, [processedText]);
 
-  if (!textareaRef?.current) return null;
-
-  const value = htmlTextArea.value.substring(Number(selectionStart), selectionEnd ?? undefined);
+  const value = htmlTextArea?.value.substring(Number(selectionStart), selectionEnd ?? undefined) ?? '';
 
   const isEmptySelected = selectionEnd === selectionStart;
 
@@ -135,7 +133,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
     const spaceInStartCount = valueLength - value.trimStart().length;
     const spaceInEndCount = valueLength - value.trimEnd().length;
 
-    htmlTextArea.setSelectionRange(selectionStart + spaceInStartCount, selectionEnd - spaceInEndCount);
+    htmlTextArea?.setSelectionRange(selectionStart + spaceInStartCount, selectionEnd - spaceInEndCount);
 
     document.execCommand('insertText', false, processedText);
 
