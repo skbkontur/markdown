@@ -108,7 +108,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
 
       if (response && taskId === taskIdRef.current.generated) {
         setRequestStatus(RequestStatus.isLoaded);
-        setProcessedText(value === response ? ERRORS_NOT_FOUND_TEXT : response);
+        setProcessedText(value.trim() === response ? ERRORS_NOT_FOUND_TEXT : response);
       }
     } catch (e) {
       if (taskId === taskIdRef.current.generated) {
