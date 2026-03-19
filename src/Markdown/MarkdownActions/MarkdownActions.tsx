@@ -25,6 +25,7 @@ import { MarkdownFormat } from '../MarkdownFormat';
 import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from '../MarkdownHelpers/markdownHelpers';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from '../MarkdownHelpItems';
+import { MarkdownTids } from '../MarkdownTids';
 import { AIApi, HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from '../types';
 
 interface Props {
@@ -79,6 +80,7 @@ export const MarkdownActions: FC<Props> = ({
         <ActionsLeftWrapper>
           {!hideOptions?.heading && (
             <MarkdownDropdown
+              dataTid={MarkdownTids.HeadingDropdown}
               showActionHint={showActionHints}
               hintPos="top left"
               caption="H"
@@ -88,6 +90,7 @@ export const MarkdownActions: FC<Props> = ({
               {markdownHelpHeaders.map((helper, idx) => (
                 <MarkdownMenuItem
                   key={idx}
+                  data-tid={helper.tid}
                   onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
                 >
                   <MarkdownCombination showShortKey={showShortKeys} format={helper.format} text={helper.node} />
@@ -105,6 +108,7 @@ export const MarkdownActions: FC<Props> = ({
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
+                dataTid={helper.tid}
                 hintText={helper.node}
                 icon={helper.icon}
                 text={helper.text}
@@ -122,6 +126,7 @@ export const MarkdownActions: FC<Props> = ({
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
+                dataTid={helper.tid}
                 hintText={helper.node}
                 icon={helper.icon}
                 text={helper.text}
@@ -139,6 +144,7 @@ export const MarkdownActions: FC<Props> = ({
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
+                dataTid={helper.tid}
                 hintText={helper.node}
                 icon={helper.icon}
                 text={helper.text}
@@ -148,6 +154,7 @@ export const MarkdownActions: FC<Props> = ({
           })}
           {hasFilesApi && !hideOptions?.file && (
             <MarkdownFormatButton
+              dataTid={MarkdownTids.AttachFile}
               hintText="Прикрепить файл"
               showActionHint={showActionHints}
               showShortKey={showShortKeys}
@@ -178,6 +185,8 @@ export const MarkdownActions: FC<Props> = ({
         <ActionsRightWrapper>
           {!hideOptions?.help && (
             <MarkdownFormatButton
+              showActionHint={showActionHints}
+              dataTid={MarkdownTids.Help}
               hintText="Документация Markdown"
               icon={<DocIcon />}
               text="Документация Markdown"
@@ -187,6 +196,8 @@ export const MarkdownActions: FC<Props> = ({
           {!hideOptions?.viewMode && renderViewModeButton()}
           {!hideOptions?.screenMode && !disableFullscreen && (
             <MarkdownFormatButton
+              showActionHint={showActionHints}
+              dataTid={MarkdownTids.FullscreenToggle}
               hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
               icon={fullscreen ? <Collapse /> : <Expand />}
               text={fullscreen ? 'Свернуть' : '  Развернуть'}
@@ -203,6 +214,7 @@ export const MarkdownActions: FC<Props> = ({
       <div>
         {viewMode !== ViewMode.Split && fullscreen && isSplitViewAvailable && (
           <MarkdownFormatButton
+            dataTid={MarkdownTids.SplitView}
             icon={<SplitView />}
             hintText="Сплит"
             text="Сплит"
@@ -213,6 +225,7 @@ export const MarkdownActions: FC<Props> = ({
         )}
         {viewMode !== ViewMode.Edit && (
           <MarkdownFormatButton
+            dataTid={MarkdownTids.EditView}
             icon={<ToolPencil />}
             hintText="Редактор"
             text="Редактор"
@@ -223,6 +236,7 @@ export const MarkdownActions: FC<Props> = ({
         )}
         {viewMode !== ViewMode.Preview && (
           <MarkdownFormatButton
+            dataTid={MarkdownTids.PreviewView}
             icon={<EyeOpen />}
             hintText="Превью"
             text="Превью"

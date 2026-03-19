@@ -4,10 +4,12 @@ import React, { FC, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
 import { Wrapper } from './MarkdownDropdown.styled';
 import { MarkdownFormatButton } from '../../MarkdownHelpers/MarkdownFormatButton';
+import { MarkdownTids } from '../../MarkdownTids';
 
 interface Props {
   caption: ReactNode;
   showActionHint: boolean;
+  dataTid?: MarkdownTids;
   disabled?: boolean;
   hintPos?: ShortPopupPositionsType | PopupPositionsType;
   hintText?: string;
@@ -17,6 +19,7 @@ interface Props {
 }
 
 export const MarkdownDropdown: FC<PropsWithChildren<Props>> = ({
+  dataTid,
   icon,
   disabled,
   children,
@@ -37,6 +40,7 @@ export const MarkdownDropdown: FC<PropsWithChildren<Props>> = ({
         _renderButton={({ onClick }) => (
           <MarkdownFormatButton
             showText
+            dataTid={dataTid}
             hintPos={hintPos}
             showActionHint={showActionHint}
             disabled={disabled}

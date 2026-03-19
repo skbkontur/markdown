@@ -1,16 +1,20 @@
 import { delay } from '@skbkontur/react-ui/lib/utils';
 import { story, kind, test } from 'creevey';
 
+import { MarkdownTids } from './MarkdownTids';
+
+const getByTid = (tid: MarkdownTids) => `[data-tid="${tid}"]`;
+
 kind('Markdown', () => {
   story('CustomWidth', ({ setStoryParameters }) => {
     setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
 
     test('withPreview', async context => {
-      const button = context.webdriver.locator('button[class*="react-ui"]').nth(-2);
+      const previewButton = context.webdriver.locator(getByTid(MarkdownTids.PreviewView));
 
       const idle = await context.takeScreenshot();
 
-      await button.click();
+      await previewButton.click();
 
       const preview = await context.takeScreenshot();
 
@@ -18,15 +22,17 @@ kind('Markdown', () => {
     });
 
     test('withFullscreen', async context => {
-      const buttons = context.webdriver.locator('button[class*="react-ui"]');
+      const fullscreenButton = context.webdriver.locator(getByTid(MarkdownTids.FullscreenToggle));
+      const previewButton = context.webdriver.locator(getByTid(MarkdownTids.PreviewView));
+      const editButton = context.webdriver.locator(getByTid(MarkdownTids.EditView));
 
-      await buttons.nth(-1).click();
+      await fullscreenButton.click();
       const fullscreenSplit = await context.takeScreenshot();
 
-      await buttons.nth(-2).click();
+      await previewButton.click();
       const fullscreenPreview = await context.takeScreenshot();
 
-      await buttons.nth(-2).click();
+      await editButton.click();
       const fullscreenEdit = await context.takeScreenshot();
 
       await context.matchImages({
@@ -42,7 +48,7 @@ kind('Markdown', () => {
       setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
 
       test('hint', async context => {
-        const boldButton = context.webdriver.locator('button[class*="react-ui"]').nth(1);
+        const boldButton = context.webdriver.locator(getByTid(MarkdownTids.Bold));
 
         await boldButton.hover();
 
@@ -60,16 +66,19 @@ kind('Markdown', () => {
 
     test('markdownTests', async context => {
       const textarea = context.webdriver.locator('textarea').nth(0);
-      const buttons = context.webdriver.locator('button[class*="react-ui"]');
+      const headingDropdown = context.webdriver.locator(getByTid(MarkdownTids.HeadingDropdown));
+      const headingH2 = context.webdriver.locator(getByTid(MarkdownTids.HeadingH2));
+      const boldButton = context.webdriver.locator(getByTid(MarkdownTids.Bold));
+      const emojiButton = context.webdriver.locator(getByTid(MarkdownTids.Emoji));
 
       await textarea.click();
       await textarea.type('Заголовок');
 
       await textarea.press('Control+A');
-      await buttons.nth(0).click();
+      await headingDropdown.click();
       const openedDropdown = await context.takeScreenshot();
 
-      await buttons.nth(1).click();
+      await headingH2.click();
       const h2FromButton = await context.takeScreenshot();
 
       await textarea.press('Control+A');
@@ -81,7 +90,7 @@ kind('Markdown', () => {
       await textarea.press('Control+A');
       await textarea.type('Жирный');
       await textarea.press('Control+A');
-      await buttons.nth(1).click();
+      await boldButton.click();
       const boldFromButton = await context.takeScreenshot();
 
       await textarea.press('Control+A');
@@ -90,7 +99,7 @@ kind('Markdown', () => {
       await textarea.press('Control+B');
       const boldFromKeyboard = await context.takeScreenshot();
 
-      await buttons.nth(12).click();
+      await emojiButton.click();
       const openedEmojiPicker = await context.takeScreenshot();
 
       await context.matchImages({

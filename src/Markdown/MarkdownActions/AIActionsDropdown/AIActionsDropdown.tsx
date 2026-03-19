@@ -6,6 +6,7 @@ import { COPY_BUTTON_TEXT, ERRORS_NOT_FOUND_TEXT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
 import { MarkdownMenuItem } from '../../Markdown.styled';
+import { MarkdownTids } from '../../MarkdownTids';
 import { AIApi } from '../../types';
 import { Guid } from '../../utils/guid';
 import { RequestStatus } from '../../utils/requestStatus';
@@ -54,6 +55,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
       render={renderTooltipContent}
     >
       <MarkdownDropdown
+        dataTid={MarkdownTids.AI}
         hintPos="top center"
         showActionHint={showActionHint}
         hintText={isEmptySelected ? 'Выдели текст' : 'ИИ-помощник'}

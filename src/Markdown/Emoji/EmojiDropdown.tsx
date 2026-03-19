@@ -9,6 +9,7 @@ import { EmojiPickerWrapper } from './Emoji.styled';
 import { EmojiFace } from '../../MarkdownIcons/EmojiFace';
 import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../../styles/theme';
 import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
+import { MarkdownTids } from '../MarkdownTids';
 
 emojiLocale.search = 'Поиск на английском';
 
@@ -32,6 +33,7 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
             ref={dropdownMenuRef}
             caption={({ toggleMenu }) => (
               <MarkdownFormatButton
+                dataTid={MarkdownTids.Emoji}
                 showShortKey={showShortKey}
                 showActionHint={showActionHint}
                 hintText="Emoji"

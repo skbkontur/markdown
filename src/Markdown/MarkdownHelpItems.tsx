@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { MarkdownSymbolWrapper } from './Markdown.styled';
 import { MarkdownFormat } from './MarkdownFormat';
+import { MarkdownTids } from './MarkdownTids';
 import { RefItem } from './types';
 import { AttachLink } from '../MarkdownIcons/AttachLink';
 import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
@@ -52,6 +53,7 @@ export interface MarkdownHelpItem {
   format: MarkdownFormat;
   node: ReactNode;
   text: string;
+  tid: MarkdownTids;
   wrapContent: (content: string) => string;
   checkLength?: number;
   icon?: ReactNode;
@@ -81,6 +83,7 @@ export function checkSpaceSymbol(text: string, checkedLength?: number) {
 export const markdownHelpHeaders: MarkdownHelpItem[] = [
   {
     format: MarkdownFormat.h2,
+    tid: MarkdownTids.HeadingH2,
     node: (
       <>
         <MarkdownSymbolWrapper>##</MarkdownSymbolWrapper> Заголовок 2
@@ -91,6 +94,7 @@ export const markdownHelpHeaders: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.h3,
+    tid: MarkdownTids.HeadingH3,
     node: (
       <>
         <MarkdownSymbolWrapper>###</MarkdownSymbolWrapper> Заголовок 3
@@ -101,6 +105,7 @@ export const markdownHelpHeaders: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.h4,
+    tid: MarkdownTids.HeadingH4,
     node: (
       <>
         <MarkdownSymbolWrapper>####</MarkdownSymbolWrapper> Заголовок 4
@@ -114,6 +119,7 @@ export const markdownHelpHeaders: MarkdownHelpItem[] = [
 export const markdownHelpText: MarkdownHelpItem[] = [
   {
     format: MarkdownFormat.bold,
+    tid: MarkdownTids.Bold,
     node: (
       <>
         <MarkdownSymbolWrapper>**</MarkdownSymbolWrapper>Жирный
@@ -127,6 +133,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.italic,
+    tid: MarkdownTids.Italic,
     node: (
       <>
         <MarkdownSymbolWrapper>*</MarkdownSymbolWrapper>Курсив
@@ -140,6 +147,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.crossed,
+    tid: MarkdownTids.Crossed,
     node: (
       <>
         <MarkdownSymbolWrapper>~~</MarkdownSymbolWrapper>Зачеркнутый
@@ -161,6 +169,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.ref,
+    tid: MarkdownTids.Ref,
     node: (
       <>
         <MarkdownSymbolWrapper>[</MarkdownSymbolWrapper>Название ссылки
@@ -179,6 +188,7 @@ export const markdownHelpText: MarkdownHelpItem[] = [
 export const markdownHelpLists: MarkdownHelpItem[] = [
   {
     format: MarkdownFormat.list,
+    tid: MarkdownTids.List,
     node: (
       <>
         <MarkdownSymbolWrapper>*</MarkdownSymbolWrapper> Список
@@ -190,6 +200,7 @@ export const markdownHelpLists: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.checkedList,
+    tid: MarkdownTids.CheckedList,
     node: (
       <>
         <MarkdownSymbolWrapper>* [x]</MarkdownSymbolWrapper> Список - выполнено
@@ -201,6 +212,7 @@ export const markdownHelpLists: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.numberedList,
+    tid: MarkdownTids.NumberedList,
     node: (
       <>
         <MarkdownSymbolWrapper>1. </MarkdownSymbolWrapper> Список - нумерованный
@@ -215,6 +227,7 @@ export const markdownHelpLists: MarkdownHelpItem[] = [
 export const markdownHelpOther: MarkdownHelpItem[] = [
   {
     format: MarkdownFormat.codeBlock,
+    tid: MarkdownTids.CodeBlock,
     node: (
       <>
         <MarkdownSymbolWrapper>`</MarkdownSymbolWrapper>Блок кода
@@ -228,6 +241,7 @@ export const markdownHelpOther: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.quote,
+    tid: MarkdownTids.Quote,
     node: (
       <>
         <MarkdownSymbolWrapper>{'>'} </MarkdownSymbolWrapper> Цитата
@@ -239,6 +253,7 @@ export const markdownHelpOther: MarkdownHelpItem[] = [
   },
   {
     format: MarkdownFormat.table,
+    tid: MarkdownTids.Table,
     node: 'Таблица',
     icon: <Table />,
     wrapContent: () => `| Заголовок | Заголовок |
@@ -259,6 +274,7 @@ export const markdownHelpFiles = (fileApiUrl?: string): MarkdownHelpFileItem[] =
   return [
     {
       format: MarkdownFormat.image,
+      tid: MarkdownTids.AttachFile,
       node: '',
       icon: <span />,
       wrapContent: file => `![img](${fileApiUrl}${file.id})`,
@@ -266,6 +282,7 @@ export const markdownHelpFiles = (fileApiUrl?: string): MarkdownHelpFileItem[] =
     },
     {
       format: MarkdownFormat.file,
+      tid: MarkdownTids.AttachFile,
       node: '',
       icon: <AttachPaperclip />,
       wrapContent: file => `[${file.caption}](${fileApiUrl}${file.id})`,

@@ -10,11 +10,13 @@ import {
   VisuallyHidden,
 } from '../Markdown.styled';
 import { MarkdownFormat } from '../MarkdownFormat';
+import { MarkdownTids } from '../MarkdownTids';
 
 interface Props {
   hintText: ReactNode;
   icon: ReactNode;
   text: ReactNode;
+  dataTid?: MarkdownTids;
   disabled?: boolean;
   format?: MarkdownFormat;
   hintPos?: ShortPopupPositionsType | PopupPositionsType;
@@ -27,6 +29,7 @@ interface Props {
 }
 
 export const MarkdownFormatButton: FC<Props> = ({
+  dataTid,
   icon,
   hintText,
   onClick,
@@ -40,7 +43,7 @@ export const MarkdownFormatButton: FC<Props> = ({
   hintPos,
 }) => {
   const button = (
-    <MarkdownButtonWrapper borderless disabled={disabled} onClick={onClick}>
+    <MarkdownButtonWrapper borderless disabled={disabled} data-tid={dataTid} onClick={onClick}>
       <MarkdownButtonContentWrapper onMouseDown={e => e.preventDefault()}>
         {!!icon && <MarkdownButtonIcon>{icon}</MarkdownButtonIcon>}
         {showText ? text : <VisuallyHidden>{text}</VisuallyHidden>}
