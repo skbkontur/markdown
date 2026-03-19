@@ -18,9 +18,3 @@ export const TooltipButtonsWrapper = styled.div`
   align-items: center;
   gap: 8px;
 `;
-
-export const DropdownCaptionWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`;

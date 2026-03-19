@@ -80,7 +80,7 @@ export const MarkdownActions: FC<Props> = ({
           {!hideOptions?.heading && (
             <MarkdownDropdown
               showActionHint={showActionHints}
-              pos="top left"
+              hintPos="top left"
               caption="H"
               hintText="Заголовок"
               disabled={isPreviewMode}

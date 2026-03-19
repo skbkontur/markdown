@@ -1,14 +1,29 @@
 import { Hint } from '@skbkontur/react-ui';
-import React, { FC } from 'react';
+import { PopupPositionsType, ShortPopupPositionsType } from '@skbkontur/react-ui/cjs/internal/Popup';
+import React, { FC, ReactNode, SyntheticEvent } from 'react';
 
-import { MarkdownButtonProps } from './types';
 import { MarkdownCombination } from '../../MarkdownCombination/MarkdownCombination';
-import { MarkdownButtonIcon, MarkdownButtonWrapper, VisuallyHidden } from '../Markdown.styled';
+import {
+  MarkdownButtonContentWrapper,
+  MarkdownButtonIcon,
+  MarkdownButtonWrapper,
+  VisuallyHidden,
+} from '../Markdown.styled';
 import { MarkdownFormat } from '../MarkdownFormat';
 
-interface Props extends MarkdownButtonProps {
+interface Props {
+  hintText: ReactNode;
+  icon: ReactNode;
+  text: ReactNode;
+  disabled?: boolean;
   format?: MarkdownFormat;
+  hintPos?: ShortPopupPositionsType | PopupPositionsType;
   href?: string;
+  isLoading?: boolean;
+  onClick?: (event: SyntheticEvent) => void;
+  showActionHint?: boolean;
+  showShortKey?: boolean;
+  showText?: boolean;
 }
 
 export const MarkdownFormatButton: FC<Props> = ({
@@ -21,11 +36,15 @@ export const MarkdownFormatButton: FC<Props> = ({
   href,
   showActionHint,
   showShortKey,
+  showText,
+  hintPos,
 }) => {
   const button = (
     <MarkdownButtonWrapper borderless disabled={disabled} onClick={onClick}>
-      <MarkdownButtonIcon>{icon}</MarkdownButtonIcon>
-      <VisuallyHidden>{text}</VisuallyHidden>
+      <MarkdownButtonContentWrapper onMouseDown={e => e.preventDefault()}>
+        {!!icon && <MarkdownButtonIcon>{icon}</MarkdownButtonIcon>}
+        {showText ? text : <VisuallyHidden>{text}</VisuallyHidden>}
+      </MarkdownButtonContentWrapper>
     </MarkdownButtonWrapper>
   );
   const content = href ? (
@@ -47,7 +66,7 @@ export const MarkdownFormatButton: FC<Props> = ({
   );
 
   return (
-    <Hint manual={disabled} text={hintComponent} pos="top center" maxWidth={360}>
+    <Hint manual={disabled} text={hintComponent} pos={hintPos ?? 'top center'} maxWidth={360}>
       {content}
     </Hint>
   );

@@ -1,12 +1,7 @@
 import { Button, Hint, Spinner, Textarea, Toast, Tooltip } from '@skbkontur/react-ui';
 import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 
-import {
-  DropdownCaptionWrapper,
-  TooltipButtonsWrapper,
-  TooltipContentWrapper,
-  TooltipWrapper,
-} from './AIActionsDropdown.styled';
+import { TooltipButtonsWrapper, TooltipContentWrapper, TooltipWrapper } from './AIActionsDropdown.styled';
 import { COPY_BUTTON_TEXT, ERRORS_NOT_FOUND_TEXT } from './constants';
 import { Copy } from '../../../MarkdownIcons/Copy';
 import { NatureFxSparkleA2 } from '../../../MarkdownIcons/NatureFxSparkleA2';
@@ -59,14 +54,11 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
       render={renderTooltipContent}
     >
       <MarkdownDropdown
-        pos="top center"
+        hintPos="top center"
         showActionHint={showActionHint}
         hintText={isEmptySelected ? 'Выдели текст' : 'ИИ-помощник'}
-        caption={
-          <DropdownCaptionWrapper>
-            <NatureFxSparkleA2 /> ИИ
-          </DropdownCaptionWrapper>
-        }
+        icon={<NatureFxSparkleA2 />}
+        caption="ИИ"
         menuWidth={180}
         disabled={isPreviewMode || isEmptySelected}
         onOpen={handleCloseTooltip}

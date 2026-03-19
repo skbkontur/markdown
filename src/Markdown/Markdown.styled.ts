@@ -157,8 +157,14 @@ export const MarkdownButtonWrapper = styled(Button)`
   }
 `;
 
+export const MarkdownButtonContentWrapper = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+`;
+
 export const MarkdownButtonIcon = styled.div`
-  height: 24px;
+  height: 22px;
   display: flex;
   width: 100%;
   align-items: center;
