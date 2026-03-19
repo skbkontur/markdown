@@ -20,6 +20,7 @@ import {
   ButtonsWrapper,
   MarkdownActionsWrapper,
   MarkdownMenuItem,
+  ViewModeButtonsWrapper,
 } from '../Markdown.styled';
 import { MarkdownFormat } from '../MarkdownFormat';
 import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
@@ -211,7 +212,7 @@ export const MarkdownActions: FC<Props> = ({
 
   function renderViewModeButton() {
     return (
-      <div>
+      <ViewModeButtonsWrapper>
         {viewMode !== ViewMode.Split && fullscreen && isSplitViewAvailable && (
           <MarkdownFormatButton
             dataTid={MarkdownTids.SplitView}
@@ -245,7 +246,7 @@ export const MarkdownActions: FC<Props> = ({
             onClick={() => onChangeViewMode(ViewMode.Preview)}
           />
         )}
-      </div>
+      </ViewModeButtonsWrapper>
     );
   }
 

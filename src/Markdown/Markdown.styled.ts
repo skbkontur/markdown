@@ -141,6 +141,10 @@ export const ButtonsWrapper = styled.div<{ fullscreen?: boolean }>`
   border-bottom: ${p => (p.fullscreen ? `1px solid ${p.theme.colors.grayDefault}` : 'none')};
 `;
 
+export const ViewModeButtonsWrapper = styled.div`
+  display: flex;
+`;
+
 export const ActionsRightWrapper = styled.div`
   display: flex;
 `;
