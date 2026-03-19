@@ -113,6 +113,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
     } catch (e) {
       if (taskId === taskIdRef.current.generated) {
         handleCloseTooltip();
+
         Toast.push('Ошибка обработки текста');
       }
     }
