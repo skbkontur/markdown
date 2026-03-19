@@ -24,6 +24,7 @@ interface Props {
   isLoading?: boolean;
   onClick?: (event: SyntheticEvent) => void;
   showActionHint?: boolean;
+  showHintWhenDisabled?: boolean;
   showShortKey?: boolean;
   showText?: boolean;
 }
@@ -38,6 +39,7 @@ export const MarkdownFormatButton: FC<Props> = ({
   text,
   href,
   showActionHint,
+  showHintWhenDisabled,
   showShortKey,
   showText,
   hintPos,
@@ -69,7 +71,7 @@ export const MarkdownFormatButton: FC<Props> = ({
   );
 
   return (
-    <Hint manual={disabled} text={hintComponent} pos={hintPos ?? 'top center'} maxWidth={360}>
+    <Hint manual={!showHintWhenDisabled && disabled} text={hintComponent} pos={hintPos ?? 'top center'} maxWidth={360}>
       {content}
     </Hint>
   );

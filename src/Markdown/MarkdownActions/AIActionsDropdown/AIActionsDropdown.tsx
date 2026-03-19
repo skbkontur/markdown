@@ -58,6 +58,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
         dataTid={MarkdownTids.AI}
         hintPos="top center"
         showActionHint={showActionHint}
+        showHintWhenDisabled={!isPreviewMode}
         hintText={isEmptySelected ? 'Выдели текст' : 'ИИ-помощник'}
         icon={<NatureFxSparkleA2 />}
         caption="ИИ"

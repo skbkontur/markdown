@@ -16,6 +16,7 @@ interface Props {
   icon?: ReactElement;
   menuWidth?: number;
   onOpen?: () => void;
+  showHintWhenDisabled?: boolean;
 }
 
 export const MarkdownDropdown: FC<PropsWithChildren<Props>> = ({
@@ -28,6 +29,7 @@ export const MarkdownDropdown: FC<PropsWithChildren<Props>> = ({
   menuWidth,
   hintText,
   showActionHint,
+  showHintWhenDisabled,
   hintPos,
 }) => {
   return (
@@ -43,6 +45,7 @@ export const MarkdownDropdown: FC<PropsWithChildren<Props>> = ({
             dataTid={dataTid}
             hintPos={hintPos}
             showActionHint={showActionHint}
+            showHintWhenDisabled={showHintWhenDisabled}
             disabled={disabled}
             hintText={hintText}
             icon={icon}
