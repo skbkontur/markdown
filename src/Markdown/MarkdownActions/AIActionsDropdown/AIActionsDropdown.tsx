@@ -106,6 +106,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
 
       const response = await onSendMessage(value, method);
 
+      /*  Игнорируем ответ, если это не последний запрос Например, закрыли тултип и отправили новый запрос */
       if (response && taskId === taskIdRef.current.generated) {
         setRequestStatus(RequestStatus.isLoaded);
         setProcessedText(value.trim() === response ? ERRORS_NOT_FOUND_TEXT : response);
