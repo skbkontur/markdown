@@ -1,3 +1,5 @@
+import { AIApi, AIMethod, MarkdownApi, RefItem, User } from '../types';
+
 export const allVariantsMarkdownMock = `# Заголовок 1
 ## Заголовок 2
 ### Заголовок 3
@@ -60,3 +62,47 @@ $$L = \\frac{1}{2} \\rho v^2 S C_L$$
 `;
 
 export const emojiMarkdownMock = `😞😟🙁☹️😐🤨🙂😃😁😆😅😂🤣`;
+
+const availableAIMethodsMock: AIMethod[] = [
+  { method: 'correctSpelling', caption: 'Исправить ошибки' },
+  { method: 'rewriteText', caption: 'Другими словами' },
+];
+
+export const AIApiMock: AIApi = {
+  onSendMessage: () => new Promise<string>(resolve => resolve('Привет, как дела?')),
+  availableMethods: availableAIMethodsMock,
+};
+
+export const apiMock: MarkdownApi = {
+  fileDownloadApi: () => new Promise<File>(resolve => resolve(new File(['a'], 'test.txt'))),
+  fileUploadApi: () => new Promise<RefItem>(resolve => resolve({ id: 'i', caption: 'test.txt' })),
+  getUsersApi: () =>
+    new Promise<User[]>(resolve =>
+      resolve([
+        { id: '1', name: 'Максим', login: 'login', teams: [] },
+        { id: '2', name: 'Максим2', login: 'login2', teams: [] },
+        { id: '3', name: 'Максим3', login: 'login3', teams: [] },
+        { id: '4', name: 'Максим4', login: 'login4', teams: [] },
+        { id: '5', name: 'Максим5', login: 'login5', teams: [] },
+        { id: '6', name: 'Максим6', login: 'login6', teams: [] },
+        { id: '7', name: 'Максим7', login: 'login7', teams: [] },
+        { id: '8', name: 'Максим8', login: 'login8', teams: [] },
+        { id: '9', name: 'Максим9', login: 'login9', teams: [] },
+      ]),
+    ),
+};
+
+export const hiddenOptionsTestCases = [
+  { legend: 'Без панели кнопок', hideActionsOptions: { allActions: true } },
+  { legend: 'Без заголовок', hideActionsOptions: { heading: true } },
+  { legend: 'Без формата текста', hideActionsOptions: { bold: true, italic: true, crossed: true } },
+  { legend: 'Без ссылки', hideActionsOptions: { ref: true } },
+  { legend: 'Без списков', hideActionsOptions: { list: true, checkedList: true, numberedList: true } },
+  { legend: 'Без блока кода', hideActionsOptions: { codeBlock: true } },
+  { legend: 'Без цитаты', hideActionsOptions: { quote: true } },
+  { legend: 'Без таблицы', hideActionsOptions: { table: true } },
+  { legend: 'Без ссылки на доку по markdown', hideActionsOptions: { help: true } },
+  { legend: 'Без кнопки переключения режима просмотра', hideActionsOptions: { viewMode: true } },
+  { legend: 'Без кнопки разворачивания/сворачивания', hideActionsOptions: { screenMode: true } },
+  { legend: 'Без ИИ-помощника', hideActionsOptions: { AI: true } },
+];

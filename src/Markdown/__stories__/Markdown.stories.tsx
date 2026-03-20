@@ -5,9 +5,14 @@ import React, { CSSProperties, useState } from 'react';
 
 import { a11yRules } from '../../../a11y/rules';
 import { MarkdownViewer } from '../../MarkdownViewer';
-import { allVariantsMarkdownMock, emojiMarkdownMock } from '../__mocks__/markdown.mock';
-import { Markdown } from '../Markdown';
-import { MarkdownApi, RefItem, User } from '../types';
+import {
+  AIApiMock,
+  allVariantsMarkdownMock,
+  apiMock,
+  emojiMarkdownMock,
+  hiddenOptionsTestCases,
+} from '../__mocks__/markdown.mock';
+import { Markdown, MarkdownProps } from '../Markdown';
 
 const sizeOptions: SizeProp[] = ['small', 'medium', 'large'];
 
@@ -34,37 +39,24 @@ export default {
 } as Meta;
 type Story = StoryFn<typeof Markdown>;
 
-const apiMock: MarkdownApi = {
-  fileDownloadApi: () => new Promise<File>(resolve => resolve(new File(['a'], 'test.txt'))),
-  fileUploadApi: () => new Promise<RefItem>(resolve => resolve({ id: 'i', caption: 'test.txt' })),
-  getUsersApi: () =>
-    new Promise<User[]>(resolve =>
-      resolve([
-        { id: '1', name: 'Максим', login: 'login', teams: [] },
-        { id: '2', name: 'Максим2', login: 'login2', teams: [] },
-        { id: '3', name: 'Максим3', login: 'login3', teams: [] },
-        { id: '4', name: 'Максим4', login: 'login4', teams: [] },
-        { id: '5', name: 'Максим5', login: 'login5', teams: [] },
-        { id: '6', name: 'Максим6', login: 'login6', teams: [] },
-        { id: '7', name: 'Максим7', login: 'login7', teams: [] },
-        { id: '8', name: 'Максим8', login: 'login8', teams: [] },
-        { id: '9', name: 'Максим9', login: 'login9', teams: [] },
-      ]),
-    ),
+const baseProps: Partial<MarkdownProps> = {
+  api: apiMock,
 };
 
-export const MediumSize: Story = args => <Markdown {...args} width="100%" value={allVariantsMarkdownMock} />;
+export const MediumSize: Story = args => (
+  <Markdown {...baseProps} {...args} width="100%" value={allVariantsMarkdownMock} />
+);
 MediumSize.args = {
   size: 'medium',
 };
 
-export const LargeSize: Story = args => <Markdown {...args} value={allVariantsMarkdownMock} />;
+export const LargeSize: Story = args => <Markdown {...baseProps} {...args} value={allVariantsMarkdownMock} />;
 LargeSize.args = {
   size: 'large',
 };
 
 export const WithPanel: Story = args => (
-  <Markdown {...args} borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
+  <Markdown {...baseProps} {...args} borderless value={allVariantsMarkdownMock} panelHorizontalPadding={28} />
 );
 
 export const Editable: Story = args => {
@@ -72,8 +64,8 @@ export const Editable: Story = args => {
 
   return (
     <Markdown
+      {...baseProps}
       {...args}
-      api={apiMock}
       fileApiUrl="/api/file/download"
       value={value}
       maxLength={50000}
@@ -88,6 +80,7 @@ export const WithValidation: Story = args => {
   return (
     <ValidationContainer>
       <Markdown
+        {...baseProps}
         {...args}
         withValidationWrapper
         value={value}
@@ -105,7 +98,7 @@ export const InModal: Story = args => {
     <Modal width={600}>
       <Modal.Header>In Modal</Modal.Header>
       <Modal.Body>
-        <Markdown {...args} api={apiMock} value={value} maxLength={50000} onValueChange={setValue} />
+        <Markdown {...baseProps} {...args} value={value} maxLength={50000} onValueChange={setValue} />
       </Modal.Body>
     </Modal>
   );
@@ -116,7 +109,7 @@ InModal.parameters = { creevey: { captureElement: 'body > div.react-ui > div' } 
 export const CustomWidth: Story = args => {
   const [value, setValue] = useState<string>(allVariantsMarkdownMock);
 
-  return <Markdown {...args} fileApiUrl="/api/file" value={value} onValueChange={setValue} />;
+  return <Markdown {...baseProps} {...args} fileApiUrl="/api/file" value={value} onValueChange={setValue} />;
 };
 
 CustomWidth.decorators = [];
@@ -135,6 +128,7 @@ export const CustomValidation: Story = args => {
   return (
     <ValidationContainer>
       <Markdown
+        {...baseProps}
         {...args}
         withValidationWrapper
         width={444}
@@ -151,6 +145,7 @@ export const WithoutHints: Story = args => {
   return (
     <ValidationContainer>
       <Markdown
+        {...baseProps}
         {...args}
         withValidationWrapper
         showActionHints={false}
@@ -166,6 +161,7 @@ export const WithActionHint: Story = args => {
   return (
     <ValidationContainer>
       <Markdown
+        {...baseProps}
         {...args}
         withValidationWrapper
         showActionHints
@@ -181,6 +177,7 @@ export const WithShortKeyHint: Story = args => {
   return (
     <ValidationContainer>
       <Markdown
+        {...baseProps}
         {...args}
         withValidationWrapper
         showShortKeys
@@ -196,6 +193,7 @@ export const WithActionAndShortKeyHints: Story = args => {
   return (
     <ValidationContainer>
       <Markdown
+        {...baseProps}
         {...args}
         withValidationWrapper
         showActionHints
@@ -218,13 +216,21 @@ Viewer.parameters = {
 };
 
 export const WithEmoji = (args: any) => {
-  return <Markdown {...args} value={emojiMarkdownMock} />;
+  return <Markdown {...baseProps} {...args} value={emojiMarkdownMock} />;
 };
 
 export const WithEmojiEditable = (args: any) => {
   const [value, setValue] = useState<string>('');
 
-  return <Markdown {...args} value={value} onValueChange={setValue} />;
+  return <Markdown {...baseProps} {...args} value={value} onValueChange={setValue} />;
+};
+
+export const WithAIApi = (args: any) => {
+  const [value, setValue] = useState<string>('');
+
+  return (
+    <Markdown width="550px" api={{ ...apiMock, AIApi: AIApiMock }} {...args} value={value} onValueChange={setValue} />
+  );
 };
 
 export const HiddenOptions = () => {
@@ -245,50 +251,12 @@ export const HiddenOptions = () => {
 
   return (
     <div style={wrapStyles}>
-      <fieldset style={itemStyles}>
-        <legend>Без панели кнопок</legend>
-        <Markdown hideActionsOptions={{ allActions: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без заголовок</legend>
-        <Markdown hideActionsOptions={{ heading: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без формата текста</legend>
-        <Markdown hideActionsOptions={{ bold: true, italic: true, crossed: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без ссылки</legend>
-        <Markdown hideActionsOptions={{ ref: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без списков</legend>
-        <Markdown hideActionsOptions={{ list: true, checkedList: true, numberedList: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без блока кода</legend>
-        <Markdown hideActionsOptions={{ codeBlock: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без цитаты</legend>
-        <Markdown hideActionsOptions={{ quote: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без таблицы</legend>
-        <Markdown hideActionsOptions={{ table: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без ссылки на доку по markdown</legend>
-        <Markdown hideActionsOptions={{ help: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без кнопки переключения режима просмотра</legend>
-        <Markdown hideActionsOptions={{ viewMode: true }} rows={1} />
-      </fieldset>
-      <fieldset style={itemStyles}>
-        <legend>Без кнопки разворачивания/сворачивания</legend>
-        <Markdown hideActionsOptions={{ screenMode: true }} rows={1} />
-      </fieldset>
+      {hiddenOptionsTestCases.map(({ legend, hideActionsOptions }, index) => (
+        <fieldset key={index} style={itemStyles}>
+          <legend>{legend}</legend>
+          <Markdown api={{ AIApi: AIApiMock }} hideActionsOptions={hideActionsOptions} rows={1} />
+        </fieldset>
+      ))}
     </div>
   );
 };

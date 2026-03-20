@@ -1,43 +1,45 @@
+import { delay } from '@skbkontur/react-ui/lib/utils';
 import { story, kind, test } from 'creevey';
 
+import { MarkdownTids } from './MarkdownTids';
+
+const getByTid = (tid: MarkdownTids) => `[data-tid="${tid}"]`;
+
 kind('Markdown', () => {
-  story('MediumSize', ({ setStoryParameters }) => {
+  story('CustomWidth', ({ setStoryParameters }) => {
     setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
 
-    test('withPreview', async function () {
-      const buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-      const idle = await this.captureElement?.takeScreenshot();
-      await this.browser
-        .actions()
-        .click(buttons[buttons.length - 2])
-        .perform();
-      const preview = await this.captureElement?.takeScreenshot();
-      await this.expect({ idle, preview }).to.matchImages();
+    test('withPreview', async context => {
+      const previewButton = context.webdriver.locator(getByTid(MarkdownTids.PreviewView));
+
+      const idle = await context.takeScreenshot();
+
+      await previewButton.click();
+
+      const preview = await context.takeScreenshot();
+
+      await context.matchImages({ idle, preview });
     });
 
-    test('withFullscreen', async function () {
-      let buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-      await this.browser
-        .actions()
-        .click(buttons[buttons.length - 1])
-        .perform();
-      const fullscreenSplit = await this.captureElement?.takeScreenshot();
+    test('withFullscreen', async context => {
+      const fullscreenButton = context.webdriver.locator(getByTid(MarkdownTids.FullscreenToggle));
+      const previewButton = context.webdriver.locator(getByTid(MarkdownTids.PreviewView));
+      const editButton = context.webdriver.locator(getByTid(MarkdownTids.EditView));
 
-      buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-      await this.browser
-        .actions()
-        .click(buttons[buttons.length - 2])
-        .perform();
-      const fullscreenPreview = await this.captureElement?.takeScreenshot();
+      await fullscreenButton.click();
+      const fullscreenSplit = await context.takeScreenshot();
 
-      buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-      await this.browser
-        .actions()
-        .click(buttons[buttons.length - 2])
-        .perform();
-      const fullscreenEdit = await this.captureElement?.takeScreenshot();
+      await previewButton.click();
+      const fullscreenPreview = await context.takeScreenshot();
 
-      await this.expect({ fullscreenSplit, fullscreenPreview, fullscreenEdit }).to.matchImages();
+      await editButton.click();
+      const fullscreenEdit = await context.takeScreenshot();
+
+      await context.matchImages({
+        fullscreenSplit,
+        fullscreenPreview,
+        fullscreenEdit,
+      });
     });
   });
 
@@ -45,24 +47,16 @@ kind('Markdown', () => {
     story(storyName, ({ setStoryParameters }) => {
       setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
 
-      test('hint', async function () {
-        const buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-        const boldButton = buttons[1];
-        const boldButtonLocation = await boldButton.getRect();
+      test('hint', async context => {
+        const boldButton = context.webdriver.locator(getByTid(MarkdownTids.Bold));
 
-        await this.browser
-          .actions()
-          .move({
-            x: Math.ceil(boldButtonLocation.x + boldButtonLocation.width / 2),
-            y: Math.ceil(boldButtonLocation.y + boldButtonLocation.height / 2),
-          })
-          .perform();
+        await boldButton.hover();
 
-        await this.browser.sleep(500);
+        await delay(500);
 
-        const hint = await this.captureElement?.takeScreenshot();
+        const hint = await context.takeScreenshot();
 
-        await this.expect({ hint }).to.matchImages();
+        await context.matchImages({ hint });
       });
     });
   }
@@ -70,87 +64,52 @@ kind('Markdown', () => {
   story('Editable', ({ setStoryParameters }) => {
     setStoryParameters({ skip: !!process.env.STORYBOOK_TEAMCITY_VERSION });
 
-    test('markdownTests', async function () {
-      const textarea = await this.browser.findElement({ tagName: 'textarea' });
-      const buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
+    test('markdownTests', async context => {
+      const textarea = context.webdriver.locator('textarea').nth(0);
+      const headingDropdown = context.webdriver.locator(getByTid(MarkdownTids.HeadingDropdown));
+      const headingH2 = context.webdriver.locator(getByTid(MarkdownTids.HeadingH2));
+      const boldButton = context.webdriver.locator(getByTid(MarkdownTids.Bold));
+      const emojiButton = context.webdriver.locator(getByTid(MarkdownTids.Emoji));
 
-      await this.browser.actions().click(textarea).perform();
-      await this.browser.actions().sendKeys('Заголовок').keyDown(this.keys.CONTROL).sendKeys('a').perform();
-      await this.browser.actions().click(buttons[0]).perform();
+      await textarea.click();
+      await textarea.type('Заголовок');
 
-      const openedDropdown = await this.captureElement?.takeScreenshot();
-      const newButtons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-      await this.browser.actions().click(newButtons[1]).perform();
-      const h1FromButton = await this.captureElement?.takeScreenshot();
-      await this.browser
-        .actions()
-        .keyDown(this.keys.CONTROL)
-        .sendKeys('a')
-        .sendKeys('Заголовок')
-        .keyDown(this.keys.CONTROL)
-        .sendKeys('a')
-        .keyDown(this.keys.CONTROL)
-        .keyDown(this.keys.ALT)
-        .sendKeys('1')
-        .perform();
-      const h1FromKeyboard = await this.captureElement?.takeScreenshot();
-      await this.browser
-        .actions()
-        .keyDown(this.keys.CONTROL)
-        .sendKeys('a')
-        .sendKeys('Жирный')
-        .keyDown(this.keys.CONTROL)
-        .sendKeys('a')
-        .click(buttons[1])
-        .perform();
-      const boldFromButton = await this.captureElement?.takeScreenshot();
-      await this.browser
-        .actions()
-        .keyDown(this.keys.CONTROL)
-        .sendKeys('a')
-        .sendKeys('Жирный')
-        .keyDown(this.keys.CONTROL)
-        .sendKeys('a')
-        .keyDown(this.keys.CONTROL)
-        .keyDown(this.keys.ALT)
-        .sendKeys('b')
-        .perform();
-      const boldFromKeyboard = await this.captureElement?.takeScreenshot();
-      await this.browser.actions().click(buttons[12]).perform();
-      const openedEmojiPicker = await this.captureElement?.takeScreenshot();
-      await this.expect({
+      await textarea.press('Control+A');
+      await headingDropdown.click();
+      const openedDropdown = await context.takeScreenshot();
+
+      await headingH2.click();
+      const h2FromButton = await context.takeScreenshot();
+
+      await textarea.press('Control+A');
+      await textarea.type('Заголовок');
+      await textarea.press('Control+A');
+      await textarea.press('Control+Shift+2');
+      const h2FromKeyboard = await context.takeScreenshot();
+
+      await textarea.press('Control+A');
+      await textarea.type('Жирный');
+      await textarea.press('Control+A');
+      await boldButton.click();
+      const boldFromButton = await context.takeScreenshot();
+
+      await textarea.press('Control+A');
+      await textarea.type('Жирный');
+      await textarea.press('Control+A');
+      await textarea.press('Control+B');
+      const boldFromKeyboard = await context.takeScreenshot();
+
+      await emojiButton.click();
+      const openedEmojiPicker = await context.takeScreenshot();
+
+      await context.matchImages({
         openedDropdown,
-        h1FromButton,
-        h1FromKeyboard,
+        h2FromButton,
+        h2FromKeyboard,
         boldFromButton,
         boldFromKeyboard,
         openedEmojiPicker,
-      }).to.matchImages();
-    });
-
-    test('withFullscreen', async function () {
-      let buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-      await this.browser
-        .actions()
-        .click(buttons[buttons.length - 1])
-        .perform();
-      const fullscreenSplit = await this.captureElement?.takeScreenshot();
-
-      buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-      await this.browser
-        .actions()
-        .click(buttons[buttons.length - 2])
-        .perform();
-      const fullscreenPreview = await this.captureElement?.takeScreenshot();
-
-      buttons = await this.browser.findElements({ css: 'button[class*="react-ui"]' });
-      await this.browser
-        .actions()
-        .click(buttons[buttons.length - 2])
-        .perform();
-      const fullscreenEdit = await this.captureElement?.takeScreenshot();
-
-      await this.expect({ fullscreenSplit, fullscreenPreview, fullscreenEdit }).to.matchImages();
+      });
     });
   });
 });

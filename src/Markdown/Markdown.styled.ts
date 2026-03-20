@@ -141,6 +141,10 @@ export const ButtonsWrapper = styled.div<{ fullscreen?: boolean }>`
   border-bottom: ${p => (p.fullscreen ? `1px solid ${p.theme.colors.grayDefault}` : 'none')};
 `;
 
+export const ViewModeButtonsWrapper = styled.div`
+  display: flex;
+`;
+
 export const ActionsRightWrapper = styled.div`
   display: flex;
 `;
@@ -157,22 +161,18 @@ export const MarkdownButtonWrapper = styled(Button)`
   }
 `;
 
+export const MarkdownButtonContentWrapper = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+`;
+
 export const MarkdownButtonIcon = styled.div`
-  height: 24px;
+  height: 22px;
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
-`;
-
-export const MarkdownDropdown = styled.div`
-  display: flex;
-  align-items: end;
-  padding-bottom: 1px;
-
-  button {
-    font-size: ${p => p.theme.elementsFontSize};
-  }
 `;
 
 export const MarkdownSymbolWrapper = styled.span`
@@ -183,7 +183,7 @@ export const MarkdownSymbolWrapper = styled.span`
 export const MarkdownMenuItem = styled(MenuItem)`
   padding-left: 8px;
   padding-right: 8px;
-  color: ${p => p.theme.colors.grayDefault};
+  color: ${p => p.theme.colors.text};
 `;
 
 export const MarkdownEditorBlock = styled.div`

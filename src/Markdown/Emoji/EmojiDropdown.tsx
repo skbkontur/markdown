@@ -9,16 +9,18 @@ import { EmojiPickerWrapper } from './Emoji.styled';
 import { EmojiFace } from '../../MarkdownIcons/EmojiFace';
 import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../../styles/theme';
 import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
+import { MarkdownTids } from '../MarkdownTids';
 
 emojiLocale.search = 'Поиск на английском';
 
 interface Props {
   isPreviewMode: boolean;
   onSelect: (emoji: EmojiData) => void;
+  showActionHint: boolean;
   showShortKey: boolean;
 }
 
-export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, onSelect }) => {
+export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, onSelect, showActionHint }) => {
   const dropdownMenuRef = useRef<DropdownMenu>(null);
 
   return (
@@ -31,7 +33,9 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
             ref={dropdownMenuRef}
             caption={({ toggleMenu }) => (
               <MarkdownFormatButton
+                dataTid={MarkdownTids.Emoji}
                 showShortKey={showShortKey}
+                showActionHint={showActionHint}
                 hintText="Emoji"
                 disabled={isPreviewMode}
                 icon={<EmojiFace />}

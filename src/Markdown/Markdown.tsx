@@ -29,7 +29,7 @@ import {
   SplitViewPreviewContainer,
   Wrapper,
 } from './Markdown.styled';
-import { MarkdownActions } from './MarkdownActions';
+import { MarkdownActions } from './MarkdownActions/MarkdownActions';
 import { MarkdownEditor, MarkdownEditorProps } from './MarkdownEditor';
 import { EmptyPreview } from './MarkdownHelpers/EmptyPreview';
 import { usePasteFromClipboard } from './MarkdownHelpers/markdownHelpers';
@@ -40,7 +40,7 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Token, ViewMode } from './types';
+import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Nullable, Token, ViewMode } from './types';
 import { Guid } from './utils/guid';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
@@ -48,7 +48,7 @@ import { ThemeProvider } from '../styles/styled-components';
 import { DEFAULT_MARKDOWN_THEME, MarkdownThemeConsumer } from '../styles/theme';
 
 export interface MarkdownProps extends MarkdownEditorProps {
-  /** Методы апи для загрузки/скачивания файлов и меншена */
+  /** Методы апи для загрузки/скачивания файлов, меншена, ИИ */
   api?: MarkdownApi;
   /** Режим прозрачной рамки у Textarea */
   borderless?: boolean;
@@ -68,6 +68,7 @@ export interface MarkdownProps extends MarkdownEditorProps {
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
   /** Показывать подсказки к действиям */
   showActionHints?: boolean;
+
   /** Показывать сочетания клавиш для действия в хинте */
   showShortKeys?: boolean;
 
@@ -97,7 +98,6 @@ export const Markdown: FC<MarkdownProps> = props => {
     ...textareaProps
   } = props;
 
-  const textareaRef = useRef<Textarea | null>(null);
   const [mention, setMention] = useState<Token>();
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Edit);
   const [fullscreen, setFullScreen] = useState<boolean>(false);
@@ -106,8 +106,10 @@ export const Markdown: FC<MarkdownProps> = props => {
   const [selectionEnd, setSelectionEnd] = useState<number>();
 
   const guid = useRef(new Guid().generate()).current;
-  const isEditMode = viewMode !== ViewMode.Preview;
+  const textareaRef = useRef<Textarea | null>(null);
+  const textareaNode = getTextareaNode();
 
+  const isEditMode = viewMode !== ViewMode.Preview;
   const width = fullscreen || !textareaProps.width ? '100%' : textareaProps.width;
 
   const { isSplitViewAvailable, isMobile } = useResponsiveLayout({
@@ -132,8 +134,9 @@ export const Markdown: FC<MarkdownProps> = props => {
   const fullscreenTextareaPadding = useFullscreenHorizontalPadding(fullscreen, viewMode, initialWidth);
 
   useLayoutEffect(() => {
-    const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
-    setInitialWidth(textareaNode.clientWidth);
+    const textareaNode = getTextareaNode();
+
+    if (textareaNode) setInitialWidth(textareaNode.clientWidth);
   }, []);
 
   useEffect(() => {
@@ -147,15 +150,28 @@ export const Markdown: FC<MarkdownProps> = props => {
 
   useEffect(() => {
     if (fullscreen && isEditMode && textareaRef) {
-      const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
+      const textareaNode = getTextareaNode();
 
-      if (textareaNode) {
+      if (textareaNode && !textareaNode.selectionStart && !textareaNode.selectionEnd) {
         textareaNode.focus();
         textareaNode.selectionStart = selectionStart ?? 0;
         textareaNode.selectionEnd = selectionEnd ?? 0;
       }
     }
   }, [fullscreen, isEditMode, selectionEnd, selectionStart, textareaRef]);
+
+  useEffect(() => {
+    const handleSelectionChange = () => {
+      const textareaNode = getTextareaNode();
+
+      setSelectionStart(textareaNode?.selectionStart);
+      setSelectionEnd(textareaNode?.selectionEnd);
+    };
+
+    document.addEventListener('selectionchange', handleSelectionChange);
+
+    return () => document.removeEventListener('selectionchange', handleSelectionChange);
+  }, []);
 
   const horizontalPaddings: HorizontalPaddings = {
     panelPadding: panelHorizontalPadding,
@@ -181,6 +197,7 @@ export const Markdown: FC<MarkdownProps> = props => {
             hasFilesApi={!!api?.fileDownloadApi && !!api?.fileUploadApi}
             isSplitViewAvailable={isSplitViewAvailable}
             disableFullscreen={isMobile}
+            AIApi={api?.AIApi}
             onOpenFileDialog={open}
             onChangeViewMode={handleChangeViewMode}
             onClickFullscreen={handleClickFullscreen}
@@ -262,7 +279,7 @@ export const Markdown: FC<MarkdownProps> = props => {
           width={width}
           textareaRef={textareaRef}
           onChange={listenChange}
-          onSelect={listenSelection}
+          onSelect={listenSelect}
           onClick={listenClick}
         />
       </MarkdownEditorBlock>
@@ -287,8 +304,7 @@ export const Markdown: FC<MarkdownProps> = props => {
   }
 
   function renderMentions() {
-    if (textareaRef.current && mention && api?.getUsersApi) {
-      const textareaNode = (textareaRef.current as any)?.node as HTMLTextAreaElement;
+    if (textareaNode && mention && api?.getUsersApi) {
       const position = getCursorCoordinates(textareaNode, guid);
 
       return (
@@ -309,10 +325,8 @@ export const Markdown: FC<MarkdownProps> = props => {
   }
 
   function handleSelectUser(login: string, name: string) {
-    if (textareaRef.current && mention) {
-      const htmlTextArea = (textareaRef.current as any) as HTMLTextAreaElement;
-
-      htmlTextArea.setSelectionRange(mention.positions[0] ? mention.positions[0] - 1 : 0, mention.positions[1]);
+    if (textareaNode && mention) {
+      textareaNode.setSelectionRange(mention.positions[0] ? mention.positions[0] - 1 : 0, mention.positions[1]);
 
       document.execCommand('insertText', false, `[${name}](@${login})`);
 
@@ -320,12 +334,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     }
   }
 
-  function listenSelection(event: SyntheticEvent<HTMLTextAreaElement, Event>) {
-    const { selectionStart: textSelectionStart, selectionEnd: textSelectionEnd } = event.currentTarget;
-
-    setSelectionStart(textSelectionStart);
-    setSelectionEnd(textSelectionEnd);
-
+  function listenSelect(event: SyntheticEvent<HTMLTextAreaElement, Event>) {
     onSelect && onSelect(event);
 
     checkMention(event);
@@ -354,6 +363,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     resetMention();
     setSelectionStart(undefined);
     setSelectionEnd(undefined);
+    textareaNode?.setSelectionRange(0, 0);
   }
 
   function resetMention() {
@@ -363,5 +373,9 @@ export const Markdown: FC<MarkdownProps> = props => {
   function handleClickFullscreen() {
     setViewMode(prevState => (prevState !== ViewMode.Split && isSplitViewAvailable ? ViewMode.Split : ViewMode.Edit));
     setFullScreen(!fullscreen);
+  }
+
+  function getTextareaNode() {
+    return (textareaRef?.current as any)?.node as Nullable<HTMLTextAreaElement>;
   }
 };

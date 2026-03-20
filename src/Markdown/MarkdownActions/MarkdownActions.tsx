@@ -1,30 +1,33 @@
-import { Dropdown, Hint, Textarea } from '@skbkontur/react-ui';
+import { Textarea } from '@skbkontur/react-ui';
 import React, { FC, RefObject, SyntheticEvent } from 'react';
 
-import { COMMONMARK_HELP_URL } from './constants';
-import { EmojiData } from './Emoji/Emoji.logic';
-import { EmojiDropdown } from './Emoji/EmojiDropdown';
+import { AIActionsDropdown } from './AIActionsDropdown/AIActionsDropdown';
+import { MarkdownDropdown } from './MarkdownDropdown/MarkdownDropdown';
+import { MarkdownCombination } from '../../MarkdownCombination/MarkdownCombination';
+import { AttachPaperclip } from '../../MarkdownIcons/AttachPaperclip';
+import { Collapse } from '../../MarkdownIcons/Collapse';
+import { DocIcon } from '../../MarkdownIcons/DocIcon';
+import { Expand } from '../../MarkdownIcons/Expand';
+import { EyeOpen } from '../../MarkdownIcons/EyeOpen';
+import { SplitView } from '../../MarkdownIcons/SplitView';
+import { ToolPencil } from '../../MarkdownIcons/ToolPencil';
+import { COMMONMARK_HELP_URL } from '../constants';
+import { EmojiData } from '../Emoji/Emoji.logic';
+import { EmojiDropdown } from '../Emoji/EmojiDropdown';
 import {
   ActionsLeftWrapper,
   ActionsRightWrapper,
   ButtonsWrapper,
   MarkdownActionsWrapper,
-  MarkdownDropdown,
   MarkdownMenuItem,
-} from './Markdown.styled';
-import { MarkdownFormat } from './MarkdownFormat';
-import { MarkdownFormatButton } from './MarkdownHelpers/MarkdownFormatButton';
-import { setMarkdown } from './MarkdownHelpers/markdownHelpers';
-import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from './MarkdownHelpItems';
-import { HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from './types';
-import { MarkdownCombination } from '../MarkdownCombination/MarkdownCombination';
-import { AttachPaperclip } from '../MarkdownIcons/AttachPaperclip';
-import { Collapse } from '../MarkdownIcons/Collapse';
-import { DocIcon } from '../MarkdownIcons/DocIcon';
-import { Expand } from '../MarkdownIcons/Expand';
-import { EyeOpen } from '../MarkdownIcons/EyeOpen';
-import { SplitView } from '../MarkdownIcons/SplitView';
-import { ToolPencil } from '../MarkdownIcons/ToolPencil';
+  ViewModeButtonsWrapper,
+} from '../Markdown.styled';
+import { MarkdownFormat } from '../MarkdownFormat';
+import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
+import { setMarkdown } from '../MarkdownHelpers/markdownHelpers';
+import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from '../MarkdownHelpItems';
+import { MarkdownTids } from '../MarkdownTids';
+import { AIApi, HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from '../types';
 
 interface Props {
   horizontalPaddings: HorizontalPaddings;
@@ -36,10 +39,12 @@ interface Props {
   showShortKeys: boolean;
   textAreaRef: RefObject<Textarea>;
   viewMode: ViewMode;
+  AIApi?: AIApi;
   disableFullscreen?: boolean;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
   hideOptions?: HideActionsOptions;
+  isFocused?: boolean;
   isSplitViewAvailable?: boolean;
   loadingFile?: boolean;
   selectionEnd?: Nullable<number>;
@@ -66,6 +71,7 @@ export const MarkdownActions: FC<Props> = ({
   onSelectEmoji,
   isSplitViewAvailable,
   disableFullscreen,
+  AIApi,
 }) => {
   const isPreviewMode = viewMode === ViewMode.Preview;
 
@@ -74,19 +80,23 @@ export const MarkdownActions: FC<Props> = ({
       <ButtonsWrapper fullscreen={fullscreen}>
         <ActionsLeftWrapper>
           {!hideOptions?.heading && (
-            <MarkdownDropdown>
-              <Hint text="Заголовок" pos="top left">
-                <Dropdown disablePortal disabled={isPreviewMode} menuWidth={300} caption="H">
-                  {markdownHelpHeaders.map((helper, idx) => (
-                    <MarkdownMenuItem
-                      key={idx}
-                      onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
-                    >
-                      <MarkdownCombination showShortKey={showShortKeys} format={helper.format} text={helper.node} />
-                    </MarkdownMenuItem>
-                  ))}
-                </Dropdown>
-              </Hint>
+            <MarkdownDropdown
+              dataTid={MarkdownTids.HeadingDropdown}
+              showActionHint={showActionHints}
+              hintPos="top left"
+              caption="H"
+              hintText="Заголовок"
+              disabled={isPreviewMode}
+            >
+              {markdownHelpHeaders.map((helper, idx) => (
+                <MarkdownMenuItem
+                  key={idx}
+                  data-tid={helper.tid}
+                  onClick={(event: SyntheticEvent) => handleMarkdownItemClick(event, helper.format)}
+                >
+                  <MarkdownCombination showShortKey={showShortKeys} format={helper.format} text={helper.node} />
+                </MarkdownMenuItem>
+              ))}
             </MarkdownDropdown>
           )}
           {markdownHelpText.map((helper, idx) => {
@@ -99,6 +109,7 @@ export const MarkdownActions: FC<Props> = ({
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
+                dataTid={helper.tid}
                 hintText={helper.node}
                 icon={helper.icon}
                 text={helper.text}
@@ -116,6 +127,7 @@ export const MarkdownActions: FC<Props> = ({
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
+                dataTid={helper.tid}
                 hintText={helper.node}
                 icon={helper.icon}
                 text={helper.text}
@@ -133,6 +145,7 @@ export const MarkdownActions: FC<Props> = ({
                 showShortKey={showShortKeys}
                 disabled={isPreviewMode}
                 format={helper.format}
+                dataTid={helper.tid}
                 hintText={helper.node}
                 icon={helper.icon}
                 text={helper.text}
@@ -142,6 +155,7 @@ export const MarkdownActions: FC<Props> = ({
           })}
           {hasFilesApi && !hideOptions?.file && (
             <MarkdownFormatButton
+              dataTid={MarkdownTids.AttachFile}
               hintText="Прикрепить файл"
               showActionHint={showActionHints}
               showShortKey={showShortKeys}
@@ -153,21 +167,38 @@ export const MarkdownActions: FC<Props> = ({
             />
           )}
           {!hideOptions?.emoji && (
-            <EmojiDropdown showShortKey={showShortKeys} isPreviewMode={isPreviewMode} onSelect={onSelectEmoji} />
+            <EmojiDropdown
+              showActionHint={showActionHints}
+              showShortKey={showShortKeys}
+              isPreviewMode={isPreviewMode}
+              onSelect={onSelectEmoji}
+            />
           )}
+          {!hideOptions?.AI && !!AIApi && (
+            <AIActionsDropdown
+              showActionHint={showActionHints}
+              textareaRef={textAreaRef}
+              isPreviewMode={isPreviewMode}
+              api={AIApi}
+            />
+          )}
+        </ActionsLeftWrapper>
+        <ActionsRightWrapper>
           {!hideOptions?.help && (
             <MarkdownFormatButton
+              showActionHint={showActionHints}
+              dataTid={MarkdownTids.Help}
               hintText="Документация Markdown"
               icon={<DocIcon />}
               text="Документация Markdown"
               href={COMMONMARK_HELP_URL}
             />
           )}
-        </ActionsLeftWrapper>
-        <ActionsRightWrapper>
           {!hideOptions?.viewMode && renderViewModeButton()}
           {!hideOptions?.screenMode && !disableFullscreen && (
             <MarkdownFormatButton
+              showActionHint={showActionHints}
+              dataTid={MarkdownTids.FullscreenToggle}
               hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
               icon={fullscreen ? <Collapse /> : <Expand />}
               text={fullscreen ? 'Свернуть' : '  Развернуть'}
@@ -181,9 +212,10 @@ export const MarkdownActions: FC<Props> = ({
 
   function renderViewModeButton() {
     return (
-      <div>
+      <ViewModeButtonsWrapper>
         {viewMode !== ViewMode.Split && fullscreen && isSplitViewAvailable && (
           <MarkdownFormatButton
+            dataTid={MarkdownTids.SplitView}
             icon={<SplitView />}
             hintText="Сплит"
             text="Сплит"
@@ -194,6 +226,7 @@ export const MarkdownActions: FC<Props> = ({
         )}
         {viewMode !== ViewMode.Edit && (
           <MarkdownFormatButton
+            dataTid={MarkdownTids.EditView}
             icon={<ToolPencil />}
             hintText="Редактор"
             text="Редактор"
@@ -204,6 +237,7 @@ export const MarkdownActions: FC<Props> = ({
         )}
         {viewMode !== ViewMode.Preview && (
           <MarkdownFormatButton
+            dataTid={MarkdownTids.PreviewView}
             icon={<EyeOpen />}
             hintText="Превью"
             text="Превью"
@@ -212,7 +246,7 @@ export const MarkdownActions: FC<Props> = ({
             onClick={() => onChangeViewMode(ViewMode.Preview)}
           />
         )}
-      </div>
+      </ViewModeButtonsWrapper>
     );
   }
 
