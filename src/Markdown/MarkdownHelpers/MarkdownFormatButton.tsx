@@ -46,7 +46,7 @@ export const MarkdownFormatButton: FC<Props> = ({
 }) => {
   const button = (
     <MarkdownButtonWrapper borderless disabled={disabled} data-tid={dataTid} onClick={onClick}>
-      <MarkdownButtonContentWrapper onMouseDown={e => e.preventDefault()}>
+      <MarkdownButtonContentWrapper>
         {!!icon && <MarkdownButtonIcon>{icon}</MarkdownButtonIcon>}
         {showText ? text : <VisuallyHidden>{text}</VisuallyHidden>}
       </MarkdownButtonContentWrapper>
