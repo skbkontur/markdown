@@ -118,7 +118,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     },
   });
 
-  const { getRootProps, isDragActive, requestStatus, open, error, onResetError } = useFileLogic(
+  const { getRootProps, getInputProps, isDragActive, requestStatus, open, error, onResetError } = useFileLogic(
     api?.fileUploadApi,
     api?.fileDownloadApi,
     fileApiUrl,
@@ -181,6 +181,7 @@ export const Markdown: FC<MarkdownProps> = props => {
   const content = (
     <Foco component="div" onClickOutside={resetStates}>
       <Wrapper {...getRootProps()}>
+        <input {...getInputProps()} />
         {!hideActionsOptions?.allActions && (
           <MarkdownActions
             showActionHints={showActionHints !== undefined ? showActionHints : showShotKeys}

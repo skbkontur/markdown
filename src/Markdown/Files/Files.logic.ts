@@ -18,7 +18,7 @@ export const useFileLogic = (
   cursorPosition?: number | null,
   disabled?: boolean,
 ) => {
-  const { getRootProps, isDragActive, open } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     multiple: false,
     noClick: true,
     disabled: disabled || !fileUploadApi || !fileDownloadApi,
@@ -76,6 +76,7 @@ export const useFileLogic = (
     requestStatus,
     error,
     getRootProps,
+    getInputProps,
     isDragActive,
     open,
     uploadFile,
