@@ -1,12 +1,12 @@
 {
   "name": "@skbkontur/markdown",
   "version": "2.6.3",
+  "packageManager": "yarn@4.13.0",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "repository": "https://github.com/skbkontur/markdown",
-  "private": false,
   "license": "UNLICENSED",
   "author": "tsypilov",
   "dependencies": {

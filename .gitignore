@@ -89,6 +89,7 @@
 /index.d.ts
 /index.js
 node_modules
+.yarn/*
 /yarn-error.log
 .idea
 .vscode
