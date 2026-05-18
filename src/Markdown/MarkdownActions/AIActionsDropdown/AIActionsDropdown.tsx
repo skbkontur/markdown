@@ -9,6 +9,7 @@ import { MarkdownMenuItem } from '../../Markdown.styled';
 import { MarkdownTids } from '../../MarkdownTids';
 import { AIApi, Nullable } from '../../types';
 import { Guid } from '../../utils/guid';
+import { onInsertText } from '../../utils/onInsertText';
 import { RequestStatus } from '../../utils/requestStatus';
 import { MarkdownDropdown } from '../MarkdownDropdown/MarkdownDropdown';
 
@@ -137,7 +138,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
 
     htmlTextArea?.setSelectionRange(selectionStart + spaceInStartCount, selectionEnd - spaceInEndCount);
 
-    document.execCommand('insertText', false, processedText);
+    onInsertText(processedText);
 
     handleCloseTooltip();
   }

@@ -1,6 +1,7 @@
 import { Textarea } from '@skbkontur/react-ui';
 import { KeyboardEvent as ReactKeyboardEvent, RefObject, useEffect } from 'react';
 
+import { handleMarkdownListEnter } from './markdownListEnterHelpers';
 import { getPastedHtml } from './markdownTextareaHelpers';
 import { useFileLogic } from '../Files/Files.logic';
 import { MarkdownFormat } from '../MarkdownFormat';
@@ -12,12 +13,15 @@ import {
   markdownHelpItems,
 } from '../MarkdownHelpItems';
 import { Nullable, RefItem } from '../types';
+import { onInsertText } from '../utils/onInsertText';
 
 const { italic, bold, crossed, codeBlock, ref, file, image } = MarkdownFormat;
 
 const betweenTextFormats: MarkdownFormat[] = [italic, bold, crossed, codeBlock, file, image];
 
 const specialFormats: MarkdownFormat[] = [ref];
+
+export { handleMarkdownListEnter } from './markdownListEnterHelpers';
 
 export function setMarkdown(
   textareaNode: HTMLTextAreaElement,
@@ -33,7 +37,7 @@ export function setMarkdown(
     const { value, spaces } = checkSpaceSymbol(prevCommentPart, markdownHelpItem.checkLength);
     const nextCommentPart = markdownHelpItem.wrapContent(value) + spaces;
 
-    document.execCommand('insertText', false, nextCommentPart);
+    onInsertText(nextCommentPart);
 
     setTextareaCursor(
       format,
@@ -65,7 +69,7 @@ export function setMarkdownFiles(
     textareaNode.selectionStart = currentCursorPosition;
     textareaNode.focus();
 
-    document.execCommand('insertText', false, nextCommentPart);
+    onInsertText(nextCommentPart);
 
     textareaNode.selectionStart = newCursorPosition;
     textareaNode.selectionEnd = newCursorPosition;
@@ -81,7 +85,7 @@ export function setMarkdownPastedHtml(text: string, textareaNode: HTMLTextAreaEl
   textareaNode.selectionStart = currentCursorPosition;
   textareaNode.focus();
 
-  document.execCommand('insertText', false, text);
+  onInsertText(text);
 
   textareaNode.selectionStart = newCursorPosition;
   textareaNode.selectionEnd = newCursorPosition;
@@ -133,13 +137,15 @@ export function createMarkdownHelpKeyDownHandler(
         const prevCommentPart = text.substring(start, end);
         const nextCommentPart = markdownHelpItem.wrapContent(prevCommentPart);
 
-        document.execCommand('insertText', false, nextCommentPart);
+        onInsertText(nextCommentPart);
 
         setTextareaCursor(format, prevCommentPart.length, nextCommentPart.length, textareaNode, end);
       }
     }
 
-    callback && callback(event);
+    handleMarkdownListEnter(event, textareaNode);
+
+    callback?.(event);
   };
 }
 

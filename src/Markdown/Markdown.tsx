@@ -42,6 +42,7 @@ import {
 import { MarkdownMention } from './MarkdownMention';
 import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Nullable, Token, ViewMode } from './types';
 import { Guid } from './utils/guid';
+import { onInsertText } from './utils/onInsertText';
 import { RequestStatus } from './utils/requestStatus';
 import { MarkdownViewer } from '../MarkdownViewer';
 import { ThemeProvider } from '../styles/styled-components';
@@ -329,7 +330,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     if (textareaNode && mention) {
       textareaNode.setSelectionRange(mention.positions[0] ? mention.positions[0] - 1 : 0, mention.positions[1]);
 
-      document.execCommand('insertText', false, `[${name}](@${login})`);
+      onInsertText(`[${name}](@${login})`);
 
       resetMention();
     }
