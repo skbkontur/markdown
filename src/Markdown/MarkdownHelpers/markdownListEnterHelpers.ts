@@ -59,7 +59,7 @@ export function handleMarkdownListEnter(
   if (orderedListNumber && orderedListDelimiter) {
     const nextOrderedListNumber = Number(orderedListNumber) + 1;
     const newLine = `\n${spacesBeforeMarker}${nextOrderedListNumber}${orderedListDelimiter} `;
-    const renumberedRestLines = getRenumberedRestLines(
+    const renumberedRestLines = getRestLinesWithRenumberedList(
       value,
       currentLineEndIndex,
       spacesBeforeMarker,
@@ -68,11 +68,13 @@ export function handleMarkdownListEnter(
     );
 
     if (renumberedRestLines) {
+      const currentLineTextAfterCursor = value.slice(selectionStart, currentLineEndIndex);
+
       textareaNode.setSelectionRange(selectionStart, value.length);
 
-      onInsertText(`${newLine} ${renumberedRestLines}`);
+      onInsertText(`${newLine}${currentLineTextAfterCursor}${renumberedRestLines}`);
 
-      const cursorPosition = currentLineEndIndex + newLine.length;
+      const cursorPosition = selectionStart + newLine.length;
 
       return textareaNode.setSelectionRange(cursorPosition, cursorPosition);
     }
@@ -99,7 +101,7 @@ function getCurrentLineEndIndex(text: string, cursorPosition: number) {
   return currentLineEndIndex;
 }
 
-function getRenumberedRestLines(
+function getRestLinesWithRenumberedList(
   value: string,
   currentLineEndIndex: number,
   spacesBeforeMarker: string,
