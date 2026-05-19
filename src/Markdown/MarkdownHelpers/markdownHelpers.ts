@@ -159,33 +159,29 @@ export const usePasteFromClipboard = (
   const textareaNode = (textarea as any)?.node as HTMLTextAreaElement;
 
   useEffect(() => {
-    if (downloadFileApi && uploadFileApi) {
-      const handlePaste = (event: ClipboardEvent) => {
-        const files = event?.clipboardData?.files;
-        const html = event?.clipboardData
-          ?.getData('text/html')
-          ?.replace(`<meta charset='utf-8'>`, '')
-          ?.replace(`<meta charset="utf-8">`, '');
+    const handlePaste = (event: ClipboardEvent) => {
+      const files = event?.clipboardData?.files;
+      const html = event?.clipboardData
+        ?.getData('text/html')
+        ?.replace(`<meta charset='utf-8'>`, '')
+        ?.replace(`<meta charset="utf-8">`, '');
 
-        if (files?.length) {
-          event.preventDefault();
-          void uploadFile(files[0]);
+      if (downloadFileApi && uploadFileApi && files?.length) {
+        event.preventDefault();
+        void uploadFile(files[0]);
 
-          return;
-        }
-
-        if (html) {
-          getPastedHtml(html, event, textareaNode);
-
-          return;
-        }
-      };
-
-      if (textareaNode) {
-        textareaNode.addEventListener('paste', handlePaste);
+        return;
       }
 
-      return () => textareaNode?.removeEventListener('paste', handlePaste);
-    }
+      if (html) {
+        getPastedHtml(html, event, textareaNode);
+
+        return;
+      }
+    };
+
+    if (textareaNode) textareaNode.addEventListener('paste', handlePaste);
+
+    return () => textareaNode?.removeEventListener('paste', handlePaste);
   }, [downloadFileApi, textareaNode, uploadFile, uploadFileApi]);
 };
