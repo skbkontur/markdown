@@ -56,8 +56,29 @@ export function handleMarkdownListEnter(
     return document.execCommand('delete');
   }
 
-  if (orderedListNumber && orderedListDelimiter)
-    return onInsertText(`\n${spacesBeforeMarker}${Number(orderedListNumber) + 1}${orderedListDelimiter} `);
+  if (orderedListNumber && orderedListDelimiter) {
+    const nextOrderedListNumber = Number(orderedListNumber) + 1;
+    const newLine = `\n${spacesBeforeMarker}${nextOrderedListNumber}${orderedListDelimiter} `;
+    const renumberedRestLines = getRenumberedRestLines(
+      value,
+      currentLineEndIndex,
+      spacesBeforeMarker,
+      orderedListDelimiter,
+      nextOrderedListNumber + 1,
+    );
+
+    if (renumberedRestLines) {
+      textareaNode.setSelectionRange(selectionStart, value.length);
+
+      onInsertText(`${newLine} ${renumberedRestLines}`);
+
+      const cursorPosition = currentLineEndIndex + newLine.length;
+
+      return textareaNode.setSelectionRange(cursorPosition, cursorPosition);
+    }
+
+    return onInsertText(newLine);
+  }
 
   if (checkboxListMarker) return onInsertText(`\n${spacesBeforeMarker}${unorderedListMarker} ${checkboxListMarker} `);
 
@@ -76,4 +97,36 @@ function getCurrentLineEndIndex(text: string, cursorPosition: number) {
   if (currentLineEndIndex === -1) return text.length;
 
   return currentLineEndIndex;
+}
+
+function getRenumberedRestLines(
+  value: string,
+  currentLineEndIndex: number,
+  spacesBeforeMarker: string,
+  orderedListDelimiter: string,
+  nextOrderedListNumber: number,
+) {
+  const lines = value.slice(currentLineEndIndex).split('\n');
+  let currentOrderedListNumber = nextOrderedListNumber;
+
+  for (let i = 1; i < lines.length; i += 1) {
+    const listLineMatch = lines[i].match(listItemRegExp);
+    const groups = listLineMatch?.groups as MarkdownListItemGroups | undefined;
+
+    if (
+      !groups?.orderedListNumber ||
+      groups.spacesBeforeMarker !== spacesBeforeMarker ||
+      groups.orderedListDelimiter !== orderedListDelimiter
+    )
+      break;
+
+    lines[i] = lines[i].replace(
+      `${spacesBeforeMarker}${groups.orderedListNumber}${orderedListDelimiter}`,
+      `${spacesBeforeMarker}${currentOrderedListNumber}${orderedListDelimiter}`,
+    );
+
+    currentOrderedListNumber += 1;
+  }
+
+  return lines.join('\n');
 }
