@@ -2,6 +2,22 @@ import { KeyboardEvent as ReactKeyboardEvent } from 'react';
 
 import { onInsertText } from '../utils/onInsertText';
 
+/**
+ * RegExp для парсинга markdown-like list item.
+ *
+ * Поддерживает:
+ * - unordered lists: "- item", "* item", "+ item";
+ * - ordered lists: "1. item", "1) item";
+ * - checkbox items: "- [ ] item", "- [x] item done", "- [X] item done".
+ *
+ * Группы:
+ * - spacesBeforeMarker: отступы перед маркером списка;
+ * - orderedListNumber: номер ordered-list элемента;
+ * - orderedListDelimiter: разделитель ordered-list: "." или ")";
+ * - unorderedListMarker: маркер unordered-list: "*", "-" или "+";
+ * - checkboxListMarker: checkbox-маркер: "[ ]", "[x]" или "[X]";
+ * - text: текст элемента списка, может быть пустым.
+ */
 const listItemRegExp = /^(?<spacesBeforeMarker> *)(?:(?<orderedListNumber>\d+)(?<orderedListDelimiter>[.)])|(?<unorderedListMarker>[*+-])(?: +(?<checkboxListMarker>\[[ xX]]))?)(?: +(?<text>.*)|$)$/;
 
 interface MarkdownListItemGroups {
@@ -50,6 +66,7 @@ export function handleMarkdownListEnter(
   event.stopPropagation();
   event.preventDefault();
 
+  /* Если пункт списка пустой, удаляем маркер и завершаем список */
   if (!text?.trim()) {
     textareaNode.setSelectionRange(currentLineStartIndex, currentLineEndIndex);
 
@@ -59,7 +76,7 @@ export function handleMarkdownListEnter(
   if (orderedListNumber && orderedListDelimiter) {
     const nextOrderedListNumber = Number(orderedListNumber) + 1;
     const newLine = `\n${spacesBeforeMarker}${nextOrderedListNumber}${orderedListDelimiter} `;
-    const renumberedRestLines = getRestLinesWithRenumberedList(
+    const { isChanged, listEndIndex, renumberedList } = getRenumberedListLines(
       value,
       currentLineEndIndex,
       spacesBeforeMarker,
@@ -67,12 +84,12 @@ export function handleMarkdownListEnter(
       nextOrderedListNumber + 1,
     );
 
-    if (renumberedRestLines) {
+    if (isChanged) {
       const currentLineTextAfterCursor = value.slice(selectionStart, currentLineEndIndex);
 
-      textareaNode.setSelectionRange(selectionStart, value.length);
+      textareaNode.setSelectionRange(selectionStart, listEndIndex);
 
-      onInsertText(`${newLine}${currentLineTextAfterCursor}${renumberedRestLines}`);
+      onInsertText(`${newLine}${currentLineTextAfterCursor}${renumberedList}`);
 
       const cursorPosition = selectionStart + newLine.length;
 
@@ -101,18 +118,23 @@ function getCurrentLineEndIndex(text: string, cursorPosition: number) {
   return currentLineEndIndex;
 }
 
-function getRestLinesWithRenumberedList(
+function getRenumberedListLines(
   value: string,
   currentLineEndIndex: number,
   spacesBeforeMarker: string,
   orderedListDelimiter: string,
   nextOrderedListNumber: number,
 ) {
-  const lines = value.slice(currentLineEndIndex).split('\n');
+  let nextLineStartIndex = currentLineEndIndex + 1;
   let currentOrderedListNumber = nextOrderedListNumber;
+  let isChanged = false;
+  let renumberedList = '';
+  let listEndIndex = currentLineEndIndex;
 
-  for (let i = 1; i < lines.length; i += 1) {
-    const listLineMatch = lines[i].match(listItemRegExp);
+  while (nextLineStartIndex < value.length) {
+    const nextLineEndIndex = getCurrentLineEndIndex(value, nextLineStartIndex);
+    const line = value.slice(nextLineStartIndex, nextLineEndIndex);
+    const listLineMatch = line.match(listItemRegExp);
     const groups = listLineMatch?.groups as MarkdownListItemGroups | undefined;
 
     if (
@@ -122,13 +144,22 @@ function getRestLinesWithRenumberedList(
     )
       break;
 
-    lines[i] = lines[i].replace(
+    const renumberedLine = line.replace(
       `${spacesBeforeMarker}${groups.orderedListNumber}${orderedListDelimiter}`,
       `${spacesBeforeMarker}${currentOrderedListNumber}${orderedListDelimiter}`,
     );
 
+    if (renumberedLine !== line) isChanged = true;
+
+    renumberedList += `\n${renumberedLine}`;
+    listEndIndex = nextLineEndIndex;
+    nextLineStartIndex = nextLineEndIndex + 1;
     currentOrderedListNumber += 1;
   }
 
-  return lines.join('\n');
+  return {
+    isChanged,
+    listEndIndex,
+    renumberedList,
+  };
 }
