@@ -18,9 +18,16 @@ interface Props {
   onSelect: (emoji: EmojiData) => void;
   showActionHint: boolean;
   showShortKey: boolean;
+  onTrackEvent?: () => void;
 }
 
-export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, onSelect, showActionHint }) => {
+export const EmojiDropdown: React.FC<Props> = ({
+  isPreviewMode,
+  showShortKey,
+  onSelect,
+  showActionHint,
+  onTrackEvent,
+}) => {
   const dropdownMenuRef = useRef<DropdownMenu>(null);
 
   return (
@@ -40,7 +47,10 @@ export const EmojiDropdown: React.FC<Props> = ({ isPreviewMode, showShortKey, on
                 disabled={isPreviewMode}
                 icon={<EmojiFace />}
                 text="Emoji"
-                onClick={toggleMenu}
+                onClick={() => {
+                  onTrackEvent?.();
+                  toggleMenu();
+                }}
               />
             )}
             menuWidth={300}

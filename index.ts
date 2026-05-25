@@ -14,7 +14,7 @@ export {
   Token,
   HorizontalPaddings,
   ViewMode,
-  HideActionsOptions,
+  ActionsOptions,
   AIMethod,
   AIApi,
 } from '././src/Markdown/types';

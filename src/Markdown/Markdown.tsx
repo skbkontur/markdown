@@ -40,7 +40,15 @@ import {
   useListenTextareaScroll,
 } from './MarkdownHelpers/markdownTextareaHelpers';
 import { MarkdownMention } from './MarkdownMention';
-import { HideActionsOptions, HorizontalPaddings, MarkdownApi, Nullable, Token, ViewMode } from './types';
+import {
+  ActionsOptions,
+  ActionsOptionsKeys,
+  HorizontalPaddings,
+  MarkdownApi,
+  Nullable,
+  Token,
+  ViewMode,
+} from './types';
 import { Guid } from './utils/guid';
 import { onInsertText } from './utils/onInsertText';
 import { RequestStatus } from './utils/requestStatus';
@@ -56,11 +64,13 @@ export interface MarkdownProps extends MarkdownEditorProps {
   /** Url апи для файлов  */
   fileApiUrl?: string;
   /** Скрывать выборочно опции */
-  hideActionsOptions?: HideActionsOptions;
+  hideActionsOptions?: ActionsOptions;
   /** Превьювер мардауна, по умолчанию используется MarkdownViewer */
   markdownViewer?: (value: string) => ReactNode;
   /** Колбек, срабатывает на изменение режима редактирования или просмотра */
   onChangeViewMode?: (mode: ViewMode) => void;
+  /** Колбек для отправки метрик */
+  onTrackEvent?: (category: ActionsOptionsKeys, action: 'click', label?: string) => void;
   /** Padding markdownActions (кнопки помощи форматирования текста), включает режим panel */
   panelHorizontalPadding?: number;
   /** Url для профиля сотрудника  */
@@ -69,10 +79,8 @@ export interface MarkdownProps extends MarkdownEditorProps {
   renderFilesValidation?: (horizontalPadding: HorizontalPaddings, onReset: () => void) => ReactNode;
   /** Показывать подсказки к действиям */
   showActionHints?: boolean;
-
   /** Показывать сочетания клавиш для действия в хинте */
   showShortKeys?: boolean;
-
   /** Показывать шорткеи (убирает хинты действий и подсказки)
    * @deprecated используй {@link showActionHints} и {@link showShortKeys}
    * */
@@ -96,6 +104,7 @@ export const Markdown: FC<MarkdownProps> = props => {
     showShotKeys = true,
     hideActionsOptions,
     onChangeViewMode,
+    onTrackEvent,
     ...textareaProps
   } = props;
 
@@ -200,6 +209,7 @@ export const Markdown: FC<MarkdownProps> = props => {
             isSplitViewAvailable={isSplitViewAvailable}
             disableFullscreen={isMobile}
             AIApi={api?.AIApi}
+            onTrackEvent={onTrackEvent}
             onOpenFileDialog={open}
             onChangeViewMode={handleChangeViewMode}
             onClickFullscreen={handleClickFullscreen}

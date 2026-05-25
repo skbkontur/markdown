@@ -27,7 +27,7 @@ import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from '../MarkdownHelpers/markdownHelpers';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from '../MarkdownHelpItems';
 import { MarkdownTids } from '../MarkdownTids';
-import { AIApi, HideActionsOptions, HorizontalPaddings, Nullable, ViewMode } from '../types';
+import { AIApi, ActionsOptions, HorizontalPaddings, Nullable, ViewMode, ActionsOptionsKeys } from '../types';
 
 interface Props {
   horizontalPaddings: HorizontalPaddings;
@@ -43,10 +43,11 @@ interface Props {
   disableFullscreen?: boolean;
   fullscreen?: boolean;
   hasFilesApi?: boolean;
-  hideOptions?: HideActionsOptions;
+  hideOptions?: ActionsOptions;
   isFocused?: boolean;
   isSplitViewAvailable?: boolean;
   loadingFile?: boolean;
+  onTrackEvent?: (category: ActionsOptionsKeys, action: 'click', label?: string) => void;
   selectionEnd?: Nullable<number>;
   selectionStart?: Nullable<number>;
   width?: Nullable<number | string>;
@@ -68,6 +69,7 @@ export const MarkdownActions: FC<Props> = ({
   showActionHints,
   showShortKeys,
   hideOptions,
+  onTrackEvent,
   onSelectEmoji,
   isSplitViewAvailable,
   disableFullscreen,
@@ -163,7 +165,10 @@ export const MarkdownActions: FC<Props> = ({
               isLoading={loadingFile}
               icon={<AttachPaperclip />}
               text="Прикрепить файл"
-              onClick={onOpenFileDialog}
+              onClick={() => {
+                handleTrackClick(MarkdownFormat.file);
+                onOpenFileDialog();
+              }}
             />
           )}
           {!hideOptions?.emoji && (
@@ -171,6 +176,7 @@ export const MarkdownActions: FC<Props> = ({
               showActionHint={showActionHints}
               showShortKey={showShortKeys}
               isPreviewMode={isPreviewMode}
+              onTrackEvent={() => handleTrackClick('emoji')}
               onSelect={onSelectEmoji}
             />
           )}
@@ -180,6 +186,7 @@ export const MarkdownActions: FC<Props> = ({
               textareaRef={textAreaRef}
               isPreviewMode={isPreviewMode}
               api={AIApi}
+              onTrackEvent={label => handleTrackClick('AI', label)}
             />
           )}
         </ActionsLeftWrapper>
@@ -192,6 +199,7 @@ export const MarkdownActions: FC<Props> = ({
               icon={<DocIcon />}
               text="Документация Markdown"
               href={COMMONMARK_HELP_URL}
+              onClick={() => handleTrackClick('help')}
             />
           )}
           {!hideOptions?.viewMode && renderViewModeButton()}
@@ -202,7 +210,10 @@ export const MarkdownActions: FC<Props> = ({
               hintText={fullscreen ? 'Свернуть' : 'Развернуть'}
               icon={fullscreen ? <Collapse /> : <Expand />}
               text={fullscreen ? 'Свернуть' : '  Развернуть'}
-              onClick={onClickFullscreen}
+              onClick={() => {
+                handleTrackClick('screenMode');
+                onClickFullscreen();
+              }}
             />
           )}
         </ActionsRightWrapper>
@@ -221,7 +232,7 @@ export const MarkdownActions: FC<Props> = ({
             text="Сплит"
             showActionHint={showActionHints}
             showShortKey={showShortKeys}
-            onClick={() => onChangeViewMode(ViewMode.Split)}
+            onClick={() => handleChangeViewMode(ViewMode.Split)}
           />
         )}
         {viewMode !== ViewMode.Edit && (
@@ -232,7 +243,7 @@ export const MarkdownActions: FC<Props> = ({
             text="Редактор"
             showActionHint={showActionHints}
             showShortKey={showShortKeys}
-            onClick={() => onChangeViewMode(ViewMode.Edit)}
+            onClick={() => handleChangeViewMode(ViewMode.Edit)}
           />
         )}
         {viewMode !== ViewMode.Preview && (
@@ -243,7 +254,7 @@ export const MarkdownActions: FC<Props> = ({
             text="Превью"
             showActionHint={showActionHints}
             showShortKey={showShortKeys}
-            onClick={() => onChangeViewMode(ViewMode.Preview)}
+            onClick={() => handleChangeViewMode(ViewMode.Preview)}
           />
         )}
       </ViewModeButtonsWrapper>
@@ -251,6 +262,8 @@ export const MarkdownActions: FC<Props> = ({
   }
 
   function handleMarkdownItemClick(event: SyntheticEvent, format: MarkdownFormat) {
+    handleTrackClick(format);
+
     if (!isNaN(Number(selectionStart)) && !isNaN(Number(selectionEnd))) {
       event.stopPropagation();
       event.preventDefault();
@@ -270,5 +283,14 @@ export const MarkdownActions: FC<Props> = ({
 
   function isHiddenOptions(format: MarkdownFormat) {
     return hideOptions?.[format];
+  }
+
+  function handleChangeViewMode(mode: ViewMode) {
+    handleTrackClick('viewMode', mode);
+    onChangeViewMode(mode);
+  }
+
+  function handleTrackClick(category: ActionsOptionsKeys, label?: string) {
+    onTrackEvent?.(category, 'click', label);
   }
 };
