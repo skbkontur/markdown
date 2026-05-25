@@ -1,5 +1,6 @@
 import { KeyboardEvent as ReactKeyboardEvent } from 'react';
 
+import { MarkdownFormat } from '../MarkdownFormat';
 import { onInsertText } from '../utils/onInsertText';
 
 /**
@@ -32,6 +33,7 @@ interface MarkdownListItemGroups {
 export function handleMarkdownListEnter(
   event: ReactKeyboardEvent<HTMLTextAreaElement>,
   textareaNode: HTMLTextAreaElement,
+  onTrackEvent?: (label: MarkdownFormat) => void,
 ) {
   const { selectionStart, selectionEnd, value } = textareaNode;
 
@@ -74,6 +76,8 @@ export function handleMarkdownListEnter(
   }
 
   if (orderedListNumber && orderedListDelimiter) {
+    onTrackEvent?.(MarkdownFormat.numberedList);
+
     const nextOrderedListNumber = Number(orderedListNumber) + 1;
     const newLine = `\n${spacesBeforeMarker}${nextOrderedListNumber}${orderedListDelimiter} `;
     const { isChanged, listEndIndex, renumberedList } = getRenumberedListLines(
@@ -99,9 +103,17 @@ export function handleMarkdownListEnter(
     return onInsertText(newLine);
   }
 
-  if (checkboxListMarker) return onInsertText(`\n${spacesBeforeMarker}${unorderedListMarker} ${checkboxListMarker} `);
+  if (checkboxListMarker) {
+    onTrackEvent?.(MarkdownFormat.checkedList);
 
-  if (unorderedListMarker) return onInsertText(`\n${spacesBeforeMarker}${unorderedListMarker} `);
+    return onInsertText(`\n${spacesBeforeMarker}${unorderedListMarker} ${checkboxListMarker} `);
+  }
+
+  if (unorderedListMarker) {
+    onTrackEvent?.(MarkdownFormat.list);
+
+    return onInsertText(`\n${spacesBeforeMarker}${unorderedListMarker} `);
+  }
 }
 
 function getCurrentLineEndIndex(text: string, cursorPosition: number) {

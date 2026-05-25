@@ -12,7 +12,7 @@ import {
   markdownHelpFiles,
   markdownHelpItems,
 } from '../MarkdownHelpItems';
-import { Nullable, RefItem } from '../types';
+import { TrackEventCategory, Nullable, RefItem } from '../types';
 import { onInsertText } from '../utils/onInsertText';
 
 const { italic, bold, crossed, codeBlock, ref, file, image } = MarkdownFormat;
@@ -117,6 +117,7 @@ export function createMarkdownHelpKeyDownHandler(
   text: string,
   ref?: RefObject<Textarea> | null,
   callback?: (event: ReactKeyboardEvent<HTMLTextAreaElement>) => void,
+  onTrackHotkey?: (category: TrackEventCategory, label?: string) => void,
 ) {
   return (event: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     if (!ref?.current) return;
@@ -140,10 +141,11 @@ export function createMarkdownHelpKeyDownHandler(
         onInsertText(nextCommentPart);
 
         setTextareaCursor(format, prevCommentPart.length, nextCommentPart.length, textareaNode, end);
+        onTrackHotkey?.(format);
       }
     }
 
-    handleMarkdownListEnter(event, textareaNode);
+    handleMarkdownListEnter(event, textareaNode, label => onTrackHotkey?.('continueList', label));
 
     callback?.(event);
   };

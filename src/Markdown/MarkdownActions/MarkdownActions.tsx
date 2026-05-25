@@ -27,7 +27,7 @@ import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from '../MarkdownHelpers/markdownHelpers';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from '../MarkdownHelpItems';
 import { MarkdownTids } from '../MarkdownTids';
-import { AIApi, ActionsOptions, HorizontalPaddings, Nullable, ViewMode, ActionsOptionsKeys } from '../types';
+import { AIApi, ActionsOptions, TrackEventCategory, HorizontalPaddings, Nullable, ViewMode } from '../types';
 
 interface Props {
   horizontalPaddings: HorizontalPaddings;
@@ -47,7 +47,7 @@ interface Props {
   isFocused?: boolean;
   isSplitViewAvailable?: boolean;
   loadingFile?: boolean;
-  onTrackEvent?: (category: ActionsOptionsKeys, action: 'click', label?: string) => void;
+  onTrackEvent?: (category: TrackEventCategory, action: 'click' | 'hotkey', label?: string) => void;
   selectionEnd?: Nullable<number>;
   selectionStart?: Nullable<number>;
   width?: Nullable<number | string>;
@@ -290,7 +290,7 @@ export const MarkdownActions: FC<Props> = ({
     onChangeViewMode(mode);
   }
 
-  function handleTrackClick(category: ActionsOptionsKeys, label?: string) {
+  function handleTrackClick(category: TrackEventCategory, label?: string) {
     onTrackEvent?.(category, 'click', label);
   }
 };

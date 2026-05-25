@@ -68,4 +68,4 @@ export type ActionsOptions = Partial<
   Record<MarkdownFormat | 'heading' | 'emoji' | 'viewMode' | 'screenMode' | 'help' | 'allActions' | 'AI', boolean>
 >;
 
-export type ActionsOptionsKeys = keyof ActionsOptions;
+export type TrackEventCategory = keyof ActionsOptions | 'continueList';
