@@ -111,5 +111,57 @@ kind('Markdown', () => {
         openedEmojiPicker,
       });
     });
+
+    test('autoContinueNumberedList', async context => {
+      const textarea = context.webdriver.locator('textarea').nth(0);
+
+      await textarea.click();
+      await textarea.type('1. Первый');
+      await textarea.press('Enter');
+
+      const autoContinueNumberedList = await context.takeScreenshot();
+
+      await context.matchImages({ autoContinueNumberedList });
+    });
+
+    test('autoContinueNumberedListWithTail', async context => {
+      const textarea = context.webdriver.locator('textarea').nth(0);
+
+      await textarea.click();
+      await textarea.type('1. Первый');
+      await textarea.press('Enter');
+      await textarea.type('Второй');
+      await textarea.press('Control+Home');
+      await textarea.press('End');
+      await textarea.press('Enter');
+
+      const autoContinueNumberedListWithTail = await context.takeScreenshot();
+
+      await context.matchImages({ autoContinueNumberedListWithTail });
+    });
+
+    test('autoContinueUnorderedList', async context => {
+      const textarea = context.webdriver.locator('textarea').nth(0);
+
+      await textarea.click();
+      await textarea.type('- Первый');
+      await textarea.press('Enter');
+
+      const autoContinueUnorderedList = await context.takeScreenshot();
+
+      await context.matchImages({ autoContinueUnorderedList });
+    });
+
+    test('autoContinueCheckboxList', async context => {
+      const textarea = context.webdriver.locator('textarea').nth(0);
+
+      await textarea.click();
+      await textarea.type('- [ ] Первый');
+      await textarea.press('Enter');
+
+      const autoContinueCheckboxList = await context.takeScreenshot();
+
+      await context.matchImages({ autoContinueCheckboxList });
+    });
   });
 });

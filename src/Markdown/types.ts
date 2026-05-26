@@ -8,6 +8,16 @@ export enum ViewMode {
   Split = 'Split',
 }
 
+export enum MarkdownOtherActions {
+  Heading = 'heading',
+  Emoji = 'emoji',
+  ViewMode = 'viewMode',
+  ScreenMode = 'screenMode',
+  Help = 'help',
+  AllActions = 'allActions',
+  AI = 'AI',
+}
+
 export interface Token {
   positions: number[];
   value: string;
@@ -64,6 +74,6 @@ export interface TestCase<V, E> {
 
 export type ReactUIThemeType = Partial<typeof THEME_2022>;
 
-export type HideActionsOptions = Partial<
-  Record<MarkdownFormat | 'heading' | 'emoji' | 'viewMode' | 'screenMode' | 'help' | 'allActions' | 'AI', boolean>
->;
+export type ActionsOptions = Partial<Record<MarkdownFormat | MarkdownOtherActions, boolean>>;
+
+export type ActionsOptionsKeys = keyof ActionsOptions;

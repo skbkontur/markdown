@@ -4,13 +4,14 @@ import React, { FC, RefObject } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { createMarkdownHelpKeyDownHandler } from './MarkdownHelpers/markdownHelpers';
-import { Nullable } from './types';
+import { ActionsOptionsKeys, Nullable } from './types';
 
 export interface MarkdownEditorProps
   extends Omit<TextareaProps, 'rows' | 'maxRows' | 'disableAnimations' | 'extraRow'> {
   disableAnimations?: boolean;
   extraRow?: boolean;
   maxRows?: number;
+  onTrackEvent?: (category: ActionsOptionsKeys, action: 'click' | 'hotkey', label?: string) => void;
   /** Рендер сообщения валидации react-ui-validations */
   renderMessage?: Nullable<RenderErrorMessage>;
   rows?: number;
@@ -31,6 +32,7 @@ export const MarkdownEditor: FC<MarkdownEditorProps> = props => {
     validationInfo,
     renderMessage,
     withValidationWrapper,
+    onTrackEvent,
     ...rest
   } = props;
 
@@ -55,7 +57,12 @@ export const MarkdownEditor: FC<MarkdownEditorProps> = props => {
         width={width}
         showLengthCounter={showLengthCounter()}
         autoResize={autoResize}
-        onKeyDown={createMarkdownHelpKeyDownHandler((props.value as string) || '', textareaRef, props.onKeyDown)}
+        onKeyDown={createMarkdownHelpKeyDownHandler(
+          (props.value as string) || '',
+          textareaRef,
+          props.onKeyDown,
+          (category, label) => onTrackEvent?.(category, 'hotkey', label),
+        )}
       />
     );
   }

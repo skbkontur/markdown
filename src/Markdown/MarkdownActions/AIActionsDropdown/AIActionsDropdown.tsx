@@ -9,6 +9,7 @@ import { MarkdownMenuItem } from '../../Markdown.styled';
 import { MarkdownTids } from '../../MarkdownTids';
 import { AIApi, Nullable } from '../../types';
 import { Guid } from '../../utils/guid';
+import { onInsertText } from '../../utils/onInsertText';
 import { RequestStatus } from '../../utils/requestStatus';
 import { MarkdownDropdown } from '../MarkdownDropdown/MarkdownDropdown';
 
@@ -17,9 +18,10 @@ interface Props {
   showActionHint: boolean;
   textareaRef: RefObject<Textarea>;
   isPreviewMode?: boolean;
+  onTrackEvent?: (label: string) => void;
 }
 
-export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showActionHint, api }) => {
+export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showActionHint, api, onTrackEvent }) => {
   const [processedText, setProcessedText] = useState<string>();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.Default);
 
@@ -97,6 +99,8 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
   }
 
   async function handleProcessText(method: string) {
+    onTrackEvent?.(method);
+
     const taskId = taskIdRef.current.generate();
 
     try {
@@ -121,12 +125,16 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
   }
 
   async function handleCopyText() {
+    onTrackEvent?.('copyText');
+
     await navigator.clipboard.writeText(processedText || '');
 
     handleCloseTooltip();
   }
 
   function handleSetText() {
+    onTrackEvent?.('setText');
+
     if (!textareaRef?.current) return null;
 
     textareaRef.current.focus();
@@ -137,7 +145,7 @@ export const AIActionsDropdown: FC<Props> = ({ textareaRef, isPreviewMode, showA
 
     htmlTextArea?.setSelectionRange(selectionStart + spaceInStartCount, selectionEnd - spaceInEndCount);
 
-    document.execCommand('insertText', false, processedText);
+    onInsertText(processedText);
 
     handleCloseTooltip();
   }

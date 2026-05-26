@@ -1,6 +1,7 @@
 import { Textarea } from '@skbkontur/react-ui';
 import { KeyboardEvent as ReactKeyboardEvent, RefObject, useEffect } from 'react';
 
+import { handleMarkdownListEnter } from './markdownListEnterHelpers';
 import { getPastedHtml } from './markdownTextareaHelpers';
 import { useFileLogic } from '../Files/Files.logic';
 import { MarkdownFormat } from '../MarkdownFormat';
@@ -11,13 +12,16 @@ import {
   markdownHelpFiles,
   markdownHelpItems,
 } from '../MarkdownHelpItems';
-import { Nullable, RefItem } from '../types';
+import { ActionsOptionsKeys, Nullable, RefItem } from '../types';
+import { onInsertText } from '../utils/onInsertText';
 
 const { italic, bold, crossed, codeBlock, ref, file, image } = MarkdownFormat;
 
 const betweenTextFormats: MarkdownFormat[] = [italic, bold, crossed, codeBlock, file, image];
 
 const specialFormats: MarkdownFormat[] = [ref];
+
+export { handleMarkdownListEnter } from './markdownListEnterHelpers';
 
 export function setMarkdown(
   textareaNode: HTMLTextAreaElement,
@@ -33,7 +37,7 @@ export function setMarkdown(
     const { value, spaces } = checkSpaceSymbol(prevCommentPart, markdownHelpItem.checkLength);
     const nextCommentPart = markdownHelpItem.wrapContent(value) + spaces;
 
-    document.execCommand('insertText', false, nextCommentPart);
+    onInsertText(nextCommentPart);
 
     setTextareaCursor(
       format,
@@ -65,7 +69,7 @@ export function setMarkdownFiles(
     textareaNode.selectionStart = currentCursorPosition;
     textareaNode.focus();
 
-    document.execCommand('insertText', false, nextCommentPart);
+    onInsertText(nextCommentPart);
 
     textareaNode.selectionStart = newCursorPosition;
     textareaNode.selectionEnd = newCursorPosition;
@@ -81,7 +85,7 @@ export function setMarkdownPastedHtml(text: string, textareaNode: HTMLTextAreaEl
   textareaNode.selectionStart = currentCursorPosition;
   textareaNode.focus();
 
-  document.execCommand('insertText', false, text);
+  onInsertText(text);
 
   textareaNode.selectionStart = newCursorPosition;
   textareaNode.selectionEnd = newCursorPosition;
@@ -113,6 +117,7 @@ export function createMarkdownHelpKeyDownHandler(
   text: string,
   ref?: RefObject<Textarea> | null,
   callback?: (event: ReactKeyboardEvent<HTMLTextAreaElement>) => void,
+  onTrackHotkey?: (category: ActionsOptionsKeys, label?: string) => void,
 ) {
   return (event: ReactKeyboardEvent<HTMLTextAreaElement>) => {
     if (!ref?.current) return;
@@ -133,13 +138,16 @@ export function createMarkdownHelpKeyDownHandler(
         const prevCommentPart = text.substring(start, end);
         const nextCommentPart = markdownHelpItem.wrapContent(prevCommentPart);
 
-        document.execCommand('insertText', false, nextCommentPart);
+        onInsertText(nextCommentPart);
 
         setTextareaCursor(format, prevCommentPart.length, nextCommentPart.length, textareaNode, end);
+        onTrackHotkey?.(format);
       }
     }
 
-    callback && callback(event);
+    handleMarkdownListEnter(event, textareaNode, format => onTrackHotkey?.(format, 'continueList'));
+
+    callback?.(event);
   };
 }
 
@@ -153,33 +161,29 @@ export const usePasteFromClipboard = (
   const textareaNode = (textarea as any)?.node as HTMLTextAreaElement;
 
   useEffect(() => {
-    if (downloadFileApi && uploadFileApi) {
-      const handlePaste = (event: ClipboardEvent) => {
-        const files = event?.clipboardData?.files;
-        const html = event?.clipboardData
-          ?.getData('text/html')
-          ?.replace(`<meta charset='utf-8'>`, '')
-          ?.replace(`<meta charset="utf-8">`, '');
+    const handlePaste = (event: ClipboardEvent) => {
+      const files = event?.clipboardData?.files;
+      const html = event?.clipboardData
+        ?.getData('text/html')
+        ?.replace(`<meta charset='utf-8'>`, '')
+        ?.replace(`<meta charset="utf-8">`, '');
 
-        if (files?.length) {
-          event.preventDefault();
-          void uploadFile(files[0]);
+      if (downloadFileApi && uploadFileApi && files?.length) {
+        event.preventDefault();
+        void uploadFile(files[0]);
 
-          return;
-        }
-
-        if (html) {
-          getPastedHtml(html, event, textareaNode);
-
-          return;
-        }
-      };
-
-      if (textareaNode) {
-        textareaNode.addEventListener('paste', handlePaste);
+        return;
       }
 
-      return () => textareaNode?.removeEventListener('paste', handlePaste);
-    }
+      if (html) {
+        getPastedHtml(html, event, textareaNode);
+
+        return;
+      }
+    };
+
+    if (textareaNode) textareaNode.addEventListener('paste', handlePaste);
+
+    return () => textareaNode?.removeEventListener('paste', handlePaste);
   }, [downloadFileApi, textareaNode, uploadFile, uploadFileApi]);
 };
