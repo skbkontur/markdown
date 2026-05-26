@@ -33,7 +33,7 @@ interface MarkdownListItemGroups {
 export function handleMarkdownListEnter(
   event: ReactKeyboardEvent<HTMLTextAreaElement>,
   textareaNode: HTMLTextAreaElement,
-  onTrackEvent?: (label: MarkdownFormat) => void,
+  onTrackEvent?: (format: MarkdownFormat) => void,
 ) {
   const { selectionStart, selectionEnd, value } = textareaNode;
 

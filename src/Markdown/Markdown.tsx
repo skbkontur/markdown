@@ -42,7 +42,7 @@ import {
 import { MarkdownMention } from './MarkdownMention';
 import {
   ActionsOptions,
-  TrackEventCategory,
+  ActionsOptionsKeys,
   HorizontalPaddings,
   MarkdownApi,
   Nullable,
@@ -70,7 +70,7 @@ export interface MarkdownProps extends MarkdownEditorProps {
   /** Колбек, срабатывает на изменение режима редактирования или просмотра */
   onChangeViewMode?: (mode: ViewMode) => void;
   /** Колбек для отправки метрик */
-  onTrackEvent?: (category: TrackEventCategory, action: 'click' | 'hotkey', label?: string) => void;
+  onTrackEvent?: (category: ActionsOptionsKeys, action: 'click' | 'hotkey', label?: string) => void;
   /** Padding markdownActions (кнопки помощи форматирования текста), включает режим panel */
   panelHorizontalPadding?: number;
   /** Url для профиля сотрудника  */

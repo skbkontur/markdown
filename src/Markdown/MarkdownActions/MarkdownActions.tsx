@@ -27,7 +27,15 @@ import { MarkdownFormatButton } from '../MarkdownHelpers/MarkdownFormatButton';
 import { setMarkdown } from '../MarkdownHelpers/markdownHelpers';
 import { markdownHelpHeaders, markdownHelpLists, markdownHelpOther, markdownHelpText } from '../MarkdownHelpItems';
 import { MarkdownTids } from '../MarkdownTids';
-import { AIApi, ActionsOptions, TrackEventCategory, HorizontalPaddings, Nullable, ViewMode } from '../types';
+import {
+  AIApi,
+  ActionsOptions,
+  ActionsOptionsKeys,
+  HorizontalPaddings,
+  Nullable,
+  ViewMode,
+  MarkdownOtherActions,
+} from '../types';
 
 interface Props {
   horizontalPaddings: HorizontalPaddings;
@@ -47,7 +55,7 @@ interface Props {
   isFocused?: boolean;
   isSplitViewAvailable?: boolean;
   loadingFile?: boolean;
-  onTrackEvent?: (category: TrackEventCategory, action: 'click' | 'hotkey', label?: string) => void;
+  onTrackEvent?: (category: ActionsOptionsKeys, action: 'click' | 'hotkey', label?: string) => void;
   selectionEnd?: Nullable<number>;
   selectionStart?: Nullable<number>;
   width?: Nullable<number | string>;
@@ -176,7 +184,7 @@ export const MarkdownActions: FC<Props> = ({
               showActionHint={showActionHints}
               showShortKey={showShortKeys}
               isPreviewMode={isPreviewMode}
-              onTrackEvent={() => handleTrackClick('emoji')}
+              onTrackEvent={() => handleTrackClick(MarkdownOtherActions.Emoji)}
               onSelect={onSelectEmoji}
             />
           )}
@@ -186,7 +194,7 @@ export const MarkdownActions: FC<Props> = ({
               textareaRef={textAreaRef}
               isPreviewMode={isPreviewMode}
               api={AIApi}
-              onTrackEvent={label => handleTrackClick('AI', label)}
+              onTrackEvent={label => handleTrackClick(MarkdownOtherActions.AI, label)}
             />
           )}
         </ActionsLeftWrapper>
@@ -199,7 +207,7 @@ export const MarkdownActions: FC<Props> = ({
               icon={<DocIcon />}
               text="Документация Markdown"
               href={COMMONMARK_HELP_URL}
-              onClick={() => handleTrackClick('help')}
+              onClick={() => handleTrackClick(MarkdownOtherActions.Help)}
             />
           )}
           {!hideOptions?.viewMode && renderViewModeButton()}
@@ -211,7 +219,7 @@ export const MarkdownActions: FC<Props> = ({
               icon={fullscreen ? <Collapse /> : <Expand />}
               text={fullscreen ? 'Свернуть' : '  Развернуть'}
               onClick={() => {
-                handleTrackClick('screenMode');
+                handleTrackClick(MarkdownOtherActions.ScreenMode);
                 onClickFullscreen();
               }}
             />
@@ -286,11 +294,11 @@ export const MarkdownActions: FC<Props> = ({
   }
 
   function handleChangeViewMode(mode: ViewMode) {
-    handleTrackClick('viewMode', mode);
+    handleTrackClick(MarkdownOtherActions.ViewMode, mode);
     onChangeViewMode(mode);
   }
 
-  function handleTrackClick(category: TrackEventCategory, label?: string) {
+  function handleTrackClick(category: ActionsOptionsKeys, label?: string) {
     onTrackEvent?.(category, 'click', label);
   }
 };

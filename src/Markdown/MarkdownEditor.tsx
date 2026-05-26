@@ -4,14 +4,14 @@ import React, { FC, RefObject } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { createMarkdownHelpKeyDownHandler } from './MarkdownHelpers/markdownHelpers';
-import { TrackEventCategory, Nullable } from './types';
+import { ActionsOptionsKeys, Nullable } from './types';
 
 export interface MarkdownEditorProps
   extends Omit<TextareaProps, 'rows' | 'maxRows' | 'disableAnimations' | 'extraRow'> {
   disableAnimations?: boolean;
   extraRow?: boolean;
   maxRows?: number;
-  onTrackEvent?: (category: TrackEventCategory, action: 'click' | 'hotkey', label?: string) => void;
+  onTrackEvent?: (category: ActionsOptionsKeys, action: 'click' | 'hotkey', label?: string) => void;
   /** Рендер сообщения валидации react-ui-validations */
   renderMessage?: Nullable<RenderErrorMessage>;
   rows?: number;

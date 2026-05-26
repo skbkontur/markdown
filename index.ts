@@ -15,9 +15,9 @@ export {
   HorizontalPaddings,
   ViewMode,
   ActionsOptions,
+  ActionsOptionsKeys,
   AIMethod,
   AIApi,
-  TrackEventCategory,
 } from '././src/Markdown/types';
 export { ThemeMode, ColorScheme } from './src/styles/types';
 export { MarkdownTheme, MarkdownThemeProvider, MarkdownThemeConsumer, MarkdownThemeContext } from './src/styles/theme';
